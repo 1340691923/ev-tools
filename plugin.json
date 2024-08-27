@@ -1,0 +1,84 @@
+{
+  "developer": "xiaowenlong",
+  "plugin_alias": "ev-tools",
+  "plugin_name":"ev工具箱",
+  "frontend_debug": false,
+  "version": "0.0.1",
+  "main_go_file": "main.go",
+  "frontend_dev_port":7001,
+  "frontend_routes": [
+    {
+      "path": "indices",
+      "name": "indices",
+      "meta": {
+        "title": "索引管理",
+        "icon": "el-icon-coin"
+      }
+    },
+    {
+      "path": "reindex",
+      "name": "reindex",
+      "meta": {
+        "title": "重建索引",
+        "icon": "el-icon-document-copy"
+      }
+    },
+    {
+      "path": "cat",
+      "name": "cat",
+      "meta": {
+        "title": "ES状态",
+        "icon": "el-icon-pie-chart"
+      }
+    },
+    {
+      "path": "rest",
+      "name": "rest",
+      "meta": {
+        "title": "开发工具",
+        "icon": "el-icon-search"
+      }
+    },
+    {
+      "path": "task",
+      "name": "task",
+      "meta": {
+        "title": "任务",
+        "icon":"el-icon-search"
+      }
+    },
+    {
+      "path": "back-up",
+      "name": "back-up",
+      "meta": {
+        "title": "快照存储库",
+        "icon": "el-icon-first-aid-kit"
+      }
+    },
+    {
+      "path": "snapshot",
+      "name": "index",
+      "meta": {
+        "title": "快照管理",
+        "icon": "el-icon-search"
+      }
+    },
+    {
+      "path": "navicat",
+      "name": "navicat",
+      "meta": {
+        "title": "Navicat",
+        "icon": "el-icon-first-aid-kit"
+      }
+    }
+  ],
+  "backend_routes": [
+
+  ]
+}
+
+
+
+
+
+

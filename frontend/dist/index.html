@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="en"><head>
+    <script>self["MonacoEnvironment"] = (function (paths) {
+          return {
+            globalAPI: false,
+            getWorkerUrl : function (moduleId, label) {
+              var result =  paths[label];
+              if (/^((http:)|(https:)|(file:)|(\/\/))/.test(result)) {
+                var currentUrl = String(window.location);
+                var currentOrigin = currentUrl.substr(0, currentUrl.length - window.location.hash.length - window.location.search.length - window.location.pathname.length);
+                if (result.substring(0, currentOrigin.length) !== currentOrigin) {
+                  var js = '/*' + label + '*/importScripts("' + result + '");';
+                  var blob = new Blob([js], { type: 'application/javascript' });
+                  return URL.createObjectURL(blob);
+                }
+              }
+              return result;
+            }
+          };
+        })({
+  "json": "/__dynamic_base__/monacoeditorwork/json.worker.bundle.js"
+});</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ev插件</title>
+      <script>
+          window.__dynamic_base__ = window.proxy.__INJECTED_PUBLIC_PATH_BY_QIANKUN__.substring(0,window.proxy.__INJECTED_PUBLIC_PATH_BY_QIANKUN__.length-1)
+      </script>
+    <script crossorigin="">import(window.__dynamic_base__+'/assets/index-1032a0df.js').finally(() => {
+            
+    const qiankunLifeCycle = window.moudleQiankunAppLifeCycles && window.moudleQiankunAppLifeCycles['ev-tools'];
+    if (qiankunLifeCycle) {
+      window.proxy.vitemount((props) => qiankunLifeCycle.mount(props));
+      window.proxy.viteunmount((props) => qiankunLifeCycle.unmount(props));
+      window.proxy.vitebootstrap(() => qiankunLifeCycle.bootstrap());
+      window.proxy.viteupdate((props) => qiankunLifeCycle.update(props));
+    }
+  
+          })</script>
+    
+    <script>
+(function(){
+var preloads = [{"parentTagName":"head","tagName":"link","attrs":{"rel":"stylesheet","href":"/assets/index-8dc6e13b.css"}}];
+function setAttribute(target, attrs) {
+for (var key in attrs) {
+  target.setAttribute(key, attrs[key]);
+}
+return target;
+};
+for(var i = 0; i < preloads.length; i++){
+var item = preloads[i]
+var childNode = document.createElement(item.tagName);
+setAttribute(childNode, item.attrs)
+if( window.proxy.__INJECTED_PUBLIC_PATH_BY_QIANKUN__.substring(0,window.proxy.__INJECTED_PUBLIC_PATH_BY_QIANKUN__.length-1)) {
+  if(item.tagName == 'link') {
+    setAttribute(childNode, { href:  window.proxy.__INJECTED_PUBLIC_PATH_BY_QIANKUN__.substring(0,window.proxy.__INJECTED_PUBLIC_PATH_BY_QIANKUN__.length-1) + item.attrs.href })
+  } else if (item.tagName == 'script') {
+    setAttribute(childNode, { src:  window.proxy.__INJECTED_PUBLIC_PATH_BY_QIANKUN__.substring(0,window.proxy.__INJECTED_PUBLIC_PATH_BY_QIANKUN__.length-1) + item.attrs.src })
+  }
+}
+document.getElementsByTagName(item.parentTagName)[0].appendChild(childNode);
+}
+})();
+</script>
+</head>
+
+  <body>
+    <div id="app"></div>
+    
+  
+
+<script>
+  const createDeffer = (hookName) => {
+    const d = new Promise((resolve, reject) => {
+      window.proxy && (window.proxy[`vite${hookName}`] = resolve)
+    })
+    return props => d.then(fn => fn(props));
+  }
+  const bootstrap = createDeffer('bootstrap');
+  const mount = createDeffer('mount');
+  const unmount = createDeffer('unmount');
+  const update = createDeffer('update');
+
+  ;(global => {
+    global.qiankunName = 'ev-tools';
+    global['ev-tools'] = {
+      bootstrap,
+      mount,
+      unmount,
+      update
+    };
+  })(window);
+</script></body></html>

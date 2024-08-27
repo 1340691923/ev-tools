@@ -1,0 +1,3 @@
+attrMap:{ "2": [ { "attribute_name": "name", "show_name": "name", "data_type": 3 } ] }
+eventAttrOptions:[ { "label": "筛选字段", "options": [ { "value": "name", "label": "name" } ] } ]
+currentIndexName:test

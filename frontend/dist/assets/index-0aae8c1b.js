@@ -1,0 +1,1 @@
+function l(e){if(typeof e=="object"&&e!=null){var r=Object.prototype.toString.call(e).slice(8,-1)==="Array"?[]:{};for(var t in e)typeof e[t]=="object"&&e[t]!=null?r[t]=l(e[t]):r[t]=e[t]}else return e;return r}export{l as c};
