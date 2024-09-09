@@ -29,6 +29,8 @@ func main() {
 		sourceDir = &execDir
 	}
 
+	os.MkdirAll("dist", 777)
+
 	err = build.CompressPathToZip(*sourceDir, *excludeDir, execFileName, *destZip)
 
 	if err != nil {
