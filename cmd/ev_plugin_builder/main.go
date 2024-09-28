@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/1340691923/eve-plugin-sdk-go/build"
+	"os"
 )
 
 var pluginJsonFile string
@@ -14,6 +15,8 @@ func init() {
 }
 
 func main() {
+
+	os.MkdirAll("dist", 777)
 
 	err := build.BuildPluginSvr(pluginJsonFile)
 

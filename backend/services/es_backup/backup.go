@@ -2,12 +2,13 @@ package es_backup
 
 import (
 	"context"
-	"encoding/json"
 	"ev-tools/backend/my_error"
 	"ev-tools/backend/services/cluser_settings_service"
 	"fmt"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/vo"
+	"github.com/goccy/go-json"
+	"log"
 
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/pkg"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/proto"
@@ -25,9 +26,10 @@ func NewEsBackUpService(clusterSvr *cluser_settings_service.ClusterSettingsServi
 	return &EsBackUpService{clusterSettingsService: clusterSvr}
 }
 
-func (this *EsBackUpService) SnapshotRepositoryList(ctx context.Context, esClient pkg.EsI, esSnapshotInfo *dto.EsSnapshotInfo) (list []vo.Snashot, snapshotGetRepository map[string]vo.SnapshotRepository, pathRepo []interface{}, err error) {
+func (this *EsBackUpService) SnapshotRepositoryList(ctx context.Context, esClient pkg.ClientInterface, esSnapshotInfo *dto.EsSnapshotInfo) (list []vo.Snashot, snapshotGetRepository map[string]vo.SnapshotRepository, pathRepo []interface{}, err error) {
 	clusterSettings, err := this.clusterSettingsService.GetSettings(ctx, esClient)
 	if err != nil {
+		log.Println("clusterSettings err", err)
 		return
 	}
 	pathRepo = this.clusterSettingsService.GetPathRepo(clusterSettings)
@@ -36,9 +38,10 @@ func (this *EsBackUpService) SnapshotRepositoryList(ctx context.Context, esClien
 		err = my_error.NewError(`path.repo没有设置`, 199999)
 		return
 	}
-	res, err := esClient.SnapshotGetRepository(ctx, esSnapshotInfo.SnapshotInfoList)
+	res, err := esClient.EsSnapshotGetRepository(ctx, esSnapshotInfo.SnapshotInfoList)
 
 	if err != nil {
+		log.Println("EsSnapshotGetRepository err", err)
 		return
 	}
 
@@ -51,6 +54,7 @@ func (this *EsBackUpService) SnapshotRepositoryList(ctx context.Context, esClien
 
 	err = json.Unmarshal(res.ResByte(), &snapshotGetRepository)
 	if err != nil {
+		log.Println("snapshotGetRepository err", err)
 		return
 	}
 
@@ -60,12 +64,12 @@ func (this *EsBackUpService) SnapshotRepositoryList(ctx context.Context, esClien
 		t.Name = name
 		b, err := json.Marshal(settings.Settings)
 		if err != nil {
-			//logs.Logger.Sugar().Errorf("err", err)
+			log.Println("Marshal err", err)
 			continue
 		}
 		err = json.Unmarshal(b, &t)
 		if err != nil {
-			//logs.Logger.Sugar().Errorf("err", err)
+			log.Println("err", err)
 			continue
 		}
 		list = append(list, t)
@@ -75,7 +79,7 @@ func (this *EsBackUpService) SnapshotRepositoryList(ctx context.Context, esClien
 
 }
 
-func (this *EsBackUpService) SnapshotCreateRepository(ctx context.Context, esClient pkg.EsI, snapshotCreateRepository *dto.SnapshotCreateRepository) (err error) {
+func (this *EsBackUpService) SnapshotCreateRepository(ctx context.Context, esClient pkg.ClientInterface, snapshotCreateRepository *dto.SnapshotCreateRepository) (err error) {
 
 	clusterSettings, err := this.clusterSettingsService.GetSettings(ctx, esClient)
 	if err != nil {
@@ -130,7 +134,7 @@ func (this *EsBackUpService) SnapshotCreateRepository(ctx context.Context, esCli
 		"settings": settings,
 	}
 
-	res, err := esClient.SnapshotCreateRepository(ctx, snapshotCreateRepository.Repository, body)
+	res, err := esClient.EsSnapshotCreateRepository(ctx, snapshotCreateRepository.Repository, body)
 	if err != nil {
 		return
 	}
@@ -142,7 +146,7 @@ func (this *EsBackUpService) SnapshotCreateRepository(ctx context.Context, esCli
 	return
 }
 
-func (this *EsBackUpService) CleanUp(ctx context.Context, esClient pkg.EsI, cleanupeRepository *dto.CleanupeRepository) (err error) {
+func (this *EsBackUpService) CleanUp(ctx context.Context, esClient pkg.ClientInterface, cleanupeRepository *dto.CleanupeRepository) (err error) {
 
 	//todo...  Invalid snapshot name [_cleanup], must not start with '_'
 	req, err := http.NewRequest(
@@ -153,7 +157,7 @@ func (this *EsBackUpService) CleanUp(ctx context.Context, esClient pkg.EsI, clea
 		return
 	}
 
-	res, err := esClient.PerformRequest(ctx, req)
+	res, err := esClient.EsPerformRequest(ctx, req)
 	if err != nil {
 		return
 	}
@@ -165,9 +169,9 @@ func (this *EsBackUpService) CleanUp(ctx context.Context, esClient pkg.EsI, clea
 	return
 }
 
-func (this *EsBackUpService) SnapshotDeleteRepository(ctx context.Context, esClient pkg.EsI, repository *dto.SnapshotDeleteRepository) (err error) {
+func (this *EsBackUpService) SnapshotDeleteRepository(ctx context.Context, esClient pkg.ClientInterface, repository *dto.SnapshotDeleteRepository) (err error) {
 
-	res, err := esClient.SnapshotDeleteRepository(ctx, []string{repository.Repository})
+	res, err := esClient.EsSnapshotDeleteRepository(ctx, []string{repository.Repository})
 	if err != nil {
 		return
 	}
@@ -180,7 +184,7 @@ func (this *EsBackUpService) SnapshotDeleteRepository(ctx context.Context, esCli
 	return
 }
 
-func (this *EsBackUpService) CreateSnapshot(ctx context.Context, esClient pkg.EsI, createSnapshot *dto.CreateSnapshot) (err error) {
+func (this *EsBackUpService) CreateSnapshot(ctx context.Context, esClient pkg.ClientInterface, createSnapshot *dto.CreateSnapshot) (err error) {
 
 	settings := proto.Json{}
 
@@ -195,7 +199,7 @@ func (this *EsBackUpService) CreateSnapshot(ctx context.Context, esClient pkg.Es
 		settings["include_global_state"] = *createSnapshot.IncludeGlobalState
 	}
 
-	res, err := esClient.SnapshotCreate(
+	res, err := esClient.EsSnapshotCreate(
 		ctx,
 		createSnapshot.RepositoryName,
 		createSnapshot.SnapshotName,
@@ -211,7 +215,7 @@ func (this *EsBackUpService) CreateSnapshot(ctx context.Context, esClient pkg.Es
 	return
 }
 
-func (this *EsBackUpService) SnapshotList(ctx context.Context, esClient pkg.EsI, snapshotList *dto.SnapshotList) (res []vo.Snapshot, err error) {
+func (this *EsBackUpService) SnapshotList(ctx context.Context, esClient pkg.ClientInterface, snapshotList *dto.SnapshotList) (res []vo.Snapshot, err error) {
 
 	if snapshotList.Repository == "" {
 		err = errors.New("请先选择快照存储库")
@@ -224,7 +228,7 @@ func (this *EsBackUpService) SnapshotList(ctx context.Context, esClient pkg.EsI,
 		return
 	}
 
-	performRequestRes, err := esClient.PerformRequest(ctx, req)
+	performRequestRes, err := esClient.EsPerformRequest(ctx, req)
 
 	if err != nil {
 		return
@@ -244,7 +248,7 @@ func (this *EsBackUpService) SnapshotList(ctx context.Context, esClient pkg.EsI,
 	return
 }
 
-func (this *EsBackUpService) SnapshotDetail(ctx context.Context, esClient pkg.EsI, snapshotDetail *dto.SnapshotDetail) (res *vo.SnapshotDetail, err error) {
+func (this *EsBackUpService) SnapshotDetail(ctx context.Context, esClient pkg.ClientInterface, snapshotDetail *dto.SnapshotDetail) (res *vo.SnapshotDetail, err error) {
 
 	req, err := http.NewRequest(
 		"GET",
@@ -254,7 +258,7 @@ func (this *EsBackUpService) SnapshotDetail(ctx context.Context, esClient pkg.Es
 		return
 	}
 
-	esRes, err := esClient.PerformRequest(ctx, req)
+	esRes, err := esClient.EsPerformRequest(ctx, req)
 	if err != nil {
 		return
 	}
@@ -275,8 +279,8 @@ func (this *EsBackUpService) SnapshotDetail(ctx context.Context, esClient pkg.Es
 	return
 }
 
-func (this *EsBackUpService) SnapshotStatus(ctx context.Context, esClient pkg.EsI, snapshotStatus *dto.SnapshotStatus) (res *vo.SnapshotStatus, err error) {
-	esRes, err := esClient.SnapshotStatus(
+func (this *EsBackUpService) SnapshotStatus(ctx context.Context, esClient pkg.ClientInterface, snapshotStatus *dto.SnapshotStatus) (res *vo.SnapshotStatus, err error) {
+	esRes, err := esClient.EsSnapshotStatus(
 		ctx,
 		snapshotStatus.RepositoryName,
 		[]string{snapshotStatus.SnapshotName},
@@ -300,9 +304,8 @@ func (this *EsBackUpService) SnapshotStatus(ctx context.Context, esClient pkg.Es
 	return
 }
 
-func (this *EsBackUpService) SnapshotDelete(ctx context.Context, esClient pkg.EsI, snapshotDelete *dto.SnapshotDelete) (err error) {
-	esRes, err := esClient.
-		SnapshotDelete(ctx, snapshotDelete.Repository, snapshotDelete.Snapshot)
+func (this *EsBackUpService) SnapshotDelete(ctx context.Context, esClient pkg.ClientInterface, snapshotDelete *dto.SnapshotDelete) (err error) {
+	esRes, err := esClient.EsSnapshotDelete(ctx, snapshotDelete.Repository, snapshotDelete.Snapshot)
 	if err != nil {
 		return
 	}
@@ -315,7 +318,7 @@ func (this *EsBackUpService) SnapshotDelete(ctx context.Context, esClient pkg.Es
 	return
 }
 
-func (this *EsBackUpService) SnapshotRestore(ctx context.Context, esClient pkg.EsI, snapshotRestore *dto.SnapshotRestore) (err error) {
+func (this *EsBackUpService) SnapshotRestore(ctx context.Context, esClient pkg.ClientInterface, snapshotRestore *dto.SnapshotRestore) (err error) {
 
 	body := map[string]interface{}{}
 
@@ -336,7 +339,7 @@ func (this *EsBackUpService) SnapshotRestore(ctx context.Context, esClient pkg.E
 		body["rename_replacement"] = snapshotRestore.RenameReplacement
 	}
 
-	esRes, err := esClient.RestoreSnapshot(
+	esRes, err := esClient.EsRestoreSnapshot(
 		ctx,
 		snapshotRestore.RepositoryName,
 		snapshotRestore.SnapshotName,

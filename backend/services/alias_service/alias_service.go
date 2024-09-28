@@ -20,13 +20,13 @@ func NewAliasService() *AliasService {
 	return &AliasService{}
 }
 
-func (this *AliasService) EsIndexGetAlias(ctx context.Context, esClient pkg.EsI, esAliasInfo *dto.EsAliasInfo) (res []vo.AliasInfo, err error) {
+func (this *AliasService) EsIndexGetAlias(ctx context.Context, esClient pkg.ClientInterface, esAliasInfo *dto.EsAliasInfo) (res []vo.AliasInfo, err error) {
 	if esAliasInfo.IndexName == "" {
 		err = errors.New("索引名不能为空")
 		return
 	}
 
-	aliasRes, err := esClient.GetAliases(ctx, []string{esAliasInfo.IndexName})
+	aliasRes, err := esClient.EsGetAliases(ctx, []string{esAliasInfo.IndexName})
 	if err != nil {
 		return
 	}
@@ -45,9 +45,9 @@ func (this *AliasService) EsIndexGetAlias(ctx context.Context, esClient pkg.EsI,
 	return
 }
 
-func (this *AliasService) MoveAliasToIndex(ctx context.Context, esClient pkg.EsI, esAliasInfo *dto.EsAliasInfo) (err error) {
+func (this *AliasService) MoveAliasToIndex(ctx context.Context, esClient pkg.ClientInterface, esAliasInfo *dto.EsAliasInfo) (err error) {
 
-	_, err = esClient.MoveToAnotherIndexAliases(
+	_, err = esClient.EsMoveToAnotherIndexAliases(
 		ctx,
 		proto.AliasAction{Actions: []proto.AliasAddAction{
 			{
@@ -65,12 +65,12 @@ func (this *AliasService) MoveAliasToIndex(ctx context.Context, esClient pkg.EsI
 	return
 }
 
-func (this *AliasService) AddAliasToIndex(ctx context.Context, esClient pkg.EsI, esAliasInfo *dto.EsAliasInfo) (err error) {
+func (this *AliasService) AddAliasToIndex(ctx context.Context, esClient pkg.ClientInterface, esAliasInfo *dto.EsAliasInfo) (err error) {
 	if esAliasInfo.IndexName == "" {
 		err = errors.New("索引名不能为空")
 		return
 	}
-	resp, err := esClient.AddAliases(ctx, []string{esAliasInfo.IndexName}, esAliasInfo.AliasName)
+	resp, err := esClient.EsAddAliases(ctx, []string{esAliasInfo.IndexName}, esAliasInfo.AliasName)
 
 	if err != nil {
 		return
@@ -84,7 +84,7 @@ func (this *AliasService) AddAliasToIndex(ctx context.Context, esClient pkg.EsI,
 	return
 }
 
-func (this *AliasService) BatchAddAliasToIndex(ctx context.Context, esClient pkg.EsI, esAliasInfo *dto.EsAliasInfo) (err error) {
+func (this *AliasService) BatchAddAliasToIndex(ctx context.Context, esClient pkg.ClientInterface, esAliasInfo *dto.EsAliasInfo) (err error) {
 	if esAliasInfo.IndexName == "" {
 		err = errors.New("索引名不能为空")
 		return
@@ -97,7 +97,7 @@ func (this *AliasService) BatchAddAliasToIndex(ctx context.Context, esClient pkg
 	for _, aliasName := range esAliasInfo.NewAliasNameList {
 		aliasName := aliasName
 		eg.Go(func() error {
-			resp, err := esClient.AddAliases(ctx, []string{esAliasInfo.IndexName}, aliasName)
+			resp, err := esClient.EsAddAliases(ctx, []string{esAliasInfo.IndexName}, aliasName)
 			if err != nil {
 				return err
 			}
@@ -116,12 +116,12 @@ func (this *AliasService) BatchAddAliasToIndex(ctx context.Context, esClient pkg
 	return
 }
 
-func (this *AliasService) RemoveAlias(ctx context.Context, esClient pkg.EsI, esAliasInfo *dto.EsAliasInfo) (err error) {
+func (this *AliasService) RemoveAlias(ctx context.Context, esClient pkg.ClientInterface, esAliasInfo *dto.EsAliasInfo) (err error) {
 	if esAliasInfo.IndexName == "" {
 		err = errors.New("索引名不能为空")
 		return
 	}
-	resp, err := esClient.RemoveAliases(
+	resp, err := esClient.EsRemoveAliases(
 		ctx,
 		[]string{esAliasInfo.IndexName},
 		[]string{esAliasInfo.AliasName},

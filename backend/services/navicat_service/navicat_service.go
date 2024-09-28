@@ -3,14 +3,16 @@ package navicat_service
 import (
 	"context"
 	"encoding/csv"
-	"encoding/json"
+	"ev-tools/backend/global"
 	"ev-tools/backend/util"
 	"fmt"
 	"github.com/1340691923/eve-plugin-sdk-go/backend/logger"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
 	"github.com/gin-gonic/gin"
+	"github.com/goccy/go-json"
 	"io"
 	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -18,7 +20,6 @@ import (
 	proto2 "github.com/1340691923/eve-plugin-sdk-go/ev_api/proto"
 	"github.com/pkg/errors"
 	"github.com/tidwall/gjson"
-	"log"
 	"sort"
 )
 
@@ -28,7 +29,7 @@ func NewNavicatService() *NavicatService {
 	return &NavicatService{}
 }
 
-func (this *NavicatService) CrudGetList(ctx context.Context, esClient pkg.EsI, crudFilter *dto.CrudFilter) (res json.RawMessage, count int64, err error) {
+func (this *NavicatService) CrudGetList(ctx context.Context, esClient pkg.ClientInterface, crudFilter *dto.CrudFilter) (res json.RawMessage, count int64, err error) {
 	q, err := GetWhereSql(crudFilter.Relation)
 	if err != nil {
 		return
@@ -54,7 +55,7 @@ func (this *NavicatService) CrudGetList(ctx context.Context, esClient pkg.EsI, c
 		Sort:  sortArr,
 	}
 
-	resp, err := esClient.Search(
+	resp, err := esClient.EsSearch(
 		ctx, req, searchBody,
 	)
 	if err != nil {
@@ -65,8 +66,12 @@ func (this *NavicatService) CrudGetList(ctx context.Context, esClient pkg.EsI, c
 		return
 	}
 	res = resp.JsonRawMessage()
+	version, err := esClient.EsVersion()
+	if err != nil {
+		return
+	}
 
-	switch esClient.Version() {
+	switch version {
 	case 6:
 		count = gjson.GetBytes(resp.ResByte(), "hits.total").Int()
 	default:
@@ -101,11 +106,11 @@ func (this *NavicatService) CrudGetDSL(ctx context.Context, crudFilter *dto.Crud
 	return
 }
 
-func (this *NavicatService) CrudDownload(ctx context.Context, esClient pkg.EsI, filter *dto.CrudFilter) (downloadFileName string, titleList []string, searchData [][]string, err error) {
+func (this *NavicatService) CrudDownload(ctx context.Context, esClient pkg.ClientInterface, filter *dto.CrudFilter) (downloadFileName string, titleList []string, searchData [][]string, err error) {
 
-	mappingRes, err := esClient.GetMapping(ctx, []string{filter.IndexName})
+	mappingRes, err := esClient.EsGetMapping(ctx, []string{filter.IndexName})
 	if err != nil {
-		log.Println("err", err)
+		logger.DefaultLogger.Error("err", err)
 		return
 	}
 	if mappingRes.StatusErr() != nil {
@@ -118,7 +123,7 @@ func (this *NavicatService) CrudDownload(ctx context.Context, esClient pkg.EsI, 
 	err = json.Unmarshal(mappingRes.ResByte(), &fields)
 
 	if err != nil {
-		log.Println("err", err)
+		logger.DefaultLogger.Error("err", err)
 		return
 	}
 
@@ -136,7 +141,13 @@ func (this *NavicatService) CrudDownload(ctx context.Context, esClient pkg.EsI, 
 		err = errors.New("该索引没有映射结构")
 		return
 	}
-	switch esClient.Version() {
+	version, err := esClient.EsVersion()
+	if err != nil {
+		logger.DefaultLogger.Error("err", err)
+		return
+	}
+
+	switch version {
 	case 6:
 
 		typeName := ""
@@ -157,7 +168,7 @@ func (this *NavicatService) CrudDownload(ctx context.Context, esClient pkg.EsI, 
 
 		properties, ok = mappings["properties"].(map[string]interface{})
 		if !ok {
-			err = errors.New("该索引没有映射结构3")
+			err = errors.New("该索引没有映射结构")
 			return
 		}
 
@@ -171,14 +182,14 @@ func (this *NavicatService) CrudDownload(ctx context.Context, esClient pkg.EsI, 
 	fieldsArr = append(fieldsArr, propertiesArr...)
 	q, err := GetWhereSql(filter.Relation)
 	if err != nil {
-		log.Println("err", err)
+		logger.DefaultLogger.Error("err", err)
 		return
 	}
 
 	querySource, err := q.Source()
 
 	if err != nil {
-		log.Println("err", err)
+		logger.DefaultLogger.Error("err", err)
 		return
 	}
 
@@ -192,7 +203,7 @@ func (this *NavicatService) CrudDownload(ctx context.Context, esClient pkg.EsI, 
 		},
 	}
 
-	resp, err := esClient.Search(
+	resp, err := esClient.EsSearch(
 		ctx, proto2.SearchRequest{Index: []string{filter.IndexName}}, searchBody,
 	)
 	if err != nil {
@@ -210,7 +221,9 @@ func (this *NavicatService) CrudDownload(ctx context.Context, esClient pkg.EsI, 
 	llist := [][]string{}
 
 	flushHitsDataFn := func(hits []gjson.Result) {
+
 		for _, data := range hits {
+
 			list := []string{data.Get("_index").String(), data.Get("_type").String(), data.Get("_id").String()}
 
 			m := data.Get("_source").Map()
@@ -250,10 +263,11 @@ func (this *NavicatService) CrudDownload(ctx context.Context, esClient pkg.EsI, 
 			SearchAfter: &searchAfter,
 		}
 		var searchResp *proto2.Response
-		searchResp, err = esClient.Search(ctx, proto2.SearchRequest{Index: []string{filter.IndexName}}, searchBody)
+
+		searchResp, err = esClient.EsSearch(ctx, proto2.SearchRequest{Index: []string{filter.IndexName}}, searchBody)
 
 		if err != nil {
-			log.Println("err", err)
+			logger.DefaultLogger.Error("err", err)
 			return
 		}
 
@@ -281,7 +295,9 @@ func (this *NavicatService) CrudDownload(ctx context.Context, esClient pkg.EsI, 
 
 func (this *NavicatService) DownloadExcel(downloadFileName string, titleList []string, data [][]string, ctx *gin.Context) (err error) {
 
-	var downloadUrl = fmt.Sprintf("data/%v.csv", time.Now().Format("20060102150405"))
+	csvFile := fmt.Sprintf("%s.csv", time.Now().Format("20060102150405"))
+
+	var downloadUrl = filepath.Join(global.GetTmpFileStorePath(), csvFile)
 
 	if !util.CheckFileIsExist(downloadUrl) {
 		os.Create(downloadUrl)
@@ -303,15 +319,6 @@ func (this *NavicatService) DownloadExcel(downloadFileName string, titleList []s
 	}
 	w.Flush()
 
-	defer func() {
-		go func() {
-			time.Sleep(5 * time.Second)
-			err := os.Remove(downloadUrl)
-			if err != nil {
-				logger.DefaultLogger.Error("err", err)
-			}
-		}()
-	}()
 	f, err := os.Open(downloadUrl)
 	if err != nil {
 		logger.DefaultLogger.Error("os.Open failed:", err)
@@ -326,8 +333,8 @@ func (this *NavicatService) DownloadExcel(downloadFileName string, titleList []s
 		return
 	}
 	ctx.Header("Content-Disposition", `attachment; filename="`+downloadFileName+`.xlsx"`)
-
 	ctx.Writer.Write(filedata)
+
 	return
 }
 

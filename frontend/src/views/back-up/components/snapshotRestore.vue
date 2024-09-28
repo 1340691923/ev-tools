@@ -9,13 +9,13 @@
           <el-form-item :label="$t('快照名')">
             <el-input v-model="snapshot" readonly />
           </el-form-item>
-          <el-form-item :label="$t('需要备份的索引')">
+          <el-form-item :label="$t('需要恢复的索引')">
             <index-select
               :multiple="true"
               :have-all="true"
               :clearable="true"
               style="width: 210px"
-              :placeholder="$t('迁移别名到多个索引上')"
+              :placeholder="$t('需要恢复的索引')"
               @change="changeIndex"
             />
           </el-form-item>
@@ -88,7 +88,7 @@ import { Close } from '@/api/es-index'
 import { ElMessage, ElMessageBox } from 'element-plus'
 const ctx = getCurrentInstance().appContext.config.globalProperties
 import {sdk} from "@/plugin_sdk/sdk"
-
+import IndexSelect from "@/components/index/select.vue";
 // Props
 const props = defineProps({
   open: {

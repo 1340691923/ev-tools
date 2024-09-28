@@ -1,1 +1,0 @@
-import{d as o,r as t,o as n,c as r,a as s}from"./index-1032a0df.js";import{_ as a}from"./_plugin-vue_export-helper-c27b6911.js";const c=o({}),p={class:"eve-plugin-app"};function _(i,d,m,f,u,l){const e=t("router-view");return n(),r("div",p,[s(e)])}const x=a(c,[["render",_]]);export{x as default};

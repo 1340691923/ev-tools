@@ -47,15 +47,15 @@
                 placement="top-start"
                 trigger="hover"
             >
-              <div>{{ row[val].to$t() }}</div>
+              <div>{{ row[val].toString() }}</div>
               <template #reference>
                 <span
-                    v-if="row[val].to$t().length >= 20"
+                    v-if="row[val].toString().length >= 20"
 
                 >
-                {{ row[val].to$t().substr(0, 20) + "..." }}
+                {{ row[val].toString().substr(0, 20) + "..." }}
               </span>
-                <span v-else >{{ row[val].to$t() }}</span>
+                <span v-else >{{ row[val].toString() }}</span>
               </template>
 
             </el-popover>

@@ -2,9 +2,9 @@ package es_task_service
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/vo"
+	"github.com/goccy/go-json"
 
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/pkg"
 	"github.com/pkg/errors"
@@ -17,9 +17,9 @@ func NewEsTaskService() *EsTaskService {
 	return &EsTaskService{}
 }
 
-func (this *EsTaskService) TaskList(ctx context.Context, esClient pkg.EsI) (res map[string]vo.TaskInfo, err error) {
+func (this *EsTaskService) TaskList(ctx context.Context, esClient pkg.ClientInterface) (res map[string]vo.TaskInfo, err error) {
 
-	resp, err := esClient.TaskList(ctx)
+	resp, err := esClient.EsTaskList(ctx)
 	if err != nil {
 		return
 	}
@@ -44,8 +44,8 @@ func (this *EsTaskService) TaskList(ctx context.Context, esClient pkg.EsI) (res 
 	return
 }
 
-func (this *EsTaskService) Cancel(ctx context.Context, esClient pkg.EsI, cancelTask *dto.CancelTask) (err error) {
-	res, err := esClient.TasksCancel(ctx, cancelTask.TaskID)
+func (this *EsTaskService) Cancel(ctx context.Context, esClient pkg.ClientInterface, cancelTask *dto.CancelTask) (err error) {
+	res, err := esClient.EsTasksCancel(ctx, cancelTask.TaskID)
 	if err != nil {
 		return
 	}

@@ -2,8 +2,8 @@ package es_doc_service
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
+	"github.com/goccy/go-json"
 
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/pkg"
 	proto2 "github.com/1340691923/eve-plugin-sdk-go/ev_api/proto"
@@ -15,8 +15,8 @@ func NewEsDocService() *EsDocService {
 	return &EsDocService{}
 }
 
-func (this *EsDocService) DeleteRowByIDAction(ctx context.Context, esClient pkg.EsI, esDocDeleteRowByID *dto.EsDocDeleteRowByID) (err error) {
-	res, err := esClient.Delete(ctx, proto2.DeleteRequest{
+func (this *EsDocService) DeleteRowByIDAction(ctx context.Context, esClient pkg.ClientInterface, esDocDeleteRowByID *dto.EsDocDeleteRowByID) (err error) {
+	res, err := esClient.EsDelete(ctx, proto2.DeleteRequest{
 		Index:        esDocDeleteRowByID.IndexName,
 		DocumentType: esDocDeleteRowByID.Type,
 		DocumentID:   esDocDeleteRowByID.ID,
@@ -30,9 +30,9 @@ func (this *EsDocService) DeleteRowByIDAction(ctx context.Context, esClient pkg.
 	return
 }
 
-func (this *EsDocService) EsDocUpdateByID(ctx context.Context, esClient pkg.EsI, esDocUpdateByID *dto.EsDocUpdateByID) (err error) {
+func (this *EsDocService) EsDocUpdateByID(ctx context.Context, esClient pkg.ClientInterface, esDocUpdateByID *dto.EsDocUpdateByID) (err error) {
 
-	res, err := esClient.Update(ctx, proto2.UpdateRequest{
+	res, err := esClient.EsUpdate(ctx, proto2.UpdateRequest{
 		Index:        esDocUpdateByID.Index,
 		DocumentType: esDocUpdateByID.Type,
 		DocumentID:   esDocUpdateByID.ID,
@@ -46,9 +46,9 @@ func (this *EsDocService) EsDocUpdateByID(ctx context.Context, esClient pkg.EsI,
 	return
 }
 
-func (this *EsDocService) EsDocInsert(ctx context.Context, esClient pkg.EsI, esDocUpdateByID *dto.EsDocUpdateByID) (res json.RawMessage, err error) {
+func (this *EsDocService) EsDocInsert(ctx context.Context, esClient pkg.ClientInterface, esDocUpdateByID *dto.EsDocUpdateByID) (res json.RawMessage, err error) {
 
-	resp, err := esClient.Create(ctx, proto2.CreateRequest{
+	resp, err := esClient.EsCreate(ctx, proto2.CreateRequest{
 		Index:        esDocUpdateByID.Index,
 		DocumentType: esDocUpdateByID.Type,
 		DocumentID:   esDocUpdateByID.ID,

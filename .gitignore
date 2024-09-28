@@ -1,3 +1,7 @@
 /.idea
 /go.work
 /go.work.sum
+/ev-tools.exe
+/ev-tools.exe~
+/ev_plugin_build.exe
+/ev_plugin_zip.exe

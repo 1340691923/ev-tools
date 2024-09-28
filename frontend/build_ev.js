@@ -9,6 +9,7 @@ const filePath = path.resolve(__dirname, 'dist', 'index.html');
 
 async function updateHtml() {
     try {
+
         // 读取文件内容
         const content = await fs.readFile(filePath, 'utf8');
 

@@ -22,6 +22,9 @@
             />
           </el-select>
         </el-form-item>
+
+
+
         <el-form-item>
           <el-button
 
@@ -30,8 +33,17 @@
           >{{ $t('新建存储库') }}
           </el-button>
         </el-form-item>
+        <el-form-item>
+          <el-button
 
+              type="success"
+              @click.native="search"
+          >{{ $t('刷新') }}
+          </el-button>
+        </el-form-item>
       </el-form>
+
+
     </div>
     <el-card shadow="never" class="table-container">
       <el-table
@@ -124,29 +136,28 @@
         destroy-on-close
         size="50%"
     >
+      <json-editor
+          v-if="drawerShow"
+          v-model:value="jsonData"
+          styles="width: 100%"
+          :read="true"
+          :title="$t('JSON数据')"
+      />
 
-      <!--      <json-editor
-                v-if="drawerShow"
-                v-model="JSON.stringify(resData[name],null, '\t')"
-                class="res-body"
-                styles="width: 100%"
-                :read="true"
-                :title="$t('JSON数据')"
-            />-->
     </el-drawer>
 
-    <!--    <add
+        <add
             v-if="openAddDialog"
             :snapshot-data="snapshotData"
             :open="openAddDialog"
             @close="closeAddDialog"
-        />-->
+        />
   </div>
 </template>
 
 <script lang="ts">
 import {sdk} from "@/plugin_sdk/sdk"
-
+import Add from '@/views/back-up/components/addRepository.vue'
 import {Component, Vue, toNative} from 'vue-facing-decorator'
 import {getCurrentInstance} from "vue";
 import {
@@ -155,10 +166,13 @@ import {
   SnapshotRepositoryListAction
 } from "../../api/es-backup";
 import {ElMessage, ElNotification} from "element-plus";
-
+import JsonEditor from '@/components/JsonEditor/index.vue'
 @Component({
   name: 'Task',
-  components: {},
+  components: {
+    Add,
+    JsonEditor
+  },
   setup() {
     const ctx = getCurrentInstance().appContext.config.globalProperties
     return {ctx}
@@ -171,6 +185,7 @@ class Task extends Vue {
   loading = false
   snapshotNameList = []
   resData = {}
+  jsonData = "{}"
   name = ''
   drawerShow = false
   tableData = []
@@ -294,6 +309,22 @@ class Task extends Vue {
         })
         return
       }
+
+
+
+    }else if (code === 199999) {
+      ElNotification({
+        title: 'Error',
+        dangerouslyUseHTMLString: true,
+        message: `
+        <strong>
+          <i style="color: orange">path.repo没有设置</i><br>
+          <i>在elasticsearch.yml 配置文件中配置仓库base目录</i><br>
+          <i>添加path.repo: /tmp/tmp (/tmp/tmp 为快照备份所在文件夹, <br><i style="color: orange">注意</i>首先要先创建这个文件夹)</i>
+        </strong>
+      `,
+        type: 'error'
+      })
     } else {
       this.tableData = data.list
     }
@@ -306,6 +337,7 @@ class Task extends Vue {
 
   look(index) {
     this.name = index
+    this.jsonData =JSON.stringify( this.resData[index] ,null, '\t')
     this.drawerShow = true
   }
 

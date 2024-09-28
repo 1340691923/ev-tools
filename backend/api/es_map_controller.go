@@ -45,7 +45,13 @@ func (this *EsMappingController) ListAction(ctx *gin.Context) {
 		return
 	}
 
-	this.Success(ctx, response.SearchSuccess, map[string]interface{}{"list": res, "ver": esI.Version()})
+	version, err := esI.EsVersion()
+
+	if err != nil {
+		this.Error(ctx, err)
+		return
+	}
+	this.Success(ctx, response.SearchSuccess, map[string]interface{}{"list": res, "ver": version})
 }
 
 // @Summary 修改Es映射

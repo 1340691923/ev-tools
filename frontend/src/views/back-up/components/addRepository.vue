@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :close-on-click-modal="false" v-model="open" :title="$t('新增/修改快照存储库')" @close="closeDialog">
+    <el-dialog :close-on-click-modal="false" v-model="props_data.open" :title="$t('新增/修改快照存储库')" @close="closeDialog">
       <el-card class="box-card">
         <el-form label-width="300px" label-position="left">
           <el-form-item :label="$t('存储库名')">
@@ -67,6 +67,7 @@
 <script>
 import { SnapshotCreateRepositoryAction } from '@/api/es-backup'
 import {sdk} from "@/plugin_sdk/sdk"
+import {ElMessage} from "element-plus";
 
 export default {
   name: 'Add',
@@ -83,6 +84,9 @@ export default {
   },
   data() {
     return {
+      props_data:{
+        open:this.open,
+      },
       isOpen: false,
       form: {
         name: '',

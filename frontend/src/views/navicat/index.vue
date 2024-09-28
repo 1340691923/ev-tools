@@ -25,7 +25,7 @@
 
                 <template #default  >
 
-                  <el-menu-item v-for="(v, index2) in getIndexList"  :index="index2.to$t()" @click="clickItem(v['index'])">
+                  <el-menu-item v-for="(v, index2) in getIndexList"  :index="index2.toString()" @click="clickItem(v['index'])">
                     <el-dropdown>
                       <span class="el-dropdown-link">
                         <el-icon v-if="v.health == 'red'" style="color: red" ><Grid /></el-icon>
@@ -253,7 +253,7 @@ const clickItem = async (index) => {
 }
 
 const deleteListByK = (k) => {
-  const index = indexList.value.findIndex((v) => v.k.to$t() === k.to$t())
+  const index = indexList.value.findIndex((v) => v.k.toString() === k.toString())
   if (index !== -1) {
     indexList.value.splice(index, 1)
   }

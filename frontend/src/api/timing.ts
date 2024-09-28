@@ -3,7 +3,7 @@ import {request} from "../plugin_sdk/sdk";
 let api = "/api/TimingController/"
 
 export function ListAction(data) {
-  return request({
+  return request({ 
     url: api + 'ListAction',
     method: 'post',
     data

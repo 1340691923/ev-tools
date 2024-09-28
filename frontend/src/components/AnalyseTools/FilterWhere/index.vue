@@ -71,7 +71,7 @@
                       <div class="action-left">
 
                         <action-row
-                            :key="(index + '_' + index2).to$t()"
+                            :key="(index + '_' + index2).toString()"
                             v-model:value="v.filts[index2]"
                             :options="props.options"
                             :table-typ="props.tableTyp"

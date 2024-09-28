@@ -1,4 +1,4 @@
-
+import {request} from "../plugin_sdk/sdk";
 
 const api = '/api/es_doc/'
 

@@ -30,22 +30,24 @@
               </el-col>
               <el-col :lg="8" :md="12" :sm="12" :xl="6" :xs="24">
                 <el-form-item label="索引名">
-                  <el-autocomplete
-                      class="filter-item width300"
-                      id="index-keyword"
-                      clearable
-                      :fetch-suggestions="querySearch"
-                      style="width: 300px"
-                      v-model="input"
-                      :placeholder="$t('请输入索引名')"
-                  >
+                  <el-container>
+                    <el-autocomplete
+                        class="filter-item width300"
+                        id="index-keyword"
+                        clearable
+                        :fetch-suggestions="querySearch"
+                        style="width: 300px"
+                        v-model="input"
+                        :placeholder="$t('请输入索引名')"
+                    >
 
-                    <template #default="{ item }">
-                      <span>{{ item.value }}</span>
-                    </template>
+                      <template #default="{ item }">
+                        <span>{{ item.value }}</span>
+                      </template>
 
-                  </el-autocomplete>
-                  <el-button id="index-search" type="primary" :icon="Search"  @click="search"></el-button>
+                    </el-autocomplete>
+                    <el-button id="index-search" type="primary" :icon="Search"  @click="search"></el-button>
+                  </el-container>
                 </el-form-item>
               </el-col>
 
@@ -694,7 +696,7 @@ export default {
       input['es_connect'] = sdk.GetSelectEsConnID()
       input['index_name'] = this.indexName
 
-      if (activeData[activeDataKeys[0]].to$t() != 'false') {
+      if (activeData[activeDataKeys[0]].toString() != 'false') {
         input['properties'] = activeData[activeDataKeys[0]]
         input['type_name'] = activeDataKeys[0]
       } else {

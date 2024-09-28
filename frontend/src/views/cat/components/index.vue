@@ -35,7 +35,7 @@
           </el-table-column>
 
           <el-table-column show-overflow-tooltip v-for="(info,index) in tableInfo" :key="index" align="center" :label="tableInfo[index].desc"
-                           :width="info.width" :prop="info.data.to$t()" :sortable="info.sort">
+                           :width="info.width" :prop="info.data.toString()" :sortable="info.sort">
             <template #default="scope">
               {{ scope.row[info.data.split('->').join('.')] }}
             </template>

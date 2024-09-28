@@ -13,7 +13,7 @@ func NewClusterSettingsService() *ClusterSettingsService {
 	return &ClusterSettingsService{}
 }
 
-func (this *ClusterSettingsService) GetSettings(ctx context.Context, esClient pkg.EsI) (resByte []byte, err error) {
+func (this *ClusterSettingsService) GetSettings(ctx context.Context, esClient pkg.ClientInterface) (resByte []byte, err error) {
 
 	req, err := http.NewRequest("GET", "/_cluster/settings?include_defaults=true", nil)
 
@@ -21,7 +21,7 @@ func (this *ClusterSettingsService) GetSettings(ctx context.Context, esClient pk
 		return nil, err
 	}
 
-	res, err := esClient.PerformRequest(ctx, req)
+	res, err := esClient.EsPerformRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}

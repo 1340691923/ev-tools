@@ -2,11 +2,11 @@
 package response
 
 import (
-	"encoding/json"
 	"ev-tools/backend/my_error"
 	"fmt"
 	"github.com/1340691923/eve-plugin-sdk-go/backend/logger"
 	"github.com/gin-gonic/gin"
+	"github.com/goccy/go-json"
 	"io"
 	"net/http"
 )

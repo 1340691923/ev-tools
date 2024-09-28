@@ -1,6 +1,6 @@
 package navicat_service
 
-import "encoding/json"
+import "github.com/goccy/go-json"
 
 type SearchHit struct {
 	Score          *float64               `json:"_score,omitempty"`   // computed score

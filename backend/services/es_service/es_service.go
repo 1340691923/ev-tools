@@ -3,8 +3,8 @@ package es_service
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/pkg"
+	"github.com/goccy/go-json"
 	"net/http"
 )
 
@@ -15,7 +15,7 @@ func NewEsService() *EsService {
 	return &EsService{}
 }
 
-func (this *EsService) RecoverCanWrite(ctx context.Context, esClient pkg.EsI) (err error) {
+func (this *EsService) RecoverCanWrite(ctx context.Context, esClient pkg.ClientInterface) (err error) {
 
 	body := map[string]interface{}{
 		"index": map[string]interface{}{
@@ -33,7 +33,7 @@ func (this *EsService) RecoverCanWrite(ctx context.Context, esClient pkg.EsI) (e
 		return
 	}
 
-	res, err := esClient.PerformRequest(ctx, req)
+	res, err := esClient.EsPerformRequest(ctx, req)
 
 	if err != nil {
 		return

@@ -2,9 +2,9 @@ package index_service
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/vo"
+	"github.com/goccy/go-json"
 	"github.com/pkg/errors"
 
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/pkg"
@@ -19,12 +19,12 @@ func NewIndexService() *IndexService {
 	return &IndexService{}
 }
 
-func (this *IndexService) EsIndexCreate(ctx context.Context, esClient pkg.EsI, esIndexInfo *dto.EsIndexInfo) (err error) {
+func (this *IndexService) EsIndexCreate(ctx context.Context, esClient pkg.ClientInterface, esIndexInfo *dto.EsIndexInfo) (err error) {
 	if esIndexInfo.IndexName == "" {
 		return errors.New("索引名不能为空")
 	}
 	if esIndexInfo.Types == "update" {
-		res, err := esClient.IndicesPutSettingsRequest(ctx,
+		res, err := esClient.EsIndicesPutSettingsRequest(ctx,
 			proto2.IndicesPutSettingsRequest{
 				Index: []string{esIndexInfo.IndexName},
 			}, esIndexInfo.Settings,
@@ -37,7 +37,7 @@ func (this *IndexService) EsIndexCreate(ctx context.Context, esClient pkg.EsI, e
 			return err
 		}
 	} else {
-		res, err := esClient.CreateIndex(ctx, proto2.IndicesCreateRequest{
+		res, err := esClient.EsCreateIndex(ctx, proto2.IndicesCreateRequest{
 			Index: esIndexInfo.IndexName,
 		},
 			map[string]interface{}{
@@ -55,11 +55,11 @@ func (this *IndexService) EsIndexCreate(ctx context.Context, esClient pkg.EsI, e
 	return nil
 }
 
-func (this *IndexService) EsIndexDelete(ctx context.Context, esClient pkg.EsI, esIndexInfo *dto.EsIndexInfo) (err error) {
+func (this *IndexService) EsIndexDelete(ctx context.Context, esClient pkg.ClientInterface, esIndexInfo *dto.EsIndexInfo) (err error) {
 	if esIndexInfo.IndexName == "" {
 		return errors.New("索引名不能为空")
 	}
-	resp, err := esClient.DeleteIndex(ctx, proto2.IndicesDeleteRequest{
+	resp, err := esClient.EsDeleteIndex(ctx, proto2.IndicesDeleteRequest{
 		Index: []string{esIndexInfo.IndexName},
 	})
 	if err != nil {
@@ -72,13 +72,13 @@ func (this *IndexService) EsIndexDelete(ctx context.Context, esClient pkg.EsI, e
 	return
 }
 
-func (this *IndexService) EsIndexGetSettings(ctx context.Context, esClient pkg.EsI, esIndexInfo *dto.EsIndexInfo) (settings map[string]interface{}, err error) {
+func (this *IndexService) EsIndexGetSettings(ctx context.Context, esClient pkg.ClientInterface, esIndexInfo *dto.EsIndexInfo) (settings map[string]interface{}, err error) {
 	if esIndexInfo.IndexName == "" {
 		err = errors.New("索引名不能为空")
 		return
 	}
 
-	res, err := esClient.IndicesGetSettingsRequest(ctx, proto2.IndicesGetSettingsRequest{
+	res, err := esClient.EsIndicesGetSettingsRequest(ctx, proto2.IndicesGetSettingsRequest{
 		Index: []string{esIndexInfo.IndexName},
 	})
 	if err != nil {
@@ -99,13 +99,13 @@ func (this *IndexService) EsIndexGetSettings(ctx context.Context, esClient pkg.E
 	return
 }
 
-func (this *IndexService) EsIndexGetSettingsInfo(ctx context.Context, esClient pkg.EsI, esIndexInfo *dto.EsIndexInfo) (settings map[string]interface{}, err error) {
+func (this *IndexService) EsIndexGetSettingsInfo(ctx context.Context, esClient pkg.ClientInterface, esIndexInfo *dto.EsIndexInfo) (settings map[string]interface{}, err error) {
 	if esIndexInfo.IndexName == "" {
 		err = errors.New("索引名不能为空")
 		return
 	}
 
-	res, err := esClient.IndicesGetSettingsRequest(ctx, proto2.IndicesGetSettingsRequest{
+	res, err := esClient.EsIndicesGetSettingsRequest(ctx, proto2.IndicesGetSettingsRequest{
 		Index: []string{esIndexInfo.IndexName},
 	})
 	if err != nil {
@@ -124,7 +124,7 @@ func (this *IndexService) EsIndexGetSettingsInfo(ctx context.Context, esClient p
 	return
 }
 
-func (this *IndexService) EsIndexReindex(ctx context.Context, esClient pkg.EsI, esReIndexInfo *dto.EsReIndexInfo) (res map[string]interface{}, err error) {
+func (this *IndexService) EsIndexReindex(ctx context.Context, esClient pkg.ClientInterface, esReIndexInfo *dto.EsReIndexInfo) (res map[string]interface{}, err error) {
 
 	reindexRequest := proto2.ReindexRequest{}
 
@@ -149,7 +149,7 @@ func (this *IndexService) EsIndexReindex(ctx context.Context, esClient pkg.EsI, 
 		reindexRequest.WaitForCompletion = urlValues.WaitForCompletion
 	}
 
-	reindexRes, err := esClient.Reindex(ctx, reindexRequest, esReIndexInfo.Body)
+	reindexRes, err := esClient.EsReindex(ctx, reindexRequest, esReIndexInfo.Body)
 	if err != nil {
 		return
 	}
@@ -166,8 +166,8 @@ func (this *IndexService) EsIndexReindex(ctx context.Context, esClient pkg.EsI, 
 	return
 }
 
-func (this *IndexService) EsIndexNames(ctx context.Context, esClient pkg.EsI) (indexNames []string, err error) {
-	catIndicesResponse, err := esClient.GetIndices(ctx, proto2.CatIndicesRequest{
+func (this *IndexService) EsIndexNames(ctx context.Context, esClient pkg.ClientInterface) (indexNames []string, err error) {
+	catIndicesResponse, err := esClient.EsGetIndices(ctx, proto2.CatIndicesRequest{
 		Format: "json",
 	})
 	if err != nil {
@@ -188,8 +188,8 @@ func (this *IndexService) EsIndexNames(ctx context.Context, esClient pkg.EsI) (i
 	return
 }
 
-func (this *IndexService) EsIndexCount(ctx context.Context, esClient pkg.EsI) (indexNameLen int, err error) {
-	catIndicesResponse, err := esClient.GetIndices(ctx, proto2.CatIndicesRequest{
+func (this *IndexService) EsIndexCount(ctx context.Context, esClient pkg.ClientInterface) (indexNameLen int, err error) {
+	catIndicesResponse, err := esClient.EsGetIndices(ctx, proto2.CatIndicesRequest{
 		Format: "json",
 	})
 	if err != nil {
@@ -208,8 +208,8 @@ func (this *IndexService) EsIndexCount(ctx context.Context, esClient pkg.EsI) (i
 	return
 }
 
-func (this *IndexService) EsIndexStats(ctx context.Context, esClient pkg.EsI, indexName string) (res []vo.Status, err error) {
-	catIndicesResponse, err := esClient.GetIndices(ctx, proto2.CatIndicesRequest{
+func (this *IndexService) EsIndexStats(ctx context.Context, esClient pkg.ClientInterface, indexName string) (res []vo.Status, err error) {
+	catIndicesResponse, err := esClient.EsGetIndices(ctx, proto2.CatIndicesRequest{
 		Index:  []string{indexName},
 		H:      []string{"status"},
 		Format: "json",
@@ -225,8 +225,8 @@ func (this *IndexService) EsIndexStats(ctx context.Context, esClient pkg.EsI, in
 	return
 }
 
-func (this *IndexService) EsIndexCatStatus(ctx context.Context, esClient pkg.EsI, indexName string) (res []vo.Status, err error) {
-	catIndicesResponse, err := esClient.GetIndices(ctx, proto2.CatIndicesRequest{
+func (this *IndexService) EsIndexCatStatus(ctx context.Context, esClient pkg.ClientInterface, indexName string) (res []vo.Status, err error) {
+	catIndicesResponse, err := esClient.EsGetIndices(ctx, proto2.CatIndicesRequest{
 		Index:  []string{indexName},
 		H:      []string{"status"},
 		Format: "json",
@@ -243,11 +243,11 @@ func (this *IndexService) EsIndexCatStatus(ctx context.Context, esClient pkg.EsI
 	return
 }
 
-func (this *IndexService) Refresh(ctx context.Context, esClient pkg.EsI, indexNames []string) (err error) {
+func (this *IndexService) Refresh(ctx context.Context, esClient pkg.ClientInterface, indexNames []string) (err error) {
 	if len(indexNames) == 0 {
 		indexNames = []string{"*"}
 	}
-	resp, err := esClient.Refresh(ctx, indexNames)
+	resp, err := esClient.EsRefresh(ctx, indexNames)
 	if err != nil {
 		return
 	}
@@ -258,11 +258,11 @@ func (this *IndexService) Refresh(ctx context.Context, esClient pkg.EsI, indexNa
 	return
 }
 
-func (this *IndexService) CacheClear(ctx context.Context, esClient pkg.EsI, indexNames []string) (err error) {
+func (this *IndexService) CacheClear(ctx context.Context, esClient pkg.ClientInterface, indexNames []string) (err error) {
 	if len(indexNames) == 0 {
 		indexNames = []string{"*"}
 	}
-	resp, err := esClient.IndicesClearCache(ctx, indexNames)
+	resp, err := esClient.EsIndicesClearCache(ctx, indexNames)
 	if err != nil {
 		return
 	}
@@ -273,11 +273,11 @@ func (this *IndexService) CacheClear(ctx context.Context, esClient pkg.EsI, inde
 	return
 }
 
-func (this *IndexService) Close(ctx context.Context, esClient pkg.EsI, indexNames []string) (err error) {
+func (this *IndexService) Close(ctx context.Context, esClient pkg.ClientInterface, indexNames []string) (err error) {
 	if len(indexNames) == 0 {
 		indexNames = []string{"*"}
 	}
-	resp, err := esClient.IndicesClose(ctx, indexNames)
+	resp, err := esClient.EsIndicesClose(ctx, indexNames)
 	if err != nil {
 		return
 	}
@@ -288,11 +288,11 @@ func (this *IndexService) Close(ctx context.Context, esClient pkg.EsI, indexName
 	return
 }
 
-func (this *IndexService) Empty(ctx context.Context, esClient pkg.EsI, indexNames []string) (err error) {
+func (this *IndexService) Empty(ctx context.Context, esClient pkg.ClientInterface, indexNames []string) (err error) {
 	if len(indexNames) == 0 {
 		indexNames = []string{"*"}
 	}
-	resp, err := esClient.DeleteByQuery(ctx, indexNames, nil, map[string]interface{}{
+	resp, err := esClient.EsDeleteByQuery(ctx, indexNames, nil, map[string]interface{}{
 		"query": map[string]interface{}{
 			"match_all": map[string]interface{}{},
 		},
@@ -307,11 +307,11 @@ func (this *IndexService) Empty(ctx context.Context, esClient pkg.EsI, indexName
 	return
 }
 
-func (this *IndexService) Flush(ctx context.Context, esClient pkg.EsI, indexNames []string) (err error) {
+func (this *IndexService) Flush(ctx context.Context, esClient pkg.ClientInterface, indexNames []string) (err error) {
 	if len(indexNames) == 0 {
 		indexNames = []string{"*"}
 	}
-	resp, err := esClient.Flush(ctx, indexNames)
+	resp, err := esClient.EsFlush(ctx, indexNames)
 	if err != nil {
 		return
 	}
@@ -322,12 +322,12 @@ func (this *IndexService) Flush(ctx context.Context, esClient pkg.EsI, indexName
 	return
 }
 
-func (this *IndexService) IndicesForcemerge(ctx context.Context, esClient pkg.EsI, indexNames []string) (err error) {
+func (this *IndexService) IndicesForcemerge(ctx context.Context, esClient pkg.ClientInterface, indexNames []string) (err error) {
 	if len(indexNames) == 0 {
 		indexNames = []string{"*"}
 	}
 	maxNumSegments := 1
-	resp, err := esClient.IndicesForcemerge(ctx, indexNames, &maxNumSegments)
+	resp, err := esClient.EsIndicesForcemerge(ctx, indexNames, &maxNumSegments)
 	if err != nil {
 		return
 	}
@@ -338,11 +338,11 @@ func (this *IndexService) IndicesForcemerge(ctx context.Context, esClient pkg.Es
 	return
 }
 
-func (this *IndexService) Open(ctx context.Context, esClient pkg.EsI, indexNames []string) (err error) {
+func (this *IndexService) Open(ctx context.Context, esClient pkg.ClientInterface, indexNames []string) (err error) {
 	if len(indexNames) == 0 {
 		indexNames = []string{"*"}
 	}
-	resp, err := esClient.Open(ctx, indexNames)
+	resp, err := esClient.EsOpen(ctx, indexNames)
 	if err != nil {
 		return
 	}
@@ -353,8 +353,8 @@ func (this *IndexService) Open(ctx context.Context, esClient pkg.EsI, indexNames
 	return
 }
 
-func (this *IndexService) UpdateMapping(ctx context.Context, esClient pkg.EsI, updateMapping *dto.UpdateMapping) (res json.RawMessage, err error) {
-	resp, err := esClient.PutMapping(ctx, proto2.IndicesPutMappingRequest{
+func (this *IndexService) UpdateMapping(ctx context.Context, esClient pkg.ClientInterface, updateMapping *dto.UpdateMapping) (res json.RawMessage, err error) {
+	resp, err := esClient.EsPutMapping(ctx, proto2.IndicesPutMappingRequest{
 		Index:        []string{updateMapping.IndexName},
 		DocumentType: updateMapping.TypeName,
 	}, updateMapping.Properties)
@@ -370,12 +370,12 @@ func (this *IndexService) UpdateMapping(ctx context.Context, esClient pkg.EsI, u
 	return
 }
 
-func (this *IndexService) EsMappingList(ctx context.Context, esClient pkg.EsI, esConnect *dto.EsMapGetProperties) (res json.RawMessage, err error) {
+func (this *IndexService) EsMappingList(ctx context.Context, esClient pkg.ClientInterface, esConnect *dto.EsMapGetProperties) (res json.RawMessage, err error) {
 	indexNames := []string{}
 	if esConnect.IndexName != "" {
 		indexNames = []string{esConnect.IndexName}
 	}
-	resp, err := esClient.GetMapping(ctx, indexNames)
+	resp, err := esClient.EsGetMapping(ctx, indexNames)
 	if err != nil {
 		return
 	}

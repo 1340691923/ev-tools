@@ -27,7 +27,7 @@
               :have-all="true"
               :clearable="true"
               style="width: 210px"
-              :placeholder="$t('迁移别名到多个索引上')"
+              :placeholder="$t('需要备份的索引')"
               @change="changeIndex"
             />
           </el-form-item>
@@ -92,7 +92,7 @@ import { CreateSnapshotAction, SnapshotRepositoryListAction } from '@/api/es-bac
 import { ElMessage, ElNotification } from 'element-plus'
 const ctx = getCurrentInstance().appContext.config.globalProperties
 import {sdk} from "@/plugin_sdk/sdk"
-
+import IndexSelect from "@/components/index/select.vue";
 // Props
 const props = defineProps({
   open: {

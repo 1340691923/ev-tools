@@ -49,7 +49,7 @@
         fixed
         width="50"
       >
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.$index + 1 }}
         </template>
       </el-table-column>
@@ -58,7 +58,7 @@
       <el-table-column align="center" :label="$t('备份索引数')" prop="indices" width="100" />
 
       <el-table-column align="center" :label="$t('状态')" width="100">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-tag v-if="scope.row.status == 'SUCCESS'" type="success">{{ $t('成功') }}</el-tag>
           <el-tag v-else-if="scope.row.status == 'IN_PROGRESS'" type="warning">{{ $t('还在进行中') }}</el-tag>
           <el-tag v-else>{{ scope.row.status }}</el-tag>
@@ -66,13 +66,13 @@
       </el-table-column>
 
       <el-table-column align="center" :label="$t('开始详细时间')" width="180">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div>{{ timestampToTime(scope.row.start_epoch) }}</div>
         </template>
       </el-table-column>
 
       <el-table-column align="center" :label="$t('结束详细时间')" width="180">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div>{{ timestampToTime(scope.row.end_epoch) }}</div>
         </template>
       </el-table-column>
@@ -83,7 +83,7 @@
       <el-table-column align="center" :label="$t('失败分片数')" prop="failed_shards" width="120" />
 
       <el-table-column align="center" :label="$t('操作')" fixed="right" width="350">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-button-group>
             <el-button
               type="success"
@@ -97,7 +97,7 @@
 
               type="danger"
 
-              @click="SnapshotDeleteAction(scope.row.id)"
+              @click="deleteSnapshot(scope.row.id)"
             >{{ $t('删除') }}
             </el-button>
             <el-button
@@ -175,7 +175,7 @@ import { timestampToTime } from '@/utils/time'
 import Add from '@/views/back-up/components/addSnapshot.vue'
 import SnapshotRestore from '@/views/back-up/components/snapshotRestore.vue'
 import {sdk} from "@/plugin_sdk/sdk"
-
+import JsonEditor from '@/components/JsonEditor/index.vue'
 const ctx = getCurrentInstance().appContext.config.globalProperties
 
 // State
@@ -192,6 +192,10 @@ const evUtils = {} // Assume this is defined globally or imported from a utility
 
 // Computed properties
 const snapshotDetailJSON = computed(() => JSON.stringify(snapshotDetail.value, null, '\t'))
+
+const closeoRestoreDialog = ()=>{
+  openRestoreDialog.value = false
+}
 
 // Methods
 const status = async (snapshotName) => {

@@ -143,8 +143,8 @@ onMounted(() => {
 
 const getDataTypeCalcuSymbol = (data) => {
   let typ = 0
-  if (props.dataTypeMap.hasOwnProperty(props.tableTyp.to$t())) {
-    for (const v of props.dataTypeMap[props.tableTyp.to$t()]) {
+  if (props.dataTypeMap.hasOwnProperty(props.tableTyp.toString())) {
+    for (const v of props.dataTypeMap[props.tableTyp.toString()]) {
       if (data === v.attribute_name) {
         typ = v.data_type
       }

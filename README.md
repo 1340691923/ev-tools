@@ -9,15 +9,15 @@
 确保已经启动ElasticView基座程序
 
 环境配置：
-golang版本 1.19
+golang版本 >= 1.20
 node版本 >= 20.14.0
 
 安装gowatch:
 go install github.com/silenceper/gowatch@latest
 
-安装辅助工具：
-go install .\cmd\ev_plugin_zip\
-go install .\cmd\ev_plugin_builder\
+安装辅助工具到项目根目录：
+go build -o ev_plugin_zip .\cmd\ev_plugin_zip\main.go
+go build -o ev_plugin_builder .\cmd\ev_plugin_builder\main.go
 
 安装pnpm:
 npm install -g pnpm
@@ -140,3 +140,13 @@ ev_plugin_builder
 按自己实际情况移动至ElasticView的plugin文件夹中即可
 
 ```
+
+### 后端插件打源码包
+
+```
+
+项目根目录执行:
+ev_plugin_zip -source=需打包文件夹目录地址
+
+```
+
