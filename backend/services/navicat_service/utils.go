@@ -166,9 +166,21 @@ func getExpr(columnName, comparator string, ftv interface{}) elastic.Query {
 		return elastic.NewRangeQuery(columnName).Lt(ftv.([]string)[0])
 	}
 
+	if comparator == "textMatch" {
+
+		switch ftv.(type) {
+		case string:
+			return elastic.NewMatchQuery(columnName, cast.ToString(ftv))
+		case []interface{}:
+			return elastic.NewMatchQuery(columnName, cast.ToString(ftv.([]interface{})[0]))
+		case []string:
+			return elastic.NewMatchQuery(columnName, cast.ToString(ftv.([]string)[0]))
+		}
+	}
+
 	if comparator == "match" || comparator == "@match" {
 		if comparator == "@match" {
-			columnName = fmt.Sprintf("%s.keyword", columnName)
+			columnName = fmt.Sprintf("%s", columnName)
 		}
 		switch ftv.(type) {
 		case string:

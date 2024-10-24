@@ -4,9 +4,9 @@ package router
 func (this *WebServer) runEsTask() {
 
 	const AbsolutePath = "/api/es_task"
-	group := this.engine.Group(AbsolutePath)
+	group := this.engine.Group("ES异步任务", AbsolutePath)
 	{
-		group.POST("/ListAction", this.esTaskController.ListAction)
-		group.POST("/CancelAction", this.esTaskController.CancelAction)
+		group.POST(false, "Es任务列表", "/ListAction", this.esTaskController.ListAction)
+		group.POST(true, "取消ES任务", "/CancelAction", this.esTaskController.CancelAction)
 	}
 }

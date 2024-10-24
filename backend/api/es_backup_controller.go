@@ -38,7 +38,7 @@ func (this *EsBackUpController) SnapshotRepositoryListAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esSnapshotInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esSnapshotInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	list, res, pathRepo, err := this.esBackUpService.SnapshotRepositoryList(ctx, esI, esSnapshotInfo)
 	if err != nil {
@@ -69,7 +69,7 @@ func (this *EsBackUpController) SnapshotCreateRepositoryAction(ctx *gin.Context)
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(snapshotCreateRepository.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(snapshotCreateRepository.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = this.esBackUpService.SnapshotCreateRepository(ctx, esI, snapshotCreateRepository)
 	if err != nil {
@@ -97,7 +97,7 @@ func (this *EsBackUpController) CleanupeRepositoryAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(cleanupeRepository.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(cleanupeRepository.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = this.esBackUpService.CleanUp(ctx, esI, cleanupeRepository)
 	if err != nil {
@@ -125,7 +125,7 @@ func (this *EsBackUpController) SnapshotDeleteRepositoryAction(ctx *gin.Context)
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(snapshotDeleteRepository.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(snapshotDeleteRepository.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = this.esBackUpService.SnapshotDeleteRepository(ctx, esI, snapshotDeleteRepository)
 	if err != nil {
@@ -153,7 +153,7 @@ func (this *EsBackUpController) CreateSnapshotAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(createSnapshot.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(createSnapshot.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = this.esBackUpService.CreateSnapshot(ctx, esI, createSnapshot)
 	if err != nil {
@@ -181,7 +181,7 @@ func (this *EsBackUpController) SnapshotListAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(snapshotList.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(snapshotList.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := this.esBackUpService.SnapshotList(ctx, esI, snapshotList)
 	if err != nil {
@@ -208,7 +208,7 @@ func (this *EsBackUpController) SnapshotDeleteAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(snapshotDelete.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(snapshotDelete.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = this.esBackUpService.SnapshotDelete(ctx, esI, snapshotDelete)
 	if err != nil {
@@ -236,7 +236,7 @@ func (this *EsBackUpController) SnapshotDetailAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(snapshotDetail.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(snapshotDetail.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := this.esBackUpService.SnapshotDetail(ctx, esI, snapshotDetail)
 	if err != nil {
@@ -263,7 +263,7 @@ func (this *EsBackUpController) SnapshotRestoreAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(snapshotRestore.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(snapshotRestore.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = this.esBackUpService.SnapshotRestore(ctx, esI, snapshotRestore)
 	if err != nil {
@@ -291,7 +291,7 @@ func (this *EsBackUpController) SnapshotStatusAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(snapshotStatus.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(snapshotStatus.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := this.esBackUpService.SnapshotStatus(ctx, esI, snapshotStatus)
 	if err != nil {

@@ -1260,7 +1260,8 @@ export const dataTypeCalcuSymbol = {
     '@!=': '不包含',
     'isNotNull': '有值',
     'isNull': '无值',
-    '@match': '模糊查询'
+    '@match': '模糊查询',
+    'textMatch': '分词查询'
   },
   6: {},
   7: {},
@@ -1268,7 +1269,7 @@ export const dataTypeCalcuSymbol = {
   9: {}
 }
 
-export const inputSymbolArr = ['>', '<', '<=', '>=', 'match']
+export const inputSymbolArr = ['>', '<', '<=', '>=', 'match','textMatch']
 export const noValueSymbolArr = ['isNotNull', 'isNull']
 export const rangeSymbolArr = ['range']
 export const rangeTimeSymbolArr = ['rangeTime']

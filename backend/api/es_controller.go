@@ -50,7 +50,7 @@ func (this *EsController) CatAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esCat.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esCat.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	catSvr := this.catService
 
@@ -133,7 +133,7 @@ func (this *EsController) RecoverCanWrite(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esConnectID.EsConnectID, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esConnectID.EsConnectID, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = this.esService.RecoverCanWrite(ctx, esI)
 
@@ -154,7 +154,7 @@ func (this *EsController) RunDslPOSTAction(ctx *gin.Context) {
 		this.Error(ctx, err)
 		return
 	}
-	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := esI.EsRunDsl(ctx, &dto.PluginRunDsl2{
 		HttpMethod: http.MethodPost,
@@ -198,7 +198,7 @@ func (this *EsController) RunDslGETAction(ctx *gin.Context) {
 		this.Error(ctx, err)
 		return
 	}
-	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := esI.EsRunDsl(ctx, &dto.PluginRunDsl2{
 		HttpMethod: http.MethodGet,
@@ -243,7 +243,7 @@ func (this *EsController) RunDslDELETEAction(ctx *gin.Context) {
 		this.Error(ctx, err)
 		return
 	}
-	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := esI.EsRunDsl(ctx, &dto.PluginRunDsl2{
 		HttpMethod: http.MethodDelete,
@@ -287,7 +287,7 @@ func (this *EsController) RunDslPUTAction(ctx *gin.Context) {
 		this.Error(ctx, err)
 		return
 	}
-	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := esI.EsRunDsl(ctx, &dto.PluginRunDsl2{
 		HttpMethod: http.MethodPut,
@@ -331,7 +331,7 @@ func (this *EsController) RunDslHEADAction(ctx *gin.Context) {
 		this.Error(ctx, err)
 		return
 	}
-	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := esI.EsRunDsl(ctx, &dto.PluginRunDsl2{
 		HttpMethod: http.MethodHead,

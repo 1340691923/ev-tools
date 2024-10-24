@@ -37,7 +37,7 @@ func (this *EsTaskController) ListAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(taskListReq.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(taskListReq.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := this.taskService.TaskList(ctx, esI)
 	if err != nil {
@@ -64,7 +64,7 @@ func (this *EsTaskController) CancelAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(cancelTask.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(cancelTask.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = this.taskService.Cancel(ctx, esI, cancelTask)
 	if err != nil {

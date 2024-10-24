@@ -5,11 +5,12 @@ import (
 	"ev-tools/backend/global"
 	"ev-tools/backend/migrate"
 	"ev-tools/backend/router"
+	"ev-tools/frontend"
 	"flag"
 	"github.com/1340691923/eve-plugin-sdk-go/backend/logger"
 	"github.com/1340691923/eve-plugin-sdk-go/backend/plugin_server"
+	"github.com/1340691923/eve-plugin-sdk-go/backend/web_engine"
 	"github.com/1340691923/eve-plugin-sdk-go/build"
-	"github.com/gin-gonic/gin"
 	"github.com/goccy/go-json"
 )
 
@@ -25,7 +26,7 @@ func init() {
 }
 
 func main() {
-	gin.SetMode(gin.ReleaseMode)
+
 	pluginJson := new(build.PluginJsonData)
 	err := json.Unmarshal(pluginJsonBytes, &pluginJson)
 	if err != nil {
@@ -34,12 +35,16 @@ func main() {
 	}
 
 	pluginJson.BackendDebug = global.Debug
+
+	webEngine := web_engine.NewWebEngine()
+
 	plugin_server.Serve(plugin_server.ServeOpts{
-		EvRpcPort:           global.EvRpcPort,
-		EvRpcKey:            global.EvRpcKey,
-		PluginJson:          pluginJson,
-		Migration:           migrate.GetMigrates(),
-		CallResourceHandler: router.NewResourceHandler(gin.New()),
+		EvRpcPort:     global.EvRpcPort,
+		EvRpcKey:      global.EvRpcKey,
+		PluginJson:    pluginJson,
+		Migration:     migrate.GetMigrates(),
+		FrontendFiles: frontend.StatisFs,
+		WebEngine:     router.NewRouter(webEngine),
 		ExitCallback: func() {
 			logger.DefaultLogger.Debug("进程退出")
 		},

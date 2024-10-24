@@ -11,7 +11,7 @@ var (
 
 func GetTmpFileStorePath() string {
 	if _, err := os.Stat(TmpFileStorePath); os.IsNotExist(err) {
-		os.MkdirAll(TmpFileStorePath, 777)
+		os.MkdirAll(TmpFileStorePath, os.ModePerm)
 	}
 	return TmpFileStorePath
 }

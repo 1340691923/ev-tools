@@ -269,10 +269,10 @@ export default {
 
   },
   computed:{
-    jsonData$t(){
+    jsonDataString(){
       return JSON.stringify(this.jsonData,null, '\t')
     },
-    queryDsl$t(){
+    queryDslString(){
       return JSON.stringify(this.queryDsl,null, '\t')
     }
   },

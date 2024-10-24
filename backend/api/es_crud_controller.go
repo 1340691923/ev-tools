@@ -38,7 +38,7 @@ func (this *EsCrudController) GetList(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(crudFilter.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(crudFilter.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 	if err != nil {
 		this.Error(ctx, err)
 		return
@@ -99,7 +99,7 @@ func (this *EsCrudController) Download(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(crudFilter.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(crudFilter.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 	if err != nil {
 		this.Error(ctx, err)
 		return

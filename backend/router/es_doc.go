@@ -4,11 +4,11 @@ package router
 func (this *WebServer) runEsDoc() {
 
 	const AbsolutePath = "/api/es_doc"
-	group := this.engine.Group(AbsolutePath)
+	group := this.engine.Group("ES文档操作", AbsolutePath)
 	{
-		group.POST("/DeleteRowByIDAction", this.esDocController.DeleteRowByIDAction)
-		group.POST("/UpdateByIDAction", this.esDocController.UpdateByIDAction)
-		group.POST("/InsertAction", this.esDocController.InsertAction)
+		group.POST(true, "删除文档数据", "/DeleteRowByIDAction", this.esDocController.DeleteRowByIDAction)
+		group.POST(true, "修改文档", "/UpdateByIDAction", this.esDocController.UpdateByIDAction)
+		group.POST(true, "新增文档", "/InsertAction", this.esDocController.InsertAction)
 
 	}
 }

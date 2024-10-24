@@ -11,14 +11,11 @@ import (
 	"ev-tools/backend/services/es_task_service"
 	"ev-tools/backend/services/index_service"
 	"ev-tools/backend/services/navicat_service"
-	"ev-tools/frontend"
-	"github.com/1340691923/eve-plugin-sdk-go/backend"
-	"github.com/1340691923/eve-plugin-sdk-go/backend/resource/httpadapter"
-	"github.com/gin-gonic/gin"
+	"github.com/1340691923/eve-plugin-sdk-go/backend/web_engine"
 )
 
 type WebServer struct {
-	engine              *gin.Engine
+	engine              *web_engine.WebEngine
 	esBackUpController  *api.EsBackUpController
 	esController        *api.EsController
 	esCrudController    *api.EsCrudController
@@ -29,9 +26,12 @@ type WebServer struct {
 }
 
 // 依赖注入
-func NewWebServer(app *gin.Engine) *WebServer {
+func NewWebServer(app *web_engine.WebEngine) *WebServer {
 	baseController := api.NewBaseController(response.NewResponse())
-	esBackUpController := api.NewEsBackUpController(baseController, es_backup.NewEsBackUpService(cluser_settings_service.NewClusterSettingsService()))
+	esBackUpController := api.NewEsBackUpController(
+		baseController, es_backup.NewEsBackUpService(
+			cluser_settings_service.NewClusterSettingsService()),
+	)
 	esController := api.NewEsController(baseController, cat_service.NewCatService(), es_service.NewEsService())
 	esCurdController := api.NewEsCrudController(baseController, navicat_service.NewNavicatService())
 	esDocController := api.NewEsDocController(baseController, es_doc_service.NewEsDocService())
@@ -52,14 +52,10 @@ func NewWebServer(app *gin.Engine) *WebServer {
 }
 
 // 实现web资源接口（webapi） 可用任何实现http.Handle接口的Web框架开发 我这里用gin为例
-func NewResourceHandler(app *gin.Engine) backend.CallResourceHandler {
-
-	//前端页面
-	//因为前端所用技术可以进行热更新，所以可进行脱离插件控制
-	app.Use(frontend.Serve("/", frontend.EmbedFolder(frontend.StatisFs, "dist")))
+func NewRouter(webEngine *web_engine.WebEngine) *web_engine.WebEngine {
 
 	//后端api
-	webSvr := NewWebServer(app)
+	webSvr := NewWebServer(webEngine)
 	webSvr.runDslHistory()
 	webSvr.runEs()
 	webSvr.runEsIndex()
@@ -68,5 +64,6 @@ func NewResourceHandler(app *gin.Engine) backend.CallResourceHandler {
 	webSvr.runEsCrud()
 	webSvr.runEsDoc()
 	webSvr.runEsMap()
-	return httpadapter.New(app.Handler())
+
+	return webSvr.engine
 }

@@ -3,7 +3,7 @@ module ev-tools
 go 1.20
 
 require (
-	github.com/1340691923/eve-plugin-sdk-go v0.0.2
+	github.com/1340691923/eve-plugin-sdk-go v0.0.3
 	github.com/cch123/elasticsql v1.0.1
 	github.com/gin-gonic/gin v1.9.0
 	github.com/goccy/go-json v0.10.3

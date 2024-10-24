@@ -199,6 +199,7 @@
 
 
     <el-table
+        height="450"
         v-loading="connectLoading"
         :data="list"
         @selection-change="selectChange"
@@ -206,6 +207,7 @@
       <el-table-column
           type="selection"
           width="55"
+          fixed
       />
 
 
@@ -239,16 +241,12 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('索引名')" width="180">
+      <el-table-column align="center" width="300" :label="$t('索引名')"  >
         <template #default="scope">
           {{ scope.row.index }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('uuid')" width="180">
-        <template #default="scope">
-          {{ scope.row.uuid }}
-        </template>
-      </el-table-column>
+
       <el-table-column align="center" :label="$t('主分片数')" width="80" prop="pri" sortable>
         <template #default="scope">
           {{ scope.row.pri }}
@@ -259,7 +257,7 @@
           {{ scope.row.rep }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('文档总数')" width="80" prop="docs->count" sortable>
+      <el-table-column align="center" :label="$t('文档总数')" width="150" prop="docs->count" sortable>
         <template #default="scope">
           {{ bigNumberTransform(scope.row["docs.count"]) }}
         </template>
@@ -720,9 +718,9 @@ export default {
     },
     openMappingEditDialog(indexName, haveMapping) {
       if (haveMapping) {
-        this.mappingTitle = $t('新增字段')
+        this.mappingTitle = '新增字段'
       } else {
-        this.mappingTitle = $t('新增映射结构')
+        this.mappingTitle = '新增映射结构'
       }
       this.indexName = indexName
 

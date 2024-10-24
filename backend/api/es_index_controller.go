@@ -39,7 +39,7 @@ func (this *EsIndexController) CreateAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = this.indexService.EsIndexCreate(ctx, esI, esIndexInfo)
 	if err != nil {
@@ -67,7 +67,7 @@ func (this *EsIndexController) DeleteAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = this.indexService.EsIndexDelete(ctx, esI, esIndexInfo)
 	if err != nil {
@@ -96,7 +96,7 @@ func (this *EsIndexController) GetSettingsAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := this.indexService.EsIndexGetSettings(ctx, esI, esIndexInfo)
 	if err != nil {
@@ -124,7 +124,7 @@ func (this *EsIndexController) GetSettingsInfoAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := this.indexService.EsIndexGetSettingsInfo(ctx, esI, esIndexInfo)
 	if err != nil {
@@ -153,7 +153,7 @@ func (this *EsIndexController) GetAliasAction(ctx *gin.Context) {
 
 	esI := ev_api.NewEvWrapApi(
 		esAliasInfo.EsConnect,
-		cast.ToInt(ctx.GetHeader(util.EvRoleID)),
+
 		cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := alias_service.NewAliasService().EsIndexGetAlias(ctx, esI, esAliasInfo)
@@ -182,7 +182,7 @@ func (this *EsIndexController) MoveAliasToIndex(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = alias_service.NewAliasService().MoveAliasToIndex(ctx, esI, esAliasInfo)
 	if err != nil {
@@ -210,7 +210,7 @@ func (this *EsIndexController) AddAliasToIndex(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = alias_service.NewAliasService().AddAliasToIndex(ctx, esI, esAliasInfo)
 	if err != nil {
@@ -238,7 +238,7 @@ func (this *EsIndexController) BatchAddAliasToIndex(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = alias_service.NewAliasService().BatchAddAliasToIndex(ctx, esI, esAliasInfo)
 	if err != nil {
@@ -266,7 +266,7 @@ func (this *EsIndexController) RemoveAlias(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = alias_service.NewAliasService().RemoveAlias(ctx, esI, esAliasInfo)
 	if err != nil {
@@ -294,7 +294,7 @@ func (this *EsIndexController) ReindexAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esReIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esReIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := this.indexService.EsIndexReindex(ctx, esI, esReIndexInfo)
 	if err != nil {
@@ -320,7 +320,7 @@ func (this *EsIndexController) IndexNamesAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esConnectID.EsConnectID, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esConnectID.EsConnectID, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := this.indexService.EsIndexNames(ctx, esI)
 	if err != nil {
@@ -346,7 +346,7 @@ func (this *EsIndexController) IndexsCountAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esConnectID.EsConnectID, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esConnectID.EsConnectID, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := this.indexService.EsIndexCount(ctx, esI)
 	if err != nil {
@@ -372,7 +372,7 @@ func (this *EsIndexController) StatsAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := this.indexService.EsIndexStats(ctx, esI, esIndexInfo.IndexName)
 	if err != nil {
@@ -398,7 +398,7 @@ func (this *EsIndexController) Refresh(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	indexSvr := index_service.NewIndexService()
 	if esOptimize.IndexName == "" {
@@ -430,7 +430,7 @@ func (this *EsIndexController) CacheClear(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	indexSvr := index_service.NewIndexService()
 	if esOptimize.IndexName == "" {
@@ -462,7 +462,7 @@ func (this *EsIndexController) Flush(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	indexSvr := index_service.NewIndexService()
 	if esOptimize.IndexName == "" {
@@ -494,7 +494,7 @@ func (this *EsIndexController) Forcemerge(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	indexSvr := index_service.NewIndexService()
 	if esOptimize.IndexName == "" {
@@ -526,7 +526,7 @@ func (this *EsIndexController) Open(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	indexSvr := index_service.NewIndexService()
 	if esOptimize.IndexName == "" {
@@ -558,7 +558,7 @@ func (this *EsIndexController) Close(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	indexSvr := index_service.NewIndexService()
 	if esOptimize.IndexName == "" {
@@ -590,7 +590,7 @@ func (this *EsIndexController) Empty(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	indexSvr := index_service.NewIndexService()
 	if esOptimize.IndexName == "" {

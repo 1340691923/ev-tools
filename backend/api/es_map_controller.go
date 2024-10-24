@@ -37,7 +37,7 @@ func (this *EsMappingController) ListAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esMapGetProperties.EsConnectID, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esMapGetProperties.EsConnectID, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := this.indexService.EsMappingList(ctx, esI, esMapGetProperties)
 	if err != nil {
@@ -70,7 +70,7 @@ func (this *EsMappingController) UpdateMappingAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(updateMapping.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(updateMapping.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	res, err := this.indexService.UpdateMapping(ctx, esI, updateMapping)
 	if err != nil {

@@ -16,7 +16,7 @@ func init() {
 
 func main() {
 
-	os.MkdirAll("dist", 777)
+	os.MkdirAll("dist", os.ModePerm)
 
 	err := build.BuildPluginSvr(pluginJsonFile)
 

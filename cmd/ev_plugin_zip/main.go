@@ -29,7 +29,7 @@ func main() {
 		sourceDir = &execDir
 	}
 
-	os.MkdirAll("dist", 777)
+	os.MkdirAll("dist", os.ModePerm)
 
 	err = build.CompressPathToZip(*sourceDir, *excludeDir, execFileName, *destZip)
 

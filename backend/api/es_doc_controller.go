@@ -36,7 +36,7 @@ func (this *EsDocController) DeleteRowByIDAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esDocDeleteRowByID.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esDocDeleteRowByID.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = this.esDocService.DeleteRowByIDAction(ctx, esI, esDocDeleteRowByID)
 	if err != nil {
@@ -63,7 +63,7 @@ func (this *EsDocController) UpdateByIDAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esDocUpdateByID.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esDocUpdateByID.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 
 	err = this.esDocService.EsDocUpdateByID(ctx, esI, esDocUpdateByID)
 	if err != nil {
@@ -86,7 +86,7 @@ func (this *EsDocController) InsertAction(ctx *gin.Context) {
 	esDocUpdateByID := new(dto.EsDocUpdateByID)
 	err := ctx.Bind(esDocUpdateByID)
 
-	esI := ev_api.NewEvWrapApi(esDocUpdateByID.EsConnect, cast.ToInt(ctx.GetHeader(util.EvRoleID)), cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esDocUpdateByID.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
 	if err != nil {
 		this.Error(ctx, err)
 		return
