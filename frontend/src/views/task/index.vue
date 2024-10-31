@@ -191,7 +191,7 @@
         direction="rtl"
         close-on-press-escape
         destroy-on-close
-        size="50%"
+        size="80%"
     >
 
       <json-editor

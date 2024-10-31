@@ -641,6 +641,6 @@ export default {
 .card {
   width: 95%;
   float: left;
-  margin: 30px
+
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :close-on-click-modal="false" v-model="props_data.open" :title="$t('新增/修改快照存储库')" @close="closeDialog">
+    <el-drawer size="80%" v-model="props_data.open" :title="$t('新增/修改快照存储库')" @close="closeDialog">
       <el-card class="box-card">
         <el-form label-width="300px" label-position="left">
           <el-form-item :label="$t('存储库名')">
@@ -43,7 +43,7 @@
             <el-input v-model="form.max_snapshot_bytes_per_sec" :placeholder="$t('每个节点快照速率')" />
           </el-form-item>
         </el-form>
-        <div style="text-align:right;">
+        <template #footer>
           <el-button
 
             type="danger"
@@ -58,9 +58,9 @@
             @click="confirm"
           > {{ $t('确认') }}
           </el-button>
-        </div>
+        </template>
       </el-card>
-    </el-dialog>
+    </el-drawer>
   </div>
 </template>
 

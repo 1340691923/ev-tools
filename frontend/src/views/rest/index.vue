@@ -1,16 +1,17 @@
 <template>
   <div class="app-container" style="overflow-x:hidden;">
-    <div class="search-container">
-      <el-form>
-        <el-form-item>
-          <el-button   @click="addTab">
-            {{ $t('添加查询窗口') }}
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+
     <el-card style="margin-top: 10px" class="box-card">
-      <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
+      <el-tabs
+          editable
+          @edit="handleTabsEdit"
+          class="curd-tab"
+          v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
+        <template #add-icon>
+          <el-icon style="font-size: 14px;font-weight: bolder" >
+            <Plus/>
+          </el-icon>
+        </template>
         <el-tab-pane
             :lazy="true"
             v-for="(item, index) in editableTabs"
@@ -76,6 +77,13 @@ onMounted(() => {
     })
   }
 })
+
+
+const handleTabsEdit = (targetName,action) => {
+  if (action === 'add') {
+    addTab()
+  }
+}
 
 onBeforeUnmount(() => {
   const editableTabsString = JSON.stringify(editableTabs.value)
@@ -171,3 +179,10 @@ const removeTab = targetName => {
   editableTabs.value = tabs.filter(tab => tab.uniqueId !== targetName)
 }
 </script>
+
+<style>
+.curd-tab .el-tabs__new-tab{
+  width:34px;
+  height:34px
+}
+</style>

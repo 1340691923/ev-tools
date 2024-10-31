@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :close-on-click-modal="false" width="95%" v-model="dialogVisible" title="查询结果" @close="close">
+    <el-drawer  size="95%" v-model="dialogVisible" title="查询结果" @close="close">
       <div class="search-container">
         <el-tag >{{ $t('请输入关键词') }}</el-tag>
         <el-input v-model="input"  style="width: 300px" clearable @input="search" />
@@ -90,7 +90,7 @@
           </template>
         </el-table-column>
       </el-table>
-    </el-dialog>
+    </el-drawer>
 
     <el-drawer
         ref="drawer"
@@ -100,7 +100,7 @@
         direction="rtl"
         close-on-press-escape
         destroy-on-close
-        size="50%"
+        size="80%"
     >
       <div v-if="ISDoc" class="search-container">
         <el-tag >{{ $t('操作') }}</el-tag>
@@ -143,7 +143,7 @@
         direction="rtl"
         close-on-press-escape
         destroy-on-close
-        size="50%"
+        size="80%"
     >
       <div class="search-container">
         <el-tag >{{ $t('操作') }}</el-tag>

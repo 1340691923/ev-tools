@@ -1,23 +1,25 @@
 <template>
   <div>
-    <el-dialog
-        :close-on-click-modal="false"
+    <el-drawer
+
         v-model="open"
         :title="title.concat(`【${indexName}】`)"
-        width="60%"
+        size="80%"
         @close="closeDialog"
     >
       <div class="app-container">
         <div class="search-container">
           <el-form :inline="true">
-            <el-form-item v-if="showTypeName" label="type">
-              <el-input
-                  v-if="showTypeName"
-                  v-model="type_name"
-                  :readonly="typeReadonly"
-                  style="width: 200px"
-              />
-            </el-form-item>
+            <template v-if="showTypeName">
+              <el-form-item  label="type">
+                <el-input
+                    v-model="type_name"
+                    :readonly="typeReadonly"
+                    style="width: 200px"
+                />
+              </el-form-item>
+            </template>
+
             <el-form-item label="dynamic">
               <el-select style="width:100px" v-model="dynamic" >
                 <el-option :label="$t('动态映射')" value="true" />
@@ -45,37 +47,44 @@
         </el-tabs>
         <el-tabs  v-model="activeName"  stretch >
           <el-tab-pane  name="1" :lazy="true" :label="$t('表单')">
-            <vue-json-helper
-                v-if="showVueJsonHelper"
-                :size="size"
-                :names="names"
-                :json-str="jsonStr"
-                :root-flag="rootFlag"
-                :open-flag="openFlag"
-                :back-top-flag="backTopFlag"
-                :shadow-flag="false"
-                :border-flag="false"
-                @jsonListener="jsonListener"
-            />
+            <div v-loading="!showVueJsonHelper" >
+              <template v-if="showVueJsonHelper">
+                <vue-json-helper
+
+                    :size="size"
+                    :names="names"
+                    :json-str="jsonStr"
+                    :root-flag="rootFlag"
+                    :open-flag="openFlag"
+                    :back-top-flag="backTopFlag"
+                    :shadow-flag="false"
+                    :border-flag="false"
+                    @jsonListener="jsonListener"
+                />
+              </template>
+
+            </div>
           </el-tab-pane>
           <el-tab-pane name="2" :lazy="true" :label="$t('JSON')">
 
-            <json-editor
-                v-model:value="jsonStrData"
-                height="720"
-                styles="width: 100%"
-                :title="type_name"
-            />
+            <div>
+              <json-editor
+                  v-model:value="jsonStrData"
+                  height="720"
+                  styles="width: 100%"
+                  :title="type_name"
+              />
+            </div>
           </el-tab-pane>
         </el-tabs>
 
       </div>
-    </el-dialog>
+    </el-drawer>
   </div>
 </template>
 
 <script setup>
-import {ref, reactive, onMounted, nextTick, getCurrentInstance,computed} from 'vue';
+import {ref, onMounted, nextTick, getCurrentInstance,computed} from 'vue';
 import { ElMessage } from 'element-plus';
 import { ListAction, UpdateMappingAction } from '@/api/es-map';
 import JsonEditor from '@/components/JsonEditor/index.vue'
@@ -116,7 +125,7 @@ const emit = defineEmits(['close', 'finished']);
 const loading = ref(false);
 const dynamic = ref('false');
 const size = ref('small');
-const names = ref([
+const names = [
   { key: 'Root', name: 'properties' },
   { key: 'type', name: '数据类型' },
   { key: 'format', name: '时间格式化' },
@@ -143,7 +152,7 @@ const names = ref([
   { key: 'similarity', name: '匹配算法' },
   { key: 'store', name: '字段是否被存储' },
   { key: 'term_vector', name: '词根信息' }
-]);
+];
 const rootFlag = ref(true);
 const openFlag = ref(true);
 const backTopFlag = ref(false);
@@ -205,12 +214,7 @@ const saveMappinng = async () => {
   }
 };
 
-const refreshVueJsonHelper = () => {
-  showVueJsonHelper.value = false;
-  nextTick(() => {
-    showVueJsonHelper.value = true;
-  });
-};
+
 
 const init = async () => {
   const input = {
@@ -259,6 +263,13 @@ const jsonListener = (data) => {
 
 const closeDialog = () => {
   emit('close');
+};
+
+const refreshVueJsonHelper = () => {
+  showVueJsonHelper.value = false;
+  nextTick(() => {
+    showVueJsonHelper.value = true;
+  });
 };
 
 // Mounted hook

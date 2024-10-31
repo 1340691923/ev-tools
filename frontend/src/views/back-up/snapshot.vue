@@ -43,18 +43,9 @@
     <el-table
       :data="tableData"
     >
-      <el-table-column
-        :label="$t('序号')"
-        align="center"
-        fixed
-        width="50"
-      >
-        <template #default="scope">
-          {{ scope.$index + 1 }}
-        </template>
-      </el-table-column>
 
-      <el-table-column align="center" :label="$t('快照名')" prop="id" width="100" />
+
+      <el-table-column align="center" :label="$t('快照名')" prop="id" />
       <el-table-column align="center" :label="$t('备份索引数')" prop="indices" width="100" />
 
       <el-table-column align="center" :label="$t('状态')" width="100">
@@ -87,32 +78,22 @@
           <el-button-group>
             <el-button
               type="success"
-
-
               @click="look(scope.row.id)"
             >{{ $t('查看') }}
             </el-button>
 
             <el-button
-
               type="danger"
-
               @click="deleteSnapshot(scope.row.id)"
             >{{ $t('删除') }}
             </el-button>
             <el-button
-
               type="warning"
-
               @click="openRestore(scope.row.id)"
             >{{ $t('恢复') }}
             </el-button>
             <el-button
-
-
               type="primary"
-
-
               @click="status(scope.row.id)"
             >{{ $t('状态') }}
             </el-button>
@@ -131,7 +112,7 @@
       direction="rtl"
       close-on-press-escape
       destroy-on-close
-      size="50%"
+      size="80%"
     >
 
       <json-editor

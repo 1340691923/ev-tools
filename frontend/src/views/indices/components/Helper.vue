@@ -1,21 +1,26 @@
 <template>
   <el-row :class="borderFlag ? 'el-row-border' : ''" >
-    <el-col v-if="isJson" class="item-body">
-      <Item
-          :item="item"
-          :deep="deep"
-          :parent="item"
-          :names="names"
-          :size="size"
-          :index="0"
-          :root-flag="rootFlag"
-          :open-flag="openFlag"
-      />
-    </el-col>
+    <template v-if="isJson">
+      <el-col  class="item-body">
+        <Item
+            :item="item"
+            :deep="deep"
+            :parent="item"
+            :names="names"
+            :size="size"
+            :index="0"
+            :root-flag="rootFlag"
+            :open-flag="openFlag"
+        />
+      </el-col>
+    </template>
+
     <el-col v-else>
       <i>{{ errorResult }}</i>
     </el-col>
-    <el-backtop v-if="backTopFlag" />
+    <template v-if="backTopFlag">
+      <el-backtop  />
+    </template>
   </el-row>
 </template>
 

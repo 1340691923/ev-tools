@@ -73,7 +73,7 @@
               direction="rtl"
               close-on-press-escape
               destroy-on-close
-              size="50%"
+              size="80%"
           >
             <div style="height: 95%;width: 100px;display: inline-block; height: 100%;vertical-align: top;width: 100%;">
               <el-tabs v-model="activeName" v-loading="tabLoading" type="border-card">

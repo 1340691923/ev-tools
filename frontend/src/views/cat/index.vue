@@ -60,7 +60,7 @@ class Cat extends Vue {
         data: 'index',
         desc: '索引名称',
         sort: true,
-        width: 180
+        width: 0
       },
       {
         data: 'uuid',
@@ -116,7 +116,7 @@ class Cat extends Vue {
         data: 'index',
         desc: '索引别名指向',
         sort: true,
-        width: 250
+        width: 0
       },
       {
         data: 'filter',
@@ -160,7 +160,7 @@ class Cat extends Vue {
         data: 'node',
         desc: '节点名称',
         sort: true,
-        width: 170
+        width: 0
       },
       {
         data: 'shards',
@@ -204,7 +204,7 @@ class Cat extends Vue {
         data: 'epoch',
         desc: '自标准时间（1970-01-01 00:00:00）以来的秒数',
         sort: true,
-        width: 500
+        width: 0
       },
       {
         data: 'timestamp',
@@ -224,7 +224,7 @@ class Cat extends Vue {
         data: 'cluster',
         desc: '集群名称',
         sort: true,
-        width: 120
+        width: 0
       },
       {
         data: 'status',
@@ -295,7 +295,7 @@ class Cat extends Vue {
         data: 'epoch',
         desc: '自标准时间（1970-01-01 00:00:00）以来的秒数',
         sort: true,
-        width: 100
+        width: 0
       },
       {
         data: 'timestamp',
@@ -309,7 +309,7 @@ class Cat extends Vue {
         data: 'index',
         desc: '索引名称',
         sort: true,
-        width: 220
+        width: 0
       },
       {
         data: 'shard',

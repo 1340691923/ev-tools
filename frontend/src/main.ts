@@ -12,6 +12,8 @@ import "vue3-json-viewer/dist/index.css";
 
 import JsonExcel from "vue-json-excel3";
 
+import floatBtnDirectives from "./utils/float-btn"
+
 // 插件启动所需安装第三方插件通过此方法
 const registerPlugin = (app)=>{
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -20,8 +22,11 @@ const registerPlugin = (app)=>{
 
   app.component("downloadExcel", JsonExcel);
 
-  app.use(JsonViewer).use(ElementPlus)
+  app.use(JsonViewer).use(ElementPlus).use(floatBtnDirectives)
   return app
 }
+
+
+
 
 setupEvPlugin(registerPlugin)

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog width="90%" :close-on-click-modal="false" v-model="open" :title="title" @close="closeDialog">
+    <el-drawer size="90%"  v-model="open" :title="title" @close="closeDialog">
       <el-card class="box-card">
         <el-form label-width="500px" label-position="left">
           <el-form-item :label="$t('索引名称：')">
@@ -19,12 +19,12 @@
             <el-input v-model="form['index.max_result_window']" type="number" style="width: 300px" />
           </el-form-item>
         </el-form>
-        <div style="text-align:right;">
+        <template #footer>
           <el-button type="danger" @click="closeDialog">{{ $t('取消') }}</el-button>
           <el-button type="primary" @click="confirmSettings">{{ $t('确认') }}</el-button>
-        </div>
+        </template>
       </el-card>
-    </el-dialog>
+    </el-drawer>
   </div>
 </template>
 

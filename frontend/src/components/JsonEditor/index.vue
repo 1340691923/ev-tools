@@ -14,7 +14,7 @@
           复制</span>
       </div>
     </div>
-    <div id="container" ref="container" :style="{'height':`${height}px`,width:containerWidth}"></div>
+    <div id="container" class="json-monaco-editor" ref="container" :style="{'height':`${height}px`,width:containerWidth}"></div>
   </div>
 </template>
 <script setup lang="ts">
@@ -22,7 +22,7 @@
 import {monaco} from '../../utils/monaco';
 
 
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import handleClipboard from "../../utils/clipboard";
 
 import {sdk} from "../../plugin_sdk/sdk";
@@ -80,6 +80,21 @@ const getTheme = computed(()=>{
   return sdk.isDarkTheme() ?"vs-dark":"vs"
 })
 
+watch(() => sdk.isDarkTheme(), (newVal) => {
+
+  if(newVal){
+    document.documentElement.style.setProperty(
+        "--line-number-bg-color",
+        "#080808"
+    );
+  }else{
+    document.documentElement.style.setProperty(
+        "--line-number-bg-color",
+        "#ebebeb"
+    );
+  }
+})
+
 const codesCopy = ref(null)
 
 const SetText = (msg)=>{
@@ -96,6 +111,18 @@ const SetText = (msg)=>{
 const emits = defineEmits(['update:value','getValue'])
 
 onMounted(()=>{
+
+  if(sdk.isDarkTheme()){
+    document.documentElement.style.setProperty(
+        "--line-number-bg-color",
+        "#080808"
+    );
+  }else{
+    document.documentElement.style.setProperty(
+        "--line-number-bg-color",
+        "#ebebeb"
+    );
+  }
 
   initEditor()
 
@@ -220,5 +247,15 @@ defineExpose({updateEditorWidth,SetText})
   display: flex;
 }
 
+
+
 </style>
 
+<style>
+.json-monaco-editor .margin {
+  background-color: var(--line-number-bg-color);;
+}
+
+
+
+</style>

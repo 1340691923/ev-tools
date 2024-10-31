@@ -69,7 +69,6 @@
 
                   </div>
                 </div>
-
               </div>
               <div style="padding: 0 12px;">
                 <span style="color:#3d90ff" class="footadd___2D4YB" @click="pushSort">
@@ -80,33 +79,37 @@
           </el-tabs>
         </div>
         <el-card class="box-card">
-          <div class="search-container">
-            <!--<el-button
+          <div  class="search-container">
+           <el-form>
+             <el-form-item>
+               <!--<el-button
 
- icon="el-icon-plus" type="primary" @click.native="openAddDialog = true" >添加文档</el-button>-->
-            <el-button
+icon="el-icon-plus" type="primary" @click.native="openAddDialog = true" >添加文档</el-button>-->
+               <el-button
 
-                type="warning"
+                   type="warning"
 
-                @click="getdsl(1)"
-            >查看查询语句
-            </el-button>
-            <el-button
+                   @click="getdsl(1)"
+               >查看查询语句
+               </el-button>
+               <el-button
 
-                type="success"
+                   type="success"
 
-                @click="search(1)"
-            >查询
-            </el-button>
-            <el-button
-                :disabled="downloadLoading"
-                :loading="downloadLoading"
+                   @click="search(1)"
+               >查询
+               </el-button>
+               <el-button
+                   :disabled="downloadLoading"
+                   :loading="downloadLoading"
 
-                type="primary"
+                   type="primary"
 
-                @click="download()"
-            >下载
-            </el-button>
+                   @click="download()"
+               >下载
+               </el-button>
+             </el-form-item>
+           </el-form>
           </div>
 
           <el-table
@@ -186,14 +189,12 @@
             direction="rtl"
             close-on-press-escape
             destroy-on-close
-            size="50%"
+            size="80%"
         >
 
           <el-tag >操作</el-tag>
           <el-button
               type="primary"
-
-
               @click="updateByID"
           >修改
           </el-button>
@@ -219,7 +220,7 @@
             direction="rtl"
             close-on-press-escape
             destroy-on-close
-            size="50%"
+            size="80%"
         >
 
           <json-editor

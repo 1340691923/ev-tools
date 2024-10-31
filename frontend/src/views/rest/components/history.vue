@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-dialog
-        :close-on-click-modal="false"
-        width="80%"
+    <el-drawer
+
+        size="80%"
         v-model="dialogVisible"
         :title="$t('历史记录')"
         @close="close"
@@ -70,7 +70,7 @@
             @current-change="searchHistory"
         />
       </div>
-    </el-dialog>
+    </el-drawer>
   </div>
 </template>
 

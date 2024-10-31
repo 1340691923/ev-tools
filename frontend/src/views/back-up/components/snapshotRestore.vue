@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :close-on-click-modal="false" v-model="open" :title="$t('恢复备份')" @close="closeDialog">
+    <el-drawer size="80%"  v-model="open" :title="$t('恢复备份')" @close="closeDialog">
       <el-card class="box-card">
         <el-form label-width="500px" label-position="left">
           <el-form-item :label="$t('仓库名')">
@@ -59,7 +59,7 @@
             </el-select>
           </el-form-item>
         </el-form>
-        <div style="text-align:right;">
+        <template #footer>
           <el-button
 
             type="danger"
@@ -74,9 +74,9 @@
             @click="confirm"
           >{{ $t('确认') }}
           </el-button>
-        </div>
+        </template>
       </el-card>
-    </el-dialog>
+    </el-drawer>
   </div>
 </template>
 

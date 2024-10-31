@@ -6,13 +6,13 @@
       <el-collapse v-model="activeNames">
         <el-collapse-item name="1">
           <template #title>
-            <span id="lixianglong">筛选
-
+            <span >
+              操作
             </span>
           </template>
           <el-form>
             <el-row :gutter="20">
-              <el-col :lg="3" :md="12" :sm="4" :xl="6" :xs="24">
+              <el-col :lg="3" :md="12" :sm="4" :xl="3" :xs="24">
                 <el-form-item label="状态">
                   <el-select
                       id="index-health-status"
@@ -28,7 +28,7 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :lg="8" :md="12" :sm="12" :xl="6" :xs="24">
+              <el-col :lg="4" :md="6" :sm="6" :xl="3" :xs="12">
                 <el-form-item label="索引名">
                   <el-container>
                     <el-autocomplete
@@ -46,7 +46,135 @@
                       </template>
 
                     </el-autocomplete>
-                    <el-button id="index-search" type="primary" :icon="Search"  @click="search"></el-button>
+                    <el-button style="margin-left:3px" id="index-search" type="success" :icon="Search"  @click="search"></el-button>
+                  </el-container>
+                </el-form-item>
+              </el-col>
+
+              <el-col :lg="10" :md="6" :sm="2" :xl="6" :xs="12">
+                <el-form-item label="索引操作">
+                  <el-container>
+                    <el-tooltip content="关闭" placement="top">
+                      <el-button
+                          :disabled="loadingGroup['close']"
+                          id="patchCloseIndex"
+                          v-loading="loadingGroup['close']"
+                          type="danger"
+                          :icon="Hide"
+                          @click="Close('close',selectIndexList.join(','))"
+                      >
+                      </el-button>
+
+                    </el-tooltip>
+                    <el-tooltip content="打开" placement="top">
+                      <el-button
+                          id="patchOpenIndex"
+                          v-loading="loadingGroup['open']"
+                          :disabled="loadingGroup['open']"
+                          type="success"
+                          :icon="View"
+
+                          @click="Open('open',selectIndexList.join(','))"
+                      >
+                      </el-button>
+                    </el-tooltip>
+                    <el-tooltip content="新建" placement="top">
+                      <el-button
+                          :icon="Plus"
+                          id="new-index"
+                          @click="openSettingDialog('','add')"
+                      >
+                      </el-button>
+                    </el-tooltip>
+                    <el-tooltip content="删除" placement="top">
+                      <el-button
+                          :icon="Delete"
+                          id="patchDeleteIndex"
+                          v-loading="loadingGroup['deleteIndex']"
+                          :disabled="loadingGroup['deleteIndex']"
+
+                          type="danger"
+                          @click="deleteIndex(selectIndexList.join(','),'deleteIndex')"
+                      >
+                      </el-button>
+                    </el-tooltip>
+                    <el-tooltip content="将节点切换为可读写状态" placement="top">
+                      <el-button
+                          :icon="Sort"
+                          :disabled="readOnlyAllowDeleteLoading"
+                          id="readOnlyAllowDelete"
+                          v-loading="readOnlyAllowDeleteLoading"
+                          type="warning"
+
+
+                          @click="readOnlyAllowDelete()"
+                      >
+
+                      </el-button>
+                    </el-tooltip>
+
+                    <el-tooltip content="将所选索引刷新到磁盘" placement="top">
+                      <el-button
+                          id="patchFlushIndex"
+                          v-loading="loadingGroup['_flush']"
+                          :disabled="loadingGroup['_flush']"
+                          type="warning"
+                          :icon="BrushFilled"
+                          @click="Flush('_flush',selectIndexList.join(','))"
+                      >
+                      </el-button>
+                    </el-tooltip>
+                    <el-tooltip content="强制合并索引" placement="top">
+                      <el-button
+                          :icon="Connection"
+
+                          id="patchForcemergeIndex"
+                          v-loading="loadingGroup['_forcemerge']"
+                          :disabled="loadingGroup['_forcemerge']"
+
+
+                          @click="Forcemerge('_forcemerge',selectIndexList.join(','))"
+                      >
+                      </el-button>
+                    </el-tooltip>
+                    <el-tooltip content="刷新索引" placement="top">
+                      <el-button
+                          id="patchRefreshIndex"
+                          #reference
+                          v-loading="loadingGroup['_refresh']"
+                          :disabled="loadingGroup['_refresh']"
+                          :icon="RefreshRight"
+
+                          type="primary"
+
+                          @click="Refresh('_refresh',selectIndexList.join(','))"
+                      >
+                      </el-button>
+                    </el-tooltip>
+
+                    <el-tooltip content="清空索引" placement="top">
+                      <el-button
+                          id="patchEmptyIndex"
+                          v-loading="loadingGroup['empty']"
+                          :disabled="loadingGroup['empty']"
+                          :icon="DocumentDelete"
+                          type="danger"
+                          @click="Empty('empty',selectIndexList.join(','))"
+                      >
+                      </el-button>
+                    </el-tooltip>
+                    <el-tooltip content="清理缓存" placement="top">
+                      <el-button
+                          :icon="ToiletPaper"
+                          id="patchCacheClear"
+                          v-loading="loadingGroup['_cache/clear']"
+                          :disabled="loadingGroup['_cache/clear']"
+                          type="warning"
+                          @click="CacheClear('_cache/clear',selectIndexList.join(','))"
+                      >
+                      </el-button>
+                    </el-tooltip>
+
                   </el-container>
                 </el-form-item>
               </el-col>
@@ -57,149 +185,10 @@
         </el-collapse-item>
       </el-collapse>
 
-      <el-form style="margin-top: 15px">
-        <el-row :gutter="20">
-          <el-col :lg="20" :md="12" :sm="4" :xl="6" :xs="24">
-            <el-form-item label="索引操作">
-              <el-container>
-                <el-tooltip content="关闭" placement="top">
-                  <el-button
-                      :disabled="loadingGroup['close']"
-                      id="patchCloseIndex"
-                      v-loading="loadingGroup['close']"
-                      type="danger"
-                      :icon="Hide"
-                      @click="Close('close',selectIndexList.join(','))"
-                  >
-                  </el-button>
-
-                </el-tooltip>
-                <el-tooltip content="打开" placement="top">
-                  <el-button
-                      id="patchOpenIndex"
-                      v-loading="loadingGroup['open']"
-                      :disabled="loadingGroup['open']"
-                      type="success"
-                      :icon="View"
-
-                      @click="Open('open',selectIndexList.join(','))"
-                  >
-                  </el-button>
-                </el-tooltip>
-                <el-tooltip content="新建" placement="top">
-                  <el-button
-                      :icon="Plus"
-                      id="new-index"
-                      @click="openSettingDialog('','add')"
-                  >
-                  </el-button>
-                </el-tooltip>
-                <el-tooltip content="删除" placement="top">
-                  <el-button
-                      :icon="Delete"
-                      id="patchDeleteIndex"
-                      v-loading="loadingGroup['deleteIndex']"
-                      :disabled="loadingGroup['deleteIndex']"
-
-                      type="danger"
-                      @click="deleteIndex(selectIndexList.join(','),'deleteIndex')"
-                  >
-                  </el-button>
-                </el-tooltip>
-                <el-tooltip content="将节点切换为可读写状态" placement="top">
-                  <el-button
-                      :icon="Sort"
-                      :disabled="readOnlyAllowDeleteLoading"
-                      id="readOnlyAllowDelete"
-                      v-loading="readOnlyAllowDeleteLoading"
-                      type="warning"
-
-
-                      @click="readOnlyAllowDelete()"
-                  >
-
-                  </el-button>
-                </el-tooltip>
-
-                <el-tooltip content="将所选索引刷新到磁盘" placement="top">
-                  <el-button
-                      id="patchFlushIndex"
-                      v-loading="loadingGroup['_flush']"
-                      :disabled="loadingGroup['_flush']"
-                      type="warning"
-                      :icon="BrushFilled"
-                      @click="Flush('_flush',selectIndexList.join(','))"
-                  >
-                  </el-button>
-                </el-tooltip>
-                <el-tooltip content="强制合并索引" placement="top">
-                  <el-button
-                      :icon="Connection"
-
-                      id="patchForcemergeIndex"
-                      v-loading="loadingGroup['_forcemerge']"
-                      :disabled="loadingGroup['_forcemerge']"
-
-
-                      @click="Forcemerge('_forcemerge',selectIndexList.join(','))"
-                  >
-                  </el-button>
-                </el-tooltip>
-                <el-tooltip content="刷新索引" placement="top">
-                  <el-button
-                      id="patchRefreshIndex"
-                      #reference
-                      v-loading="loadingGroup['_refresh']"
-                      :disabled="loadingGroup['_refresh']"
-                      :icon="RefreshRight"
-
-                      type="primary"
-
-                      @click="Refresh('_refresh',selectIndexList.join(','))"
-                  >
-                  </el-button>
-                </el-tooltip>
-
-                <el-tooltip content="清空索引" placement="top">
-                  <el-button
-                      id="patchEmptyIndex"
-                      v-loading="loadingGroup['empty']"
-                      :disabled="loadingGroup['empty']"
-                      :icon="DocumentDelete"
-                      type="danger"
-                      @click="Empty('empty',selectIndexList.join(','))"
-                  >
-                  </el-button>
-                </el-tooltip>
-                <el-tooltip content="清理缓存" placement="top">
-                  <el-button
-                      :icon="ToiletPaper"
-
-                      id="patchCacheClear"
-                      v-loading="loadingGroup['_cache/clear']"
-                      :disabled="loadingGroup['_cache/clear']"
-
-
-                      type="warning"
-                      @click="CacheClear('_cache/clear',selectIndexList.join(','))"
-                  >
-                  </el-button>
-                </el-tooltip>
-
-              </el-container>
-            </el-form-item>
-          </el-col>
-
-        </el-row>
-      </el-form>
-
-
-
     </div>
-
-
     <el-table
-        height="450"
+        width="100%"
+
         v-loading="connectLoading"
         :data="list"
         @selection-change="selectChange"
@@ -241,7 +230,7 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column align="center" width="300" :label="$t('索引名')"  >
+      <el-table-column align="center" :label="$t('索引名')"  >
         <template #default="scope">
           {{ scope.row.index }}
         </template>
@@ -291,7 +280,7 @@
             <el-tooltip content="修改映射" placement="top">
             <el-button
                 :icon="EditPen"
-                type="waring"
+
                 @click="openMappingEditDialog(scope.row.index,false)"
             >
             </el-button>
