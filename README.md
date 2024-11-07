@@ -1,6 +1,16 @@
-# ev-tools
+#  ev工具箱
 
-### 这个是用于管理elasticsearch6,7,8版本的ElasticView插件
+### ev工具箱是用于管理elasticsearch6,7,8版本的ElasticView插件
+
+* 支持sql转换成dsl语法
+* 更方便的重建索引
+* 任务管理
+* 备份管理
+* 可将查询内容下载为excel文件
+* 可进行索引创建，映射创建，别名创建，索引删除等操作
+* 支持版本 `6.x`,`7.x`,`8.x`
+* 支持类似Navicat功能
+
 
 ```
 二开本项目准备工作：
