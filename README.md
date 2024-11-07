@@ -1,14 +1,14 @@
 # ev-tools
 
-### 这里ElasticView的插件版本
+### 这个是用于管理elasticsearch6,7,8版本的ElasticView插件
 
 ```
-项目启动准备工作：
+二开本项目准备工作：
 
-基座启动：
-确保已经启动ElasticView基座程序
+基座启动:
+确保已经在开发插件的机器上启动ElasticView
 
-环境配置：
+环境配置:
 golang版本 >= 1.20
 node版本 >= 20.14.0
 
@@ -93,7 +93,7 @@ npm install -g pnpm
 
 
 
-```
+```   
 
 #### 后端插件开发
 
@@ -102,8 +102,6 @@ npm install -g pnpm
 1. go mod tidy
 2. gowatch
 
-显示如下为启动成功：
-{"code":0,"msg":"操作成功","data":null}
 
 ```
 
@@ -137,7 +135,7 @@ npm install -g pnpm
 ev_plugin_builder
 
 在dist目录会出现一个压缩包，解压后是各个不同操作系统的插件二进制，
-按自己实际情况移动至ElasticView的plugin文件夹中即可
+按自己实际情况移动对应二进制文件至ElasticView的plugin文件夹中即可
 
 ```
 
