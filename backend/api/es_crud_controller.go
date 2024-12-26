@@ -1,13 +1,11 @@
 package api
 
 import (
-	"ev-tools/backend/response"
-	"ev-tools/backend/services/navicat_service"
+	"ev-plugin/backend/dto"
+	"ev-plugin/backend/response"
+	"ev-plugin/backend/services/navicat_service"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
 	"github.com/1340691923/eve-plugin-sdk-go/util"
-	"github.com/spf13/cast"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,7 +36,7 @@ func (this *EsCrudController) GetList(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(crudFilter.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(crudFilter.EsConnect, util.GetEvUserID(ctx))
 	if err != nil {
 		this.Error(ctx, err)
 		return
@@ -99,7 +97,7 @@ func (this *EsCrudController) Download(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(crudFilter.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(crudFilter.EsConnect, util.GetEvUserID(ctx))
 	if err != nil {
 		this.Error(ctx, err)
 		return

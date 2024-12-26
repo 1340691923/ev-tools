@@ -1,8 +1,8 @@
 package navicat_service
 
 import (
+	"ev-plugin/backend/dto"
 	"fmt"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
 	"github.com/olivere/elastic/v7"
 	"github.com/pkg/errors"
 	"github.com/spf13/cast"

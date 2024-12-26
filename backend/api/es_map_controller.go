@@ -1,13 +1,12 @@
 package api
 
 import (
-	"ev-tools/backend/response"
-	"ev-tools/backend/services/index_service"
+	"ev-plugin/backend/dto"
+	"ev-plugin/backend/response"
+	"ev-plugin/backend/services/index_service"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
 	"github.com/1340691923/eve-plugin-sdk-go/util"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/cast"
 )
 
 // Es 映射控制器
@@ -37,7 +36,7 @@ func (this *EsMappingController) ListAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esMapGetProperties.EsConnectID, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esMapGetProperties.EsConnectID, util.GetEvUserID(ctx))
 
 	res, err := this.indexService.EsMappingList(ctx, esI, esMapGetProperties)
 	if err != nil {
@@ -70,7 +69,7 @@ func (this *EsMappingController) UpdateMappingAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(updateMapping.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(updateMapping.EsConnect, util.GetEvUserID(ctx))
 
 	res, err := this.indexService.UpdateMapping(ctx, esI, updateMapping)
 	if err != nil {

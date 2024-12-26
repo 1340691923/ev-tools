@@ -1,24 +1,23 @@
 package api
 
 import (
-	"ev-tools/backend/model"
-	"ev-tools/backend/response"
-	"ev-tools/backend/services/cat_service"
-	"ev-tools/backend/services/es_service"
+	"ev-plugin/backend/dto"
+	"ev-plugin/backend/dto/common"
+	"ev-plugin/backend/model"
+	"ev-plugin/backend/response"
+	"ev-plugin/backend/services/cat_service"
+	"ev-plugin/backend/services/es_service"
+	"ev-plugin/backend/vo"
 	"fmt"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto/common"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/vo"
-	"github.com/1340691923/eve-plugin-sdk-go/util"
-	"github.com/spf13/cast"
-	"net/http"
-	"strconv"
-
+	dto2 "github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/proto"
+	"github.com/1340691923/eve-plugin-sdk-go/util"
 	"github.com/cch123/elasticsql"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"net/http"
+	"strconv"
 )
 
 // Es 基本操作
@@ -50,7 +49,7 @@ func (this *EsController) CatAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esCat.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esCat.EsConnect, util.GetEvUserID(ctx))
 
 	catSvr := this.catService
 
@@ -122,7 +121,7 @@ func (this *EsController) SqlToDslAction(ctx *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Param X-Token header string false "用户令牌"
-// @Param object body dto.EsConnectID false "查询参数"
+// @Param object body common.EsConnectID false "查询参数"
 // @Success 0 {object} response.ResponseData
 // @Router /api/es/RecoverCanWrite [post]
 func (this *EsController) RecoverCanWrite(ctx *gin.Context) {
@@ -133,7 +132,7 @@ func (this *EsController) RecoverCanWrite(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esConnectID.EsConnectID, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esConnectID.EsConnectID, util.GetEvUserID(ctx))
 
 	err = this.esService.RecoverCanWrite(ctx, esI)
 
@@ -154,9 +153,9 @@ func (this *EsController) RunDslPOSTAction(ctx *gin.Context) {
 		this.Error(ctx, err)
 		return
 	}
-	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esRest.EsConnect, util.GetEvUserID(ctx))
 
-	res, err := esI.EsRunDsl(ctx, &dto.PluginRunDsl2{
+	res, err := esI.EsRunDsl(ctx, &dto2.PluginRunDsl2{
 		HttpMethod: http.MethodPost,
 		Path:       esRest.Path,
 		Dsl:        esRest.Body,
@@ -175,7 +174,7 @@ func (this *EsController) RunDslPOSTAction(ctx *gin.Context) {
 		return
 	}
 	gmDslHistoryModel := model.GmDslHistoryModel{
-		Uid:    cast.ToInt(ctx.GetHeader(util.EvUserID)),
+		Uid:    util.GetEvUserID(ctx),
 		Method: http.MethodPost,
 		Path:   esRest.Path,
 		Body:   esRest.Body,
@@ -198,9 +197,9 @@ func (this *EsController) RunDslGETAction(ctx *gin.Context) {
 		this.Error(ctx, err)
 		return
 	}
-	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esRest.EsConnect, util.GetEvUserID(ctx))
 
-	res, err := esI.EsRunDsl(ctx, &dto.PluginRunDsl2{
+	res, err := esI.EsRunDsl(ctx, &dto2.PluginRunDsl2{
 		HttpMethod: http.MethodGet,
 		Path:       esRest.Path,
 		Dsl:        esRest.Body,
@@ -220,7 +219,7 @@ func (this *EsController) RunDslGETAction(ctx *gin.Context) {
 	}
 
 	gmDslHistoryModel := model.GmDslHistoryModel{
-		Uid:    cast.ToInt(ctx.GetHeader(util.EvUserID)),
+		Uid:    util.GetEvUserID(ctx),
 		Method: http.MethodGet,
 		Path:   esRest.Path,
 		Body:   esRest.Body,
@@ -243,9 +242,9 @@ func (this *EsController) RunDslDELETEAction(ctx *gin.Context) {
 		this.Error(ctx, err)
 		return
 	}
-	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esRest.EsConnect, util.GetEvUserID(ctx))
 
-	res, err := esI.EsRunDsl(ctx, &dto.PluginRunDsl2{
+	res, err := esI.EsRunDsl(ctx, &dto2.PluginRunDsl2{
 		HttpMethod: http.MethodDelete,
 		Path:       esRest.Path,
 		Dsl:        esRest.Body,
@@ -264,7 +263,7 @@ func (this *EsController) RunDslDELETEAction(ctx *gin.Context) {
 	}
 
 	gmDslHistoryModel := model.GmDslHistoryModel{
-		Uid:    cast.ToInt(ctx.GetHeader(util.EvUserID)),
+		Uid:    util.GetEvUserID(ctx),
 		Method: http.MethodDelete,
 		Path:   esRest.Path,
 		Body:   esRest.Body,
@@ -287,9 +286,9 @@ func (this *EsController) RunDslPUTAction(ctx *gin.Context) {
 		this.Error(ctx, err)
 		return
 	}
-	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esRest.EsConnect, util.GetEvUserID(ctx))
 
-	res, err := esI.EsRunDsl(ctx, &dto.PluginRunDsl2{
+	res, err := esI.EsRunDsl(ctx, &dto2.PluginRunDsl2{
 		HttpMethod: http.MethodPut,
 		Path:       esRest.Path,
 		Dsl:        esRest.Body,
@@ -307,7 +306,7 @@ func (this *EsController) RunDslPUTAction(ctx *gin.Context) {
 		return
 	}
 	gmDslHistoryModel := model.GmDslHistoryModel{
-		Uid:    cast.ToInt(ctx.GetHeader(util.EvUserID)),
+		Uid:    util.GetEvUserID(ctx),
 		Method: http.MethodPut,
 		Path:   esRest.Path,
 		Body:   esRest.Body,
@@ -331,9 +330,9 @@ func (this *EsController) RunDslHEADAction(ctx *gin.Context) {
 		this.Error(ctx, err)
 		return
 	}
-	esI := ev_api.NewEvWrapApi(esRest.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esRest.EsConnect, util.GetEvUserID(ctx))
 
-	res, err := esI.EsRunDsl(ctx, &dto.PluginRunDsl2{
+	res, err := esI.EsRunDsl(ctx, &dto2.PluginRunDsl2{
 		HttpMethod: http.MethodHead,
 		Path:       esRest.Path,
 		Dsl:        esRest.Body,
@@ -351,7 +350,7 @@ func (this *EsController) RunDslHEADAction(ctx *gin.Context) {
 		return
 	}
 	gmDslHistoryModel := model.GmDslHistoryModel{
-		Uid:    cast.ToInt(ctx.GetHeader(util.EvUserID)),
+		Uid:    util.GetEvUserID(ctx),
 		Method: http.MethodHead,
 		Path:   esRest.Path,
 		Body:   esRest.Body,
@@ -374,7 +373,7 @@ func (this *EsController) DslHistoryAction(ctx *gin.Context) {
 		this.Error(ctx, errors.WithStack(err))
 		return
 	}
-	gmDslHistoryModel.Uid = cast.ToInt(ctx.GetHeader(util.EvUserID))
+	gmDslHistoryModel.Uid = util.GetEvUserID(ctx)
 
 	list, err := gmDslHistoryModel.List()
 
@@ -395,7 +394,7 @@ func (this *EsController) DslHistoryAction(ctx *gin.Context) {
 func (this *EsController) CleanDslHistoryAction(ctx *gin.Context) {
 
 	gmDslHistoryModel := model.GmDslHistoryModel{}
-	gmDslHistoryModel.Uid = cast.ToInt(ctx.GetHeader(util.EvUserID))
+	gmDslHistoryModel.Uid = util.GetEvUserID(ctx)
 	err := gmDslHistoryModel.Clean()
 	if err != nil {
 		this.Error(ctx, err)

@@ -1,7 +1,7 @@
 # gowatch.yml 配置示例
 
 # 当前目录执行下生成的可执行文件的名字，默认是当前目录名
-#appname: "plugin"
+appname: "plugin"
 # 是否对当前目录下相关依赖执行 ‘go install’命令，将会执行安装依赖
 go_install: true
 # 需要监听的文件名后缀，默认只有'.go'文件

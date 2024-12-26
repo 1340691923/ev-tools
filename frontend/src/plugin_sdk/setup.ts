@@ -12,16 +12,16 @@ import App from "../App.vue";
 // 本地语言包
 import enLocale from "../lang/en";
 import zhCnLocale from "../lang/zh-cn";
-import {createI18n, useI18n} from "vue-i18n";
+import {createI18n} from "vue-i18n";
 
-const messages = {
-    "zh-cn": {
-        ...zhCnLocale,
-    },
-    en: {
-        ...enLocale,
-    },
-};
+//elementui
+
+// 引入依赖
+import ElementPlus from 'element-plus'
+// 引入全局 CSS 样式
+import 'element-plus/dist/index.css'
+
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 
 let app
@@ -57,6 +57,31 @@ const render = (props:QiankunProps,registerPlugin) => {
     sdk.selectEsConnId = props.GetSelectEsConnID()
     sdk.linkOptCallBack = props.LinkOptAction
     sdk.evRouter = props.store.router
+    let i18nMessage = props.GetI18nMessage()
+    console.log("GetI18nMessage",zhCnLocale)
+    let zhCnLocaleCfg = zhCnLocale
+    let enLocaleCfg = enLocale
+
+    if(i18nMessage.hasOwnProperty('zh-cn')){
+        for(let k in i18nMessage['zh-cn']){
+            zhCnLocaleCfg[k] = i18nMessage['zh-cn'][k]
+        }
+    }
+
+    if(i18nMessage.hasOwnProperty('en')){
+        for(let k in i18nMessage['en']){
+            enLocaleCfg[k] = i18nMessage['en'][k]
+        }
+    }
+
+    const messages = {
+        "zh-cn": {
+            ...zhCnLocaleCfg,
+        },
+        'en': {
+            ...enLocaleCfg,
+        },
+    };
 
     const i18n = createI18n({
         legacy: false,
@@ -67,7 +92,13 @@ const render = (props:QiankunProps,registerPlugin) => {
 
     app.use(i18n)
 
-    app = registerPlugin(app)
+    for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+        app.component(key, component)
+    }
+
+    app.use(ElementPlus)
+
+    registerPlugin(app)
 
     app
         .use(router)
@@ -75,7 +106,7 @@ const render = (props:QiankunProps,registerPlugin) => {
 
 }
 
-export const setupEvPlugin = (registerPlugin) => {
+export const setupEvPlugin = (registerPlugin:Function) => {
     renderWithQiankun({
         update(props: QiankunProps): void | Promise<void> {
             return

@@ -1,15 +1,14 @@
 package api
 
 import (
-	"ev-tools/backend/response"
-	"ev-tools/backend/services/alias_service"
-	"ev-tools/backend/services/index_service"
+	"ev-plugin/backend/dto"
+	"ev-plugin/backend/dto/common"
+	"ev-plugin/backend/response"
+	"ev-plugin/backend/services/alias_service"
+	"ev-plugin/backend/services/index_service"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto/common"
 	"github.com/1340691923/eve-plugin-sdk-go/util"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/cast"
 )
 
 // Es 索引控制器
@@ -39,7 +38,7 @@ func (this *EsIndexController) CreateAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, util.GetEvUserID(ctx))
 
 	err = this.indexService.EsIndexCreate(ctx, esI, esIndexInfo)
 	if err != nil {
@@ -67,7 +66,7 @@ func (this *EsIndexController) DeleteAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, util.GetEvUserID(ctx))
 
 	err = this.indexService.EsIndexDelete(ctx, esI, esIndexInfo)
 	if err != nil {
@@ -96,7 +95,7 @@ func (this *EsIndexController) GetSettingsAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, util.GetEvUserID(ctx))
 
 	res, err := this.indexService.EsIndexGetSettings(ctx, esI, esIndexInfo)
 	if err != nil {
@@ -124,7 +123,7 @@ func (this *EsIndexController) GetSettingsInfoAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, util.GetEvUserID(ctx))
 
 	res, err := this.indexService.EsIndexGetSettingsInfo(ctx, esI, esIndexInfo)
 	if err != nil {
@@ -152,9 +151,7 @@ func (this *EsIndexController) GetAliasAction(ctx *gin.Context) {
 	}
 
 	esI := ev_api.NewEvWrapApi(
-		esAliasInfo.EsConnect,
-
-		cast.ToInt(ctx.GetHeader(util.EvUserID)))
+		esAliasInfo.EsConnect, util.GetEvUserID(ctx))
 
 	res, err := alias_service.NewAliasService().EsIndexGetAlias(ctx, esI, esAliasInfo)
 	if err != nil {
@@ -182,7 +179,7 @@ func (this *EsIndexController) MoveAliasToIndex(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, util.GetEvUserID(ctx))
 
 	err = alias_service.NewAliasService().MoveAliasToIndex(ctx, esI, esAliasInfo)
 	if err != nil {
@@ -210,7 +207,7 @@ func (this *EsIndexController) AddAliasToIndex(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, util.GetEvUserID(ctx))
 
 	err = alias_service.NewAliasService().AddAliasToIndex(ctx, esI, esAliasInfo)
 	if err != nil {
@@ -238,7 +235,7 @@ func (this *EsIndexController) BatchAddAliasToIndex(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, util.GetEvUserID(ctx))
 
 	err = alias_service.NewAliasService().BatchAddAliasToIndex(ctx, esI, esAliasInfo)
 	if err != nil {
@@ -266,7 +263,7 @@ func (this *EsIndexController) RemoveAlias(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esAliasInfo.EsConnect, util.GetEvUserID(ctx))
 
 	err = alias_service.NewAliasService().RemoveAlias(ctx, esI, esAliasInfo)
 	if err != nil {
@@ -294,7 +291,7 @@ func (this *EsIndexController) ReindexAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esReIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esReIndexInfo.EsConnect, util.GetEvUserID(ctx))
 
 	res, err := this.indexService.EsIndexReindex(ctx, esI, esReIndexInfo)
 	if err != nil {
@@ -309,7 +306,7 @@ func (this *EsIndexController) ReindexAction(ctx *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Param X-Token header string false "用户令牌"
-// @Param object body dto.EsConnectID false "查询参数"
+// @Param object body common.EsConnectID false "查询参数"
 // @Success 0 {object} []string
 // @Router /api/es_index/IndexNamesAction [post]
 func (this *EsIndexController) IndexNamesAction(ctx *gin.Context) {
@@ -320,7 +317,7 @@ func (this *EsIndexController) IndexNamesAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esConnectID.EsConnectID, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esConnectID.EsConnectID, util.GetEvUserID(ctx))
 
 	res, err := this.indexService.EsIndexNames(ctx, esI)
 	if err != nil {
@@ -335,7 +332,7 @@ func (this *EsIndexController) IndexNamesAction(ctx *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Param X-Token header string false "用户令牌"
-// @Param object body dto.EsConnectID false "查询参数"
+// @Param object body common.EsConnectID false "查询参数"
 // @Success 0 {object} int
 // @Router /api/es_index/IndexsCountAction [post]
 func (this *EsIndexController) IndexsCountAction(ctx *gin.Context) {
@@ -346,7 +343,7 @@ func (this *EsIndexController) IndexsCountAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esConnectID.EsConnectID, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esConnectID.EsConnectID, util.GetEvUserID(ctx))
 
 	res, err := this.indexService.EsIndexCount(ctx, esI)
 	if err != nil {
@@ -372,7 +369,7 @@ func (this *EsIndexController) StatsAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esIndexInfo.EsConnect, util.GetEvUserID(ctx))
 
 	res, err := this.indexService.EsIndexStats(ctx, esI, esIndexInfo.IndexName)
 	if err != nil {
@@ -398,7 +395,7 @@ func (this *EsIndexController) Refresh(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, util.GetEvUserID(ctx))
 
 	indexSvr := index_service.NewIndexService()
 	if esOptimize.IndexName == "" {
@@ -430,7 +427,7 @@ func (this *EsIndexController) CacheClear(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, util.GetEvUserID(ctx))
 
 	indexSvr := index_service.NewIndexService()
 	if esOptimize.IndexName == "" {
@@ -462,7 +459,7 @@ func (this *EsIndexController) Flush(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, util.GetEvUserID(ctx))
 
 	indexSvr := index_service.NewIndexService()
 	if esOptimize.IndexName == "" {
@@ -494,7 +491,7 @@ func (this *EsIndexController) Forcemerge(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, util.GetEvUserID(ctx))
 
 	indexSvr := index_service.NewIndexService()
 	if esOptimize.IndexName == "" {
@@ -526,7 +523,7 @@ func (this *EsIndexController) Open(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, util.GetEvUserID(ctx))
 
 	indexSvr := index_service.NewIndexService()
 	if esOptimize.IndexName == "" {
@@ -558,7 +555,7 @@ func (this *EsIndexController) Close(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, util.GetEvUserID(ctx))
 
 	indexSvr := index_service.NewIndexService()
 	if esOptimize.IndexName == "" {
@@ -590,7 +587,7 @@ func (this *EsIndexController) Empty(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esOptimize.EsConnect, util.GetEvUserID(ctx))
 
 	indexSvr := index_service.NewIndexService()
 	if esOptimize.IndexName == "" {

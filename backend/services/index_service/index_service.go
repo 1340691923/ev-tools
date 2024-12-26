@@ -2,8 +2,8 @@ package index_service
 
 import (
 	"context"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/vo"
+	"ev-plugin/backend/dto"
+	"ev-plugin/backend/vo"
 	"github.com/goccy/go-json"
 	"github.com/pkg/errors"
 

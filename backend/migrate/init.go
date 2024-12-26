@@ -1,7 +1,7 @@
 package migrate
 
 import (
-	"ev-tools/backend/migrate/versions"
+	"ev-plugin/backend/migrate/versions"
 	"github.com/1340691923/eve-plugin-sdk-go/build"
 )
 

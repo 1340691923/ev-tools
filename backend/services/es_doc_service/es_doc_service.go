@@ -2,7 +2,7 @@ package es_doc_service
 
 import (
 	"context"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
+	"ev-plugin/backend/dto"
 	"github.com/goccy/go-json"
 
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/pkg"

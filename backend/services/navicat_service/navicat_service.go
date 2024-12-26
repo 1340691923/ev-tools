@@ -3,11 +3,11 @@ package navicat_service
 import (
 	"context"
 	"encoding/csv"
-	"ev-tools/backend/global"
-	"ev-tools/backend/util"
+	"ev-plugin/backend/dto"
+	"ev-plugin/backend/util"
 	"fmt"
 	"github.com/1340691923/eve-plugin-sdk-go/backend/logger"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
+	"github.com/1340691923/eve-plugin-sdk-go/backend/plugin_server"
 	"github.com/gin-gonic/gin"
 	"github.com/goccy/go-json"
 	"io"
@@ -297,7 +297,7 @@ func (this *NavicatService) DownloadExcel(downloadFileName string, titleList []s
 
 	csvFile := fmt.Sprintf("%s.csv", time.Now().Format("20060102150405"))
 
-	var downloadUrl = filepath.Join(global.GetTmpFileStorePath(), csvFile)
+	var downloadUrl = filepath.Join(plugin_server.GetTmpFileStorePath(), csvFile)
 
 	if !util.CheckFileIsExist(downloadUrl) {
 		os.Create(downloadUrl)

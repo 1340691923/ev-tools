@@ -1,13 +1,12 @@
 package api
 
 import (
-	"ev-tools/backend/response"
-	"ev-tools/backend/services/es_task_service"
+	"ev-plugin/backend/dto"
+	"ev-plugin/backend/response"
+	"ev-plugin/backend/services/es_task_service"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
 	"github.com/1340691923/eve-plugin-sdk-go/util"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/cast"
 )
 
 // Es 任务控制器
@@ -37,7 +36,7 @@ func (this *EsTaskController) ListAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(taskListReq.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(taskListReq.EsConnect, util.GetEvUserID(ctx))
 
 	res, err := this.taskService.TaskList(ctx, esI)
 	if err != nil {
@@ -64,7 +63,7 @@ func (this *EsTaskController) CancelAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(cancelTask.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(cancelTask.EsConnect, util.GetEvUserID(ctx))
 
 	err = this.taskService.Cancel(ctx, esI, cancelTask)
 	if err != nil {

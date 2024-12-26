@@ -2,11 +2,11 @@ package alias_service
 
 import (
 	"context"
+	"ev-plugin/backend/dto"
+	"ev-plugin/backend/vo"
 	"fmt"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/pkg"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/proto"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/vo"
 	"github.com/pkg/errors"
 
 	"github.com/spf13/cast"

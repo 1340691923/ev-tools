@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+
     <el-tabs v-model="activeName">
       <el-tab-pane :lazy="true" label="节点" name="Node">
         <node />
@@ -355,6 +356,7 @@ class Cat extends Vue {
       }
     ]
   }
+
 
 }
 

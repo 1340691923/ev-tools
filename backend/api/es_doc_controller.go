@@ -1,13 +1,12 @@
 package api
 
 import (
-	"ev-tools/backend/response"
-	"ev-tools/backend/services/es_doc_service"
+	"ev-plugin/backend/dto"
+	"ev-plugin/backend/response"
+	"ev-plugin/backend/services/es_doc_service"
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api"
-	"github.com/1340691923/eve-plugin-sdk-go/ev_api/dto"
 	"github.com/1340691923/eve-plugin-sdk-go/util"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/cast"
 )
 
 // ES 文档控制器
@@ -36,7 +35,7 @@ func (this *EsDocController) DeleteRowByIDAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esDocDeleteRowByID.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esDocDeleteRowByID.EsConnect, util.GetEvUserID(ctx))
 
 	err = this.esDocService.DeleteRowByIDAction(ctx, esI, esDocDeleteRowByID)
 	if err != nil {
@@ -63,7 +62,7 @@ func (this *EsDocController) UpdateByIDAction(ctx *gin.Context) {
 		return
 	}
 
-	esI := ev_api.NewEvWrapApi(esDocUpdateByID.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esDocUpdateByID.EsConnect, util.GetEvUserID(ctx))
 
 	err = this.esDocService.EsDocUpdateByID(ctx, esI, esDocUpdateByID)
 	if err != nil {
@@ -86,7 +85,7 @@ func (this *EsDocController) InsertAction(ctx *gin.Context) {
 	esDocUpdateByID := new(dto.EsDocUpdateByID)
 	err := ctx.Bind(esDocUpdateByID)
 
-	esI := ev_api.NewEvWrapApi(esDocUpdateByID.EsConnect, cast.ToInt(ctx.GetHeader(util.EvUserID)))
+	esI := ev_api.NewEvWrapApi(esDocUpdateByID.EsConnect, util.GetEvUserID(ctx))
 	if err != nil {
 		this.Error(ctx, err)
 		return
