@@ -4,7 +4,7 @@
       <el-card class="box-card">
         <el-form label-width="500px" label-position="left">
           <el-form-item :label="$t('索引名称：')">
-            <el-input v-model="indexName" :placeholder="$t('索引名称')" :disabled="settingsType !== 'add'" />
+            <el-input v-model="indexName" :placeholder="$t('多个索引名用,隔开')" :disabled="settingsType !== 'add'" />
           </el-form-item>
           <el-form-item label="number_of_shards (分片数)：">
             <el-input v-model="form.number_of_shards" type="number" style="width: 300px" :disabled="isOpen" />

@@ -4,8 +4,10 @@ import (
 	"context"
 	"ev-plugin/backend/dto"
 	"ev-plugin/backend/vo"
+	"fmt"
 	"github.com/goccy/go-json"
 	"github.com/pkg/errors"
+	"strings"
 
 	"github.com/1340691923/eve-plugin-sdk-go/ev_api/pkg"
 	proto2 "github.com/1340691923/eve-plugin-sdk-go/ev_api/proto"
@@ -37,20 +39,28 @@ func (this *IndexService) EsIndexCreate(ctx context.Context, esClient pkg.Client
 			return err
 		}
 	} else {
-		res, err := esClient.EsCreateIndex(ctx, proto2.IndicesCreateRequest{
-			Index: esIndexInfo.IndexName,
-		},
-			map[string]interface{}{
-				"settings": esIndexInfo.Settings,
-			})
-		if err != nil {
+		errs := []string{}
+		for _, indexName := range strings.Split(esIndexInfo.IndexName, ",") {
+			res, err := esClient.EsCreateIndex(ctx, proto2.IndicesCreateRequest{
+				Index: indexName,
+			},
+				map[string]interface{}{
+					"settings": esIndexInfo.Settings,
+				})
+			if err != nil {
+				errs = append(errs, fmt.Sprintf("索引[%s]创建失败:%s", indexName, err.Error()))
+				continue
+			}
+			if res.StatusErr() != nil {
+				err = res.StatusErr()
+				errs = append(errs, fmt.Sprintf("索引[%s]创建失败:%s", indexName, err.Error()))
+				continue
+			}
+		}
+		if len(errs) > 0 {
+			err = errors.New(strings.Join(errs, ","))
 			return err
 		}
-		if res.StatusErr() != nil {
-			err = res.StatusErr()
-			return err
-		}
-
 	}
 	return nil
 }
