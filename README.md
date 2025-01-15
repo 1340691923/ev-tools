@@ -26,9 +26,8 @@ node version >= 20.14.0
 install gowatch:
 go install github.com/silenceper/gowatch@latest
 
-Install auxiliary tools to the project root directory:
-go build -o ev_plugin_zip .\cmd\ev_plugin_zip\main.go
-go build -o ev_plugin_builder .\cmd\ev_plugin_builder\main.go
+go install github.com/1340691923/ElasticView/cmd/ev_plugin_builder@v0.0.12
+go install github.com/1340691923/ElasticView/cmd/ev_plugin_zip@v0.0.12
 
 install pnpm:
 npm install -g pnpm
