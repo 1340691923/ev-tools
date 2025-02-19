@@ -13,12 +13,16 @@
             <index-select style="width:140px"  :clearable="true" :placeholder="$t('请选择索引名')" @change="changeIndex" />
           </el-form-item>
           <el-form-item label="时间">
-            <date  v-model="input.date" @changeDate="changeDate" />
+            <date  v-model="input.date"  />
+          </el-form-item>
+
+          <el-form-item>
+            <el-button type="primary" @click="searchHistory(1)">查询</el-button>
           </el-form-item>
         </el-form>
 
       </div>
-      <el-table :data="list">
+      <el-table v-loading="loading" :data="list">
 
         <el-table-column align="center" label="Method" width="220">
           <template #default="{ row }">
@@ -96,7 +100,6 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const ctx = getCurrentInstance().appContext.config.globalProperties
     const input = ref({
       indexName: '',
       date: [
@@ -109,13 +112,16 @@ export default {
     const list = ref([]);
     const total = ref(0);
     const dialogVisible = ref(props.dialogVisible)
+    const loading = ref(false)
     const searchHistory = async (page = 1) => {
       input.value.page = page
       input.value.date = [
         dayjs(input.value.date[0]).format('YYYY-MM-DD HH:mm:ss'),
         dayjs(input.value.date[1]).format('YYYY-MM-DD HH:mm:ss')
       ]
+      loading.value = true
       const { data, code, msg } = await ListAction(input.value);
+      loading.value = false
       if (code !== 0) {
         ElMessage({ type: 'error', message: msg });
       } else {
@@ -131,12 +137,12 @@ export default {
 
     const changeDate = (v) => {
       input.value.date = v;
-      searchHistory();
+      searchHistory(1);
     };
 
     const changeIndex = (v) => {
       input.value.indexName = v;
-      searchHistory();
+      searchHistory(1);
     };
 
     const getHistoryData = (row) => {
@@ -150,7 +156,7 @@ export default {
         ElMessage({ type: 'error', message: msg });
       } else {
         ElMessage({ type: 'success', message: msg });
-        searchHistory();
+        searchHistory(1);
       }
     };
 
@@ -159,11 +165,11 @@ export default {
     };
 
     onMounted(() => {
-      searchHistory();
+      searchHistory(1);
     });
 
     watch(() => props.dialogVisible, (newVal) => {
-      if (newVal) searchHistory();
+      if (newVal) searchHistory(1);
     });
 
     return {
@@ -178,6 +184,7 @@ export default {
       close,
       searchHistory,
       dialogVisible,
+      loading,
     };
   },
 };

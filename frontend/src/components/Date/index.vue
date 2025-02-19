@@ -15,13 +15,12 @@ defineProps<{
   modelValue: any
 }>()
 
-const emits = defineEmits(['update:modelValue','changeDate'])
+import dayjs from "dayjs";
+
+const emits = defineEmits(['update:modelValue'])
 
 const handleChange = (data: any) => {
-  if(data.length > 0){
-    emits('update:modelValue', data)
-    emits('changeDate', data)
-  }
+  data[0] && data[1] && emits('update:modelValue', data)
 }
 
 const shortcuts =   [
@@ -37,7 +36,7 @@ const shortcuts =   [
   {
     text: '昨天',
     value: () => {
-      let date = [dayjs().subtract(-1, 'day').format('YYYY-MM-DD 00:00:00'), dayjs().subtract(-1, 'day').format('YYYY-MM-DD 23:59:59')]
+      let date = [dayjs().subtract(1, 'day').format('YYYY-MM-DD 00:00:00'), dayjs().subtract(1, 'day').format('YYYY-MM-DD 23:59:59')]
 
       handleChange(date)
       return date
@@ -46,7 +45,7 @@ const shortcuts =   [
   {
     text: '一周',
     value: () => {
-      let date = [dayjs().subtract(-7, 'day').format('YYYY-MM-DD 00:00:00'), dayjs().format('YYYY-MM-DD 23:59:59')]
+      let date = [dayjs().subtract(7, 'day').format('YYYY-MM-DD 00:00:00'), dayjs().format('YYYY-MM-DD 23:59:59')]
 
       handleChange(date)
       return date
@@ -55,7 +54,7 @@ const shortcuts =   [
   {
     text: '两周',
     value: () => {
-      let date = [dayjs().subtract(-14, 'day').format('YYYY-MM-DD 00:00:00'), dayjs().format('YYYY-MM-DD 23:59:59')]
+      let date = [dayjs().subtract(14, 'day').format('YYYY-MM-DD 00:00:00'), dayjs().format('YYYY-MM-DD 23:59:59')]
 
       handleChange(date)
       return date
@@ -64,7 +63,7 @@ const shortcuts =   [
   {
     text: '一月',
     value: () => {
-      let date = [dayjs().subtract(-30, 'day').format('YYYY-MM-DD 00:00:00'), dayjs().format('YYYY-MM-DD 23:59:59')]
+      let date = [dayjs().subtract(30, 'day').format('YYYY-MM-DD 00:00:00'), dayjs().format('YYYY-MM-DD 23:59:59')]
 
       handleChange(date)
       return date
@@ -73,7 +72,7 @@ const shortcuts =   [
   {
     text: '三个月',
     value: () => {
-      let date = [dayjs().subtract(-90, 'day').format('YYYY-MM-DD 00:00:00'), dayjs().format('YYYY-MM-DD 23:59:59')]
+      let date = [dayjs().subtract(90, 'day').format('YYYY-MM-DD 00:00:00'), dayjs().format('YYYY-MM-DD 23:59:59')]
 
       handleChange(date)
       return date
@@ -82,7 +81,7 @@ const shortcuts =   [
   {
     text: '半年',
     value: () => {
-      let date = [dayjs().subtract(-180, 'day').format('YYYY-MM-DD 00:00:00'), dayjs().format('YYYY-MM-DD 23:59:59')]
+      let date = [dayjs().subtract(180, 'day').format('YYYY-MM-DD 00:00:00'), dayjs().format('YYYY-MM-DD 23:59:59')]
 
       handleChange(date)
       return date
@@ -91,7 +90,7 @@ const shortcuts =   [
   {
     text: '一年',
     value: () => {
-      let date = [dayjs().subtract(-360, 'day').format('YYYY-MM-DD 00:00:00'), dayjs().format('YYYY-MM-DD 23:59:59')]
+      let date = [dayjs().subtract(360, 'day').format('YYYY-MM-DD 00:00:00'), dayjs().format('YYYY-MM-DD 23:59:59')]
 
       handleChange(date)
       return date

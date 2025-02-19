@@ -57,8 +57,12 @@ const render = (props:QiankunProps,registerPlugin) => {
     sdk.selectEsConnId = props.GetSelectEsConnID()
     sdk.linkOptCallBack = props.LinkOptAction
     sdk.evRouter = props.store.router
+
+    sdk.subToChannel = props.SubToChannel
+    sdk.callToChannel = props.CallToChannel
+
     let i18nMessage = props.GetI18nMessage()
-    console.log("GetI18nMessage",zhCnLocale)
+
     let zhCnLocaleCfg = zhCnLocale
     let enLocaleCfg = enLocale
 
