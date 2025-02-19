@@ -27,9 +27,8 @@ node版本 >= 20.14.0
 安装gowatch:
 go install github.com/silenceper/gowatch@latest
 
-安装辅助工具到项目根目录：
-go build -o ev_plugin_zip .\cmd\ev_plugin_zip\main.go
-go build -o ev_plugin_builder .\cmd\ev_plugin_builder\main.go
+go install github.com/1340691923/ElasticView/cmd/ev_plugin_builder@v0.0.12
+go install github.com/1340691923/ElasticView/cmd/ev_plugin_zip@v0.0.12
 
 安装pnpm:
 npm install -g pnpm
