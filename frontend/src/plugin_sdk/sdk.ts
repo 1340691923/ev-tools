@@ -32,16 +32,22 @@ class SDK implements PluginApiInterface {
 
     callToChannel;
 
+    unSubscribeToChannel;
+
     //channel 频道
     //msgCb 消息回调
-    async SubToChannel(channel:string,msgCb:any) {
+    SubToChannel(channel:string,msgCb:any) {
         this.subToChannel(channel,msgCb)
     }
 
     //channel 频道
     //msgCb 消息
-    async CallToChannel(channel:string,msg:any) {
+    CallToChannel(channel:string,msg:any) {
         this.callToChannel(channel,msg)
+    }
+
+    UnSubscribeToChannel(channel:string){
+        this.unSubscribeToChannel(channel)
     }
 
     async CallPluginApi(req:Req): Promise<any> {

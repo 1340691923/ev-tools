@@ -60,6 +60,7 @@ const render = (props:QiankunProps,registerPlugin) => {
 
     sdk.subToChannel = props.SubToChannel
     sdk.callToChannel = props.CallToChannel
+    sdk.unSubscribeToChannel = props.UnSubscribeToChannel
 
     let i18nMessage = props.GetI18nMessage()
 
