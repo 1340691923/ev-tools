@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@elasticview/plugin-sdk':
+        specifier: 1.0.12
+        version: 1.0.12(typescript@5.5.4)
       '@element-plus/icons-vue':
         specifier: ^2.3.1
         version: 2.3.1(vue@3.4.35(typescript@5.5.4))
@@ -281,6 +284,9 @@ packages:
   '@ctrl/tinycolor@3.6.1':
     resolution: {integrity: sha512-SITSV6aIXsuVNV3f3O0f2n/cgyEDWoSqtZMYiAmcsYHydcKrOz3gUxB/iXd/Qf08+IZX4KpgNbvUdMBmWz+kcA==}
     engines: {node: '>=10'}
+
+  '@elasticview/plugin-sdk@1.0.12':
+    resolution: {integrity: sha512-dJg/DojSKy9gvAOk/HG//aX0FyX51ct+7xziH/OzZ4JX69PKvtgrS0uv7OBhmE1qIH6AMsDlAWIFTqopjvUFzQ==}
 
   '@element-plus/icons-vue@2.3.1':
     resolution: {integrity: sha512-XxVUZv48RZAd87ucGS48jPf6pKu0yV5UCg9f4FFwtrYxXOwWuVJo6wOvSLKEoMQKjv8GsX/mhP6UsC1lRwbUWg==}
@@ -580,28 +586,24 @@ packages:
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@swc/core-linux-arm64-musl@1.7.14':
     resolution: {integrity: sha512-JDLdNjUj3zPehd4+DrQD8Ltb3B5lD8D05IwePyDWw+uR/YPc7w/TX1FUVci5h3giJnlMCJRvi1IQYV7K1n7KtQ==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@swc/core-linux-x64-gnu@1.7.14':
     resolution: {integrity: sha512-Siy5OvPCLLWmMdx4msnEs8HvEVUEigSn0+3pbLjv78iwzXd0qSBNHUPZyC1xeurVaUbpNDxZTpPRIwpqNE2+Og==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@swc/core-linux-x64-musl@1.7.14':
     resolution: {integrity: sha512-FtEGm9mwtRYQNK43WMtUIadxHs/ja2rnDurB99os0ZoFTGG2IHuht2zD97W0wB8JbqEabT1XwSG9Y5wmN+ciEQ==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@swc/core-win32-arm64-msvc@1.7.14':
     resolution: {integrity: sha512-Jp8KDlfq7Ntt2/BXr0y344cYgB1zf0DaLzDZ1ZJR6rYlAzWYSccLYcxHa97VGnsYhhPspMpmCvHid97oe2hl4A==}
@@ -2332,6 +2334,19 @@ snapshots:
   '@bcoe/v8-coverage@0.2.3': {}
 
   '@ctrl/tinycolor@3.6.1': {}
+
+  '@elasticview/plugin-sdk@1.0.12(typescript@5.5.4)':
+    dependencies:
+      '@vueuse/components': 10.11.1(vue@3.4.35(typescript@5.5.4))
+      '@vueuse/core': 10.11.1(vue@3.4.35(typescript@5.5.4))
+      lodash: 4.17.21
+      mitt: 2.1.0
+      vue: 3.4.35(typescript@5.5.4)
+      vue-i18n: 10.0.0-beta.5(vue@3.4.35(typescript@5.5.4))
+      vue-router: 4.4.2(vue@3.4.35(typescript@5.5.4))
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - typescript
 
   '@element-plus/icons-vue@2.3.1(vue@3.4.35(typescript@5.5.4))':
     dependencies:

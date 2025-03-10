@@ -251,7 +251,7 @@ icon="el-icon-plus" type="primary" @click.native="openAddDialog = true" >添加�
 
 import JsonEditor from '@/components/JsonEditor/index.vue'
 import FilterWhere from '@/components/AnalyseTools/FilterWhere/index.vue'
-import {sdk} from "@/plugin_sdk/sdk";
+import {sdk} from "@elasticview/plugin-sdk";
 import { GetDSL, GetList, Download } from '@/api/es-crud'
 import { ListAction } from '@/api/es-map'
 import { DeleteRowByIDAction, InsertAction, UpdateByIDAction } from '@/api/es-doc'

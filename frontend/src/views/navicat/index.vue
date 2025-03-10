@@ -1,17 +1,14 @@
 <template>
-  <div style="display:flex;justify-content:space-between">
-    <div class="content_xwl">
+  <div class="navicat-container">
+    <div class="content-wrapper">
 
-      <page-split style="margin-top: 3px" :distribute="0.14" :lineThickness="6" :isVertical="true">
+      <page-split class="page-split" :distribute="0.2" :lineThickness="3" :isVertical="true">
         <template v-slot:first>
-          <div
-              id="scollL"
-              style="height: 95%;width: 100px;display: inline-block; height: 100%;vertical-align: top;width: 100%;"
-          >
-            <div style="width: 100%;height: calc(100% - 80px); overflow-x: hidden; overflow-y: auto;padding: 10px">
+          <div class="left-panel">
+            <div class="search-container">
               <el-autocomplete
                   v-model="filterStr"
-                  style="width: 90%"
+                  class="search-input"
                   clearable
                   :fetch-suggestions="querySearch"
                   :placeholder="$t('请输入索引名')"
@@ -21,11 +18,11 @@
                 </template>
               </el-autocomplete>
 
-              <el-menu v-loading="loadingMenu" style="margin-top: 10px" >
+              <el-menu v-loading="loadingMenu" class="index-menu">
 
                 <template #default  >
 
-                  <el-menu-item v-for="(v, index2) in getIndexList"  :index="index2.toString()" @click="clickItem(v['index'])">
+                  <el-menu-item v-for="(v, index2) in getIndexList" :index="index2.toString()" @click="clickItem(v['index'])" class="menu-item">
                     <el-dropdown>
                       <span class="el-dropdown-link">
                         <el-icon v-if="v.health == 'red'" style="color: red" ><Grid /></el-icon>
@@ -59,7 +56,7 @@
           </div>
         </template>
         <template v-slot:second>
-          <div style="width: 100%;height: calc(100% - 80px); overflow-x: hidden; overflow-y: auto;padding: 10px">
+          <div class="right-panel">
 
             <crud v-if="refreshTab"
                   :attr-map-prop="attrMap"
@@ -120,7 +117,7 @@ import PageSplit  from "vue3-page-split";
 import "vue3-page-split/dist/style.css";
 
 import { getCurrentInstance } from 'vue'
-import {sdk} from "@/plugin_sdk/sdk";
+import {sdk} from "@elasticview/plugin-sdk";
 // Importing components
 import JsonEditor from '@/components/JsonEditor/index.vue'
 import Crud from '@/views/navicat/crud.vue'
@@ -191,8 +188,12 @@ const clickItem = async (index) => {
     }
 
     currentMappings.value = res.data.list
-    const eventAttrOptionsData = [{label: '筛选字段', options: []}]
-    const attrMapData = {'2': []}
+    const eventAttrOptionsData = [{label: '筛选字段', options: [{value: "_id", label: "_id"}]}]
+    const attrMapData = {'2': [{
+      "attribute_name": "_id",
+      "show_name": "_id",
+      "data_type": 3
+  }]}
     let propertiesObj = {}
 
     switch (res.data.ver) {
@@ -211,7 +212,7 @@ const clickItem = async (index) => {
     const Float = 2
     const String = 3
     const Text = 5
-
+    
     for (const key in propertiesObj) {
       if (propertiesObj[key].type) {
         eventAttrOptionsData[0].options.push({value: key, label: key})
@@ -237,9 +238,12 @@ const clickItem = async (index) => {
             obj.data_type = Float
             break
         }
+  
         attrMapData['2'].push(obj)
       }
     }
+
+    
 
     attrMap.value = attrMapData
     eventAttrOptions.value = eventAttrOptionsData
@@ -328,7 +332,85 @@ const createFilter = (queryString) => {
 </script>
 
 
-<style scoped src="@/styles/event.css"/>
+<style scoped>
+.navicat-container {
+  height: 100%;
+  background-color: var(--el-bg-color);
+}
+
+.content-wrapper {
+  height: 100%;
+  padding: 16px;
+}
+
+.page-split {
+  height: calc(100vh - 100px);
+  margin-top: 8px;
+  background: var(--el-bg-color-page);
+  border-radius: 8px;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+}
+
+.left-panel {
+  height: 100%;
+  padding: 16px;
+  background: var(--el-bg-color);
+  border-right: 1px solid var(--el-border-color-light);
+}
+
+.search-container {
+  height: calc(100% - 16px);
+  overflow: hidden;
+}
+
+.search-input {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.index-menu {
+  height: calc(100% - 56px);
+  overflow-y: auto;
+  border-right: none;
+}
+
+.menu-item {
+  margin: 4px 0;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.menu-item:hover {
+  background-color: var(--el-color-primary-light-9);
+}
+
+.el-dropdown-link {
+  margin-right: 8px;
+}
+
+.right-panel {
+  height: 100%;
+  padding: 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--el-bg-color);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--el-border-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--el-fill-color-lighter);
+  border-radius: 3px;
+}
+</style>
 
 <style>
 .eventNameDisplayInput .ant-input {

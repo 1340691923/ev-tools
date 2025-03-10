@@ -6,7 +6,7 @@
 
         <el-form :inline="true" >
           <el-form-item label="关键词">
-            <el-input v-model="input"  style="width: 7rem" clearable @input="search"/>
+            <el-input v-model="input"  style="width: 7rem" clearable />
 
           </el-form-item>
           <el-form-item label="">
@@ -65,7 +65,7 @@ import {filterData} from "../../../utils/table";
 import {getCurrentInstance} from "vue";
 import {CatAction} from "../../../api/es";
 import {ElMessage} from "element-plus";
-import {sdk} from "@/plugin_sdk/sdk"
+import {sdk} from "@elasticview/plugin-sdk"
 
 @Component({
   name: 'CatIndex',

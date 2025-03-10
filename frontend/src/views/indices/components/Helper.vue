@@ -26,7 +26,7 @@
 
 <script>
 import Item from './Item.vue'
-import {sdk} from "@/plugin_sdk/sdk";
+import {sdk} from "@elasticview/plugin-sdk";
 export default {
   name: 'VueJsonHelper',
   components: {

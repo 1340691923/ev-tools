@@ -174,7 +174,7 @@
 
 <script setup>
 import {ref, computed, onMounted, onBeforeUnmount, getCurrentInstance, nextTick} from 'vue'
-import {sdk} from "@/plugin_sdk/sdk";
+import {sdk} from "@elasticview/plugin-sdk";
 import SqlEditor from '@/components/SqlEditor/index.vue'
 import JsonEditor from '@/components/JsonEditor/index.vue'
 import History from '@/views/rest/components/history.vue'
@@ -449,7 +449,19 @@ const getHistoryData = (history) => {
   input.value.body = history.body;
   jsonEditorRef1.value.SetText(history.body)
   input.value.method = history.method;
-  go();
+ /* ElMessageBox.confirm(`是否立即执行该dsl`, '二次确认', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+      .then(async () => {
+       await go();
+      })
+      .catch((err) => {
+        console.error(err)
+      })*/
+  // await go();
+
 };
 
 const closeHistory = () => {

@@ -208,7 +208,7 @@ import {Component, Prop, toNative, Vue} from "vue-facing-decorator";
 import {getCurrentInstance} from "vue";
 import {ElMessage} from "element-plus";
 import {CatAction} from "../../../api/es";
-import {sdk} from "@/plugin_sdk/sdk"
+import {sdk} from "@elasticview/plugin-sdk"
 
 @Component({
   name: 'Node',

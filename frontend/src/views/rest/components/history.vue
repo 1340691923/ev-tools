@@ -85,7 +85,7 @@ import {ref, onMounted, watch, getCurrentInstance} from 'vue';
 import { CleanAction, ListAction } from '@/api/dsl-history';
 import IndexSelect from '@/components/index/select.vue'
 import Date from '@/components/Date/index.vue'
-import {sdk} from "@/plugin_sdk/sdk";
+import {sdk} from "@elasticview/plugin-sdk";
 
 export default {
   name: 'History',

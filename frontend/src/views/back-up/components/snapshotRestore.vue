@@ -87,7 +87,7 @@ import { SnapshotRestoreAction } from '@/api/es-backup'
 import { Close } from '@/api/es-index'
 import { ElMessage, ElMessageBox } from 'element-plus'
 const ctx = getCurrentInstance().appContext.config.globalProperties
-import {sdk} from "@/plugin_sdk/sdk"
+import {sdk} from "@elasticview/plugin-sdk"
 import IndexSelect from "@/components/index/select.vue";
 // Props
 const props = defineProps({

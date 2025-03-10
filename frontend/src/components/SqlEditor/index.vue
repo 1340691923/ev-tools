@@ -31,7 +31,7 @@ import handleClipboard from "../../utils/clipboard";
 // 1. 引入monaco-editor中的sql文件
 import { language as sqlLanguage } from 'monaco-editor/esm/vs/basic-languages/sql/sql.js';
 
-import {sdk} from "../../plugin_sdk/sdk";
+import {sdk} from "@elasticview/plugin-sdk";
 
 const props = defineProps({
   read: {

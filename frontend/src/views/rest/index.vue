@@ -43,7 +43,7 @@ import { ListAction } from '@/api/es-map'
 import {ElMessageBox} from "element-plus";
 import Tools from "@/views/rest/components/tools.vue";
 const ctx = getCurrentInstance().appContext.config.globalProperties
-import {sdk} from "@/plugin_sdk/sdk";
+import {sdk} from "@elasticview/plugin-sdk";
 
 const editableTabsValue = ref(1)
 const editableTabs = ref([])

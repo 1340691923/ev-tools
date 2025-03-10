@@ -1,6 +1,7 @@
 package router
 
 import (
+	"context"
 	"ev-plugin/backend/api"
 	"ev-plugin/backend/response"
 	"ev-plugin/backend/services/cat_service"
@@ -15,6 +16,7 @@ import (
 )
 
 type WebServer struct {
+	ctx                 context.Context
 	engine              *web_engine.WebEngine
 	esBackUpController  *api.EsBackUpController
 	esController        *api.EsController
@@ -26,7 +28,7 @@ type WebServer struct {
 }
 
 // 依赖注入
-func NewWebServer(app *web_engine.WebEngine) *WebServer {
+func NewWebServer(ctx context.Context, app *web_engine.WebEngine) *WebServer {
 	baseController := api.NewBaseController(response.NewResponse())
 	esBackUpController := api.NewEsBackUpController(
 		baseController, es_backup_service.NewEsBackUpService(
@@ -40,6 +42,7 @@ func NewWebServer(app *web_engine.WebEngine) *WebServer {
 	esTaskController := api.NewEsTaskController(baseController, es_task_service.NewEsTaskService())
 
 	return &WebServer{
+		ctx:                 ctx,
 		engine:              app,
 		esBackUpController:  esBackUpController,
 		esController:        esController,
@@ -52,10 +55,10 @@ func NewWebServer(app *web_engine.WebEngine) *WebServer {
 }
 
 // 实现web资源接口（webapi） 可用任何实现http.Handle接口的Web框架开发 我这里用gin为例
-func NewRouter() *web_engine.WebEngine {
+func NewRouter(ctx context.Context) *web_engine.WebEngine {
 
 	//后端api
-	webSvr := NewWebServer(web_engine.NewWebEngine())
+	webSvr := NewWebServer(ctx, web_engine.NewWebEngine())
 
 	webSvr.runDslHistory()
 	webSvr.runEs()

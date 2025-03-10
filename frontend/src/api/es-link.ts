@@ -1,4 +1,4 @@
-import {request} from "../plugin_sdk/sdk";
+import {request} from "@elasticview/plugin-sdk";
 
 const api = '/api/es_link/'
 

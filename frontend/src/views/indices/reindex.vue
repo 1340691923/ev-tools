@@ -332,7 +332,7 @@ import { ListAction } from '@/api/es-map'
 import { ReindexAction } from '@/api/es-index'
 import {getCurrentInstance} from "vue";
 import JsonEditor from '@/components/JsonEditor/index.vue';
-import {sdk} from "@/plugin_sdk/sdk"
+import {sdk} from "@elasticview/plugin-sdk"
 
 import {ElMessage,ElNotification} from "element-plus";
 
@@ -353,7 +353,10 @@ export default {
       extendConfig: [],
       typeList: [],
       pointOut: esBodyKeyWords,
-      urlParmasConfig: [],
+      urlParmasConfig: [
+          'requests_per_second',
+          'timeout','slices','scroll','wait_for_active_shards','refresh','wait_for_completion'
+      ],
       sourceConfig: [],
       destConfig: [],
       scriptConfig: [],

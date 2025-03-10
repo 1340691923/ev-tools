@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import {sdk} from "@/plugin_sdk/sdk"
+import {sdk} from "@elasticview/plugin-sdk"
 
 import { ref, watch, computed } from 'vue';
 

@@ -155,7 +155,7 @@ import { timestampToTime } from '@/utils/time'
 
 import Add from '@/views/back-up/components/addSnapshot.vue'
 import SnapshotRestore from '@/views/back-up/components/snapshotRestore.vue'
-import {sdk} from "@/plugin_sdk/sdk"
+import {sdk} from "@elasticview/plugin-sdk"
 import JsonEditor from '@/components/JsonEditor/index.vue'
 const ctx = getCurrentInstance().appContext.config.globalProperties
 

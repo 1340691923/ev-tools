@@ -230,7 +230,7 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="$t('索引名')"  >
+      <el-table-column align="center" width="200" :label="$t('索引名')"  >
         <template #default="scope">
           {{ scope.row.index }}
         </template>
@@ -541,7 +541,7 @@ import Mappings from "@/views/indices/components/mapping.vue";
 import JsonEditor from "@/components/JsonEditor/index.vue";
 import Alias from "@/views/indices/components/alias.vue";
 import IndexSelect from "@/components/index/select.vue";
-import {sdk} from "@/plugin_sdk/sdk"
+import {sdk} from "@elasticview/plugin-sdk"
 import * as Icon from '@element-plus/icons-vue'
 
 export default {
@@ -1109,7 +1109,11 @@ export default {
       }
     },
     deleteIndex(indexName, loadingType) {
-      this.$confirm('确定删除该索引吗?', '警告', {
+
+      this.$confirm(
+      '<div style="white-space: normal;">确定删除<br>['+indexName.replaceAll(',',',<br/>')+']索引吗?</div>'
+          , '警告', {
+        dangerouslyUseHTMLString:true,
         confirmButtonText: '确认',
         cancelButtonText: '取消',
         type: 'warning'
@@ -1234,6 +1238,7 @@ export default {
   }
 }
 </script>
+
 
 <style scoped>
 .filter-item {

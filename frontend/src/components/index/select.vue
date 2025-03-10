@@ -26,7 +26,7 @@
 import {ref, onMounted, getCurrentInstance} from 'vue'
 import { IndexNamesAction } from '@/api/es-index'
 import {ElMessage} from "element-plus";
-import {sdk} from "@/plugin_sdk/sdk"
+import {sdk} from "@elasticview/plugin-sdk"
 
 const ctx = getCurrentInstance().appContext.config.globalProperties
 

@@ -9,6 +9,9 @@ import monacoEditorPlugin from "vite-plugin-monaco-editor";
 const pathSrc = resolve(__dirname, "src");
 
 export default defineConfig({
+  optimizeDeps: {
+    force: true, // 强制重新预构建
+  },
   resolve: {
     alias: {
       "@": pathSrc,

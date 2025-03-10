@@ -17,7 +17,7 @@
 
 <script>
 import { ref, watch, onMounted } from 'vue';
-import {sdk} from "@/plugin_sdk/sdk"
+import {sdk} from "@elasticview/plugin-sdk"
 
 export default {
   name: 'Values',

@@ -214,7 +214,7 @@ import JsonEditor from '@/components/JsonEditor/index.vue'
 import {ElMessage} from "element-plus";
 
 const ctx = getCurrentInstance().appContext.config.globalProperties
-import {sdk} from "@/plugin_sdk/sdk";
+import {sdk} from "@elasticview/plugin-sdk";
 
 const taskDetail = ref('')
 const loading = ref(false)

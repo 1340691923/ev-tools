@@ -25,8 +25,8 @@ import {monaco} from '../../utils/monaco';
 import {computed, onMounted, ref, watch} from "vue";
 import handleClipboard from "../../utils/clipboard";
 
-import {sdk} from "../../plugin_sdk/sdk";
-import {BusEnum} from "../../plugin_sdk/enum";
+import {sdk} from "@elasticview/plugin-sdk";
+
 
 const props = defineProps({
 
@@ -126,7 +126,7 @@ onMounted(()=>{
 
   initEditor()
 
-  sdk.getEventBus().on(BusEnum.changeEvSettings,(settings)=>{
+  sdk.getEventBus().on(sdk.getBusEnum().changeEvSettings,(settings)=>{
 
     if(editor){
       monaco.editor.setTheme(settings.theme == 'dark'?"vs-dark":"vs")

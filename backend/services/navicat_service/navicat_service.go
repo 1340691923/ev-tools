@@ -216,6 +216,11 @@ func (this *NavicatService) CrudDownload(ctx context.Context, esClient pkg.Clien
 
 	histsArr := gjson.GetBytes(resp.ResByte(), "hits.hits").Array()
 
+	if len(histsArr) == 0 {
+		titleList = fieldsArr
+		return
+	}
+
 	lastIdArr := histsArr[len(histsArr)-1].Get("sort").Array()
 
 	llist := [][]string{}

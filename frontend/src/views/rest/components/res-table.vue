@@ -177,7 +177,7 @@ import { clone } from '@/utils/index';
 import { DeleteRowByIDAction, InsertAction, UpdateByIDAction } from '@/api/es-doc';
 import { ListAction } from '@/api/es-map';
 import JsonEditor from '@/components/JsonEditor/index.vue';
-import {sdk} from "@/plugin_sdk/sdk";
+import {sdk} from "@elasticview/plugin-sdk";
 const props = defineProps({
   dialogVisible: Boolean,
   jsonData: Array,

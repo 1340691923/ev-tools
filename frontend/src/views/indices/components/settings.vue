@@ -34,7 +34,7 @@ import { ElMessage, ElLoading } from 'element-plus';
 import { StatsAction, CreateAction, GetSettingsAction } from '@/api/es-index';
 import { clone } from '@/utils/index';
 const ctx = getCurrentInstance().appContext.config.globalProperties
-import {sdk} from "@/plugin_sdk/sdk";
+import {sdk} from "@elasticview/plugin-sdk";
 const props = defineProps({
   indexName: {
     type: String,

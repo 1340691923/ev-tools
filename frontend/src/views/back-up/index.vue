@@ -156,7 +156,7 @@
 </template>
 
 <script lang="ts">
-import {sdk} from "@/plugin_sdk/sdk"
+import {sdk} from "@elasticview/plugin-sdk"
 import Add from '@/views/back-up/components/addRepository.vue'
 import {Component, Vue, toNative} from 'vue-facing-decorator'
 import {getCurrentInstance} from "vue";

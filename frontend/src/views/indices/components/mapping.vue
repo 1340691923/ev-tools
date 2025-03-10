@@ -90,7 +90,7 @@ import { ListAction, UpdateMappingAction } from '@/api/es-map';
 import JsonEditor from '@/components/JsonEditor/index.vue'
 
 import VueJsonHelper from '@/views/indices/components/Helper.vue'
-import {sdk} from "@/plugin_sdk/sdk";
+import {sdk} from "@elasticview/plugin-sdk";
 // Define props
 const props = defineProps({
   indexName: {

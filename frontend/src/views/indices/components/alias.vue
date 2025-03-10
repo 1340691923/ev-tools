@@ -43,7 +43,7 @@ import {ref, onMounted, getCurrentInstance} from 'vue';
 import { AddAliasToIndex, BatchAddAliasToIndex, GetAliasAction, MoveAliasToIndex, RemoveAlias } from '@/api/es-index';
 import IndexSelect from '@/components/index/select.vue';
 import {ElMessage} from "element-plus";
-import {sdk} from "@/plugin_sdk/sdk";
+import {sdk} from "@elasticview/plugin-sdk";
 
 const ctx = getCurrentInstance().appContext.config.globalProperties
 

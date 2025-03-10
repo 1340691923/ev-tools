@@ -8,7 +8,7 @@
 
 <script setup>
 
-import {sdk} from '@/plugin_sdk/sdk'
+import {sdk} from '@elasticview/plugin-sdk'
 import {computed} from "vue";
 
 const size = computed(()=>{

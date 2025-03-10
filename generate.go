@@ -1,8 +1,8 @@
 package main
 
-//go:generate go install github.com/1340691923/ElasticView/cmd/ev_plugin_builder
+//go:generate go install github.com/1340691923/ElasticView/cmd/ev_plugin_builder@v0.0.12
 
-//go:generate go install github.com/1340691923/ElasticView/cmd/ev_plugin_zip
+//go:generate go install github.com/1340691923/ElasticView/cmd/ev_plugin_zip@v0.0.12
 
 //go:generate swag init -g main.go -o docs -exclude cmd,dist,frontend
 

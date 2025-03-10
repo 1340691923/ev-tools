@@ -91,7 +91,7 @@ import {ref, onMounted, getCurrentInstance} from 'vue'
 import { CreateSnapshotAction, SnapshotRepositoryListAction } from '@/api/es-backup'
 import { ElMessage, ElNotification } from 'element-plus'
 const ctx = getCurrentInstance().appContext.config.globalProperties
-import {sdk} from "@/plugin_sdk/sdk"
+import {sdk} from "@elasticview/plugin-sdk"
 import IndexSelect from "@/components/index/select.vue";
 // Props
 const props = defineProps({

@@ -66,7 +66,7 @@
 
 <script>
 import { SnapshotCreateRepositoryAction } from '@/api/es-backup'
-import {sdk} from "@/plugin_sdk/sdk"
+import {sdk} from "@elasticview/plugin-sdk"
 import {ElMessage} from "element-plus";
 
 export default {
