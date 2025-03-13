@@ -3,7 +3,7 @@ module ev-plugin
 go 1.22.7
 
 require (
-	github.com/1340691923/eve-plugin-sdk-go v0.0.10
+	github.com/1340691923/eve-plugin-sdk-go v0.0.11
 	github.com/cch123/elasticsql v1.0.1
 	github.com/gin-gonic/gin v1.10.0
 	github.com/goccy/go-json v0.10.3
