@@ -34,7 +34,7 @@ import  Node from './components/Node.vue'
 
 
 @Component({
-  name: 'Cat',
+  name: 'cat',
   components: {
     CatIndex,
     Node

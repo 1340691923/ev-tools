@@ -62,7 +62,7 @@
 
 import {Component, Prop, toNative, Vue} from "vue-facing-decorator";
 import {filterData} from "../../../utils/table";
-import {getCurrentInstance} from "vue";
+
 import {CatAction} from "../../../api/es";
 import {ElMessage} from "element-plus";
 import {sdk} from "@elasticview/plugin-sdk"
@@ -70,8 +70,7 @@ import {sdk} from "@elasticview/plugin-sdk"
 @Component({
   name: 'CatIndex',
   setup() {
-    const ctx = getCurrentInstance().appContext.config.globalProperties
-    return {ctx}
+
   },
 })
 class CatIndex extends Vue {
@@ -161,7 +160,12 @@ class CatIndex extends Vue {
     })
   }
 
+  activated(){
+    console.log('cat-index activated')
+  }
+
   mounted() {
+    console.log('cat-index mounted')
     this.searchData()
   }
 }

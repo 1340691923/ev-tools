@@ -206,14 +206,13 @@
 </template>
 
 <script setup>
-import {ref, onMounted, getCurrentInstance} from 'vue'
+import {ref, onMounted, onActivated} from 'vue'
 import Moment from 'moment'
 import { CancelAction, ListAction } from '@/api/es-task'
 import JsonEditor from '@/components/JsonEditor/index.vue'
 
 import {ElMessage} from "element-plus";
 
-const ctx = getCurrentInstance().appContext.config.globalProperties
 import {sdk} from "@elasticview/plugin-sdk";
 
 const taskDetail = ref('')
@@ -380,8 +379,12 @@ const refresh = async () => {
 }
 
 onMounted(() => {
-  console.log(123)
+  console.log('task mounted')
   search()
+})
+
+onActivated(() => {
+  console.log('task activated')
 })
 </script>
 

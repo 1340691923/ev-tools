@@ -87,10 +87,9 @@
 </template>
 
 <script setup>
-import {ref, onMounted, getCurrentInstance} from 'vue'
+import {ref, onMounted, onActivated} from 'vue'
 import { CreateSnapshotAction, SnapshotRepositoryListAction } from '@/api/es-backup'
 import { ElMessage, ElNotification } from 'element-plus'
-const ctx = getCurrentInstance().appContext.config.globalProperties
 import {sdk} from "@elasticview/plugin-sdk"
 import IndexSelect from "@/components/index/select.vue";
 // Props
@@ -183,7 +182,12 @@ const emit = defineEmits(['close'])
 
 // Lifecycle hooks
 onMounted(() => {
+  console.log('addSnapshot mounted')
   initRepositoryName()
+})
+
+onActivated(() => {
+  console.log('addSnapshot activated')
 })
 </script>
 

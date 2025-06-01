@@ -173,7 +173,7 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted, onBeforeUnmount, getCurrentInstance, nextTick} from 'vue'
+import {ref, computed, onMounted, onActivated, onBeforeUnmount, nextTick} from 'vue'
 import {sdk} from "@elasticview/plugin-sdk";
 import SqlEditor from '@/components/SqlEditor/index.vue'
 import JsonEditor from '@/components/JsonEditor/index.vue'
@@ -191,7 +191,6 @@ import { clone } from '@/utils/index';
 import { RunDslAction, SqlToDslAction } from '@/api/es';
 import { filterData } from '@/utils/table';
 import { esBodyKeyWords } from '@/utils/base-data';
-const ctx = getCurrentInstance().appContext.config.globalProperties
 const props = defineProps({
   queryData: {
     type: Array,
@@ -506,11 +505,14 @@ const querySearch = (queryString, cb) => {
 }
 
 onMounted(() => {
+  console.log('rest-tools mounted')
   startGuid();
 });
 
-onBeforeUnmount(() => {
+onActivated(() => {
+  console.log('rest-tools activated')
 });
+
 </script>
 
 <style scoped>

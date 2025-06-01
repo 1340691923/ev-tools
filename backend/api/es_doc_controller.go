@@ -37,7 +37,11 @@ func (this *EsDocController) DeleteRowByIDAction(ctx *gin.Context) {
 
 	esI := ev_api.NewEvWrapApi(esDocDeleteRowByID.EsConnect, util.GetEvUserID(ctx))
 
-	err = this.esDocService.DeleteRowByIDAction(ctx, esI, esDocDeleteRowByID)
+	if len(esDocDeleteRowByID.Ids) == 0 {
+		err = this.esDocService.DeleteRowByIDAction(ctx, esI, esDocDeleteRowByID)
+	} else {
+		err = this.esDocService.BulkDeleteByID(ctx, esI, esDocDeleteRowByID.IndexName, esDocDeleteRowByID.Type, esDocDeleteRowByID.Ids)
+	}
 	if err != nil {
 		this.Error(ctx, err)
 		return

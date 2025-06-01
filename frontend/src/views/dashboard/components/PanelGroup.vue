@@ -120,7 +120,11 @@ export default {
       loading4: false
     }
   },
+  activated(){
+    console.log('panel-group activated')
+  },
   mounted() {
+    console.log('panel-group mounted')
     this.getIndexCount()
     this.getSegments()
     this.catStats()

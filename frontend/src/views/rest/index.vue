@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import {ref, onMounted, onBeforeUnmount, getCurrentInstance} from 'vue'
+import {ref, onMounted, onBeforeUnmount, getCurrentInstance,onActivated} from 'vue'
 import { clone } from '@/utils/index'
 import { esPathKeyWords } from '@/utils/base-data'
 import { ListAction } from '@/api/es-map'
@@ -51,6 +51,7 @@ const queryData = ref([])
 const sqlPointOut = ref([])
 
 onMounted(() => {
+
   mergeEsPathKeyWords()
 
   const savedEditableTabs = sessionStorage.getItem('editableTabs')
@@ -61,7 +62,6 @@ onMounted(() => {
   } else {
     editableTabsValue.value = 1
   }
-
   if (savedEditableTabs != null && savedEditableTabs != '' && savedEditableTabs != 'null') {
     editableTabs.value = JSON.parse(savedEditableTabs)
   } else {
@@ -78,6 +78,9 @@ onMounted(() => {
   }
 })
 
+onActivated(() => {
+  console.log('rest activated')
+})
 
 const handleTabsEdit = (targetName,action) => {
   if (action === 'add') {

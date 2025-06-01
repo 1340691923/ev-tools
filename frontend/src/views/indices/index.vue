@@ -28,8 +28,20 @@
                   </el-select>
                 </el-form-item>
               </el-col>
+              <el-col :lg="5" :md="12" :sm="4" :xl="3" :xs="24">
+                <el-form-item label="屏蔽系统索引">
+
+                  <el-switch
+                      @change="search"
+                      v-model="is_ban_sys_index"
+                      active-text="是"
+                      inactive-text="否">
+                  </el-switch>
+
+                </el-form-item>
+              </el-col>
               <el-col :lg="4" :md="6" :sm="6" :xl="3" :xs="12">
-                <el-form-item label="索引名">
+                <el-form-item label="筛选">
                   <el-container>
                     <el-autocomplete
                         class="filter-item width300"
@@ -559,6 +571,7 @@ export default {
 
   data() {
     return {
+      is_ban_sys_index:false,
       activeNames:'1',
       indexTishiList: [],
       modName: '索引管理',
@@ -617,6 +630,12 @@ export default {
     isMobile(){
       return sdk.IsMobile()
     }
+  },
+  deactivated() {
+    console.log('indices deactivated')
+  },
+  activated() {
+    console.log('indices activated')
   },
   mounted() {
     const input = sessionStorage.getItem('CatIndices')
@@ -1188,7 +1207,8 @@ export default {
       this.connectLoading = true
       const form = {
         cat: 'CatIndices',
-        es_connect: sdk.GetSelectEsConnID()
+        es_connect: sdk.GetSelectEsConnID(),
+        is_ban_sys_index:this.is_ban_sys_index,
       }
       this.indexTishiList = []
       CatAction(form).then(res => {

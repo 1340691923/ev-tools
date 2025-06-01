@@ -11,8 +11,9 @@ type EsDocUpdateByID struct {
 }
 
 type EsDocDeleteRowByID struct {
-	EsConnect int    `json:"es_connect"`
-	ID        string `json:"id"`
-	IndexName string `json:"index_name"`
-	Type      string `json:"type"`
+	EsConnect int      `json:"es_connect"`
+	ID        string   `json:"id"`
+	Ids       []string `json:"ids"`
+	IndexName string   `json:"index_name"`
+	Type      string   `json:"type"`
 }

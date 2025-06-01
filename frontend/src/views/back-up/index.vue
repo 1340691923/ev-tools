@@ -159,7 +159,7 @@
 import {sdk} from "@elasticview/plugin-sdk"
 import Add from '@/views/back-up/components/addRepository.vue'
 import {Component, Vue, toNative} from 'vue-facing-decorator'
-import {getCurrentInstance} from "vue";
+
 import {
   CleanupeRepositoryAction,
   SnapshotDeleteRepositoryAction,
@@ -174,8 +174,7 @@ import JsonEditor from '@/components/JsonEditor/index.vue'
     JsonEditor
   },
   setup() {
-    const ctx = getCurrentInstance().appContext.config.globalProperties
-    return {ctx}
+
   },
 })
 class Task extends Vue {
@@ -193,8 +192,13 @@ class Task extends Vue {
   tableHeader = []
 
   mounted() {
+    console.log('back-up mounted')
     this.initSnapshotName()
     this.search()
+  }
+
+  activated(){
+    console.log('back-up activated')
   }
 
   async CleanupeRepository(name) {

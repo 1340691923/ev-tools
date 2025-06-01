@@ -84,7 +84,7 @@
 </template>
 
 <script setup>
-import {ref, onMounted, nextTick, getCurrentInstance,computed} from 'vue';
+import {ref, onMounted, onActivated, nextTick,computed} from 'vue';
 import { ElMessage } from 'element-plus';
 import { ListAction, UpdateMappingAction } from '@/api/es-map';
 import JsonEditor from '@/components/JsonEditor/index.vue'
@@ -111,8 +111,6 @@ const open = ref(props.open)
 const title = ref(props.title)
 const indexName = ref(props.indexName)
 const  activeName = ref('1')
-
-const ctx = getCurrentInstance().appContext.config.globalProperties
 
 const jsonStrData = computed(()=>{
   return JSON.stringify(JSON.parse(jsonStr.value), null, '\t')
@@ -272,9 +270,14 @@ const refreshVueJsonHelper = () => {
   });
 };
 
-// Mounted hook
+// Lifecycle hooks
 onMounted(() => {
+  console.log('mapping mounted')
   init();
+});
+
+onActivated(() => {
+  console.log('mapping activated')
 });
 
 

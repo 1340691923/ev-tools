@@ -39,13 +39,12 @@
 </template>
 
 <script setup>
-import {ref, onMounted, getCurrentInstance} from 'vue';
+import {ref, onMounted, onActivated} from 'vue';
 import { AddAliasToIndex, BatchAddAliasToIndex, GetAliasAction, MoveAliasToIndex, RemoveAlias } from '@/api/es-index';
 import IndexSelect from '@/components/index/select.vue';
 import {ElMessage} from "element-plus";
 import {sdk} from "@elasticview/plugin-sdk";
 
-const ctx = getCurrentInstance().appContext.config.globalProperties
 
 const props = defineProps({
   indexName: {
@@ -193,7 +192,12 @@ const onError = (e) => {
 };
 
 onMounted(() => {
+  console.log('alias mounted')
   getAlias();
+});
+
+onActivated(() => {
+  console.log('alias activated')
 });
 </script>
 

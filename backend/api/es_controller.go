@@ -69,7 +69,7 @@ func (this *EsController) CatAction(ctx *gin.Context) {
 	case "CatAliases":
 		data, err = catSvr.CatAliases(ctx, esI)
 	case "CatIndices":
-		data, err = catSvr.CatIndices(ctx, esI, []string{"store.size:desc"}, esCat.IndexBytesFormat)
+		data, err = catSvr.CatIndices(ctx, esI, []string{"store.size:desc"}, esCat.IndexBytesFormat, esCat.IsBanSysIndex)
 	case "CatSegments":
 		data, err = catSvr.IndicesSegmentsRequest(ctx, esI)
 	case "CatStats":

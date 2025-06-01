@@ -104,7 +104,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onBeforeMount, nextTick } from 'vue'
+import {ref, computed, onBeforeMount, nextTick, onMounted, onActivated} from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 
 import { CatAction } from '@/api/es'
@@ -116,14 +116,13 @@ import PageSplit  from "vue3-page-split";
 
 import "vue3-page-split/dist/style.css";
 
-import { getCurrentInstance } from 'vue'
+
 import {sdk} from "@elasticview/plugin-sdk";
 // Importing components
 import JsonEditor from '@/components/JsonEditor/index.vue'
 import Crud from '@/views/navicat/crud.vue'
 
 // Setup instance
-const ctx = getCurrentInstance().appContext.config.globalProperties
 
 // Define reactive variables
 const indexTishiList = ref([])
@@ -171,7 +170,6 @@ const clickItem = async (index) => {
     index_name: currentIndexName.value
   }
   tabLoading.value = true
-  console.log("123")
   try {
     const res = await ListAction( input)
     if (res.code !== 0) {
@@ -195,12 +193,17 @@ const clickItem = async (index) => {
       "data_type": 3
   }]}
     let propertiesObj = {}
-
     switch (res.data.ver) {
       case 6:
-        propertiesObj = currentMappings.value[currentIndexName.value].mappings[
-            Object.keys(currentMappings.value[currentIndexName.value].mappings)[0]
-            ].properties
+
+          for(let doc of Object.keys(currentMappings.value[currentIndexName.value].mappings)){
+            for(let col in currentMappings.value[currentIndexName.value].mappings[doc].properties){
+              propertiesObj[col] = currentMappings.value[currentIndexName.value].mappings[doc].properties[col]
+            }
+          }
+
+        console.log("propertiesObj",propertiesObj)
+
         break
       case 7:
       case 8:
@@ -212,7 +215,7 @@ const clickItem = async (index) => {
     const Float = 2
     const String = 3
     const Text = 5
-    
+
     for (const key in propertiesObj) {
       if (propertiesObj[key].type) {
         eventAttrOptionsData[0].options.push({value: key, label: key})
@@ -238,12 +241,12 @@ const clickItem = async (index) => {
             obj.data_type = Float
             break
         }
-  
+
         attrMapData['2'].push(obj)
       }
     }
 
-    
+
 
     attrMap.value = attrMapData
     eventAttrOptions.value = eventAttrOptionsData
@@ -287,8 +290,13 @@ const deleteIndex = async (key, indexName) => {
 }
 
 // onBeforeMount hook to fetch index list
-onBeforeMount(async () => {
+onMounted(async () => {
+  console.log('navicat mounted')
   init()
+})
+
+onActivated(async () => {
+  console.log('navicat activated')
 })
 
 const init= async () => {

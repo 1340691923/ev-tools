@@ -170,7 +170,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, reactive, computed, onMounted, getCurrentInstance, nextTick} from 'vue';
+import {ref, reactive, computed, onMounted, onActivated, nextTick} from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { filterData } from '@/utils/table';
 import { clone } from '@/utils/index';
@@ -186,7 +186,6 @@ const props = defineProps({
 
 const emit = defineEmits(['close']);
 
-const ctx = getCurrentInstance().appContext.config.globalProperties
 
 const jsonData = ref(props.jsonData)
 
@@ -438,7 +437,12 @@ const close = () => {
 };
 
 onMounted(() => {
+  console.log('res-table mounted')
   initTableData();
+});
+
+onActivated(() => {
+  console.log('res-table activated')
 });
 </script>
 

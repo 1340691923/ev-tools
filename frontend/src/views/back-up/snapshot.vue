@@ -142,7 +142,7 @@
 </template>
 
 <script setup>
-import {ref, onMounted, computed, getCurrentInstance} from 'vue'
+import {ref, onMounted, onActivated, computed} from 'vue'
 import {
   SnapshotDeleteAction,
   SnapshotDetailAction,
@@ -157,7 +157,6 @@ import Add from '@/views/back-up/components/addSnapshot.vue'
 import SnapshotRestore from '@/views/back-up/components/snapshotRestore.vue'
 import {sdk} from "@elasticview/plugin-sdk"
 import JsonEditor from '@/components/JsonEditor/index.vue'
-const ctx = getCurrentInstance().appContext.config.globalProperties
 
 // State
 const openRestoreDialog = ref(false)
@@ -307,9 +306,14 @@ const drawerHandleClose = (done) => {
   done()
 }
 
-// Lifecycle hook
+// Lifecycle hooks
 onMounted(() => {
+  console.log('snapshot mounted')
   initRepositoryName()
+})
+
+onActivated(() => {
+  console.log('snapshot activated')
 })
 </script>
 

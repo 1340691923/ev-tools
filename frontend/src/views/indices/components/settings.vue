@@ -29,11 +29,10 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted, getCurrentInstance} from 'vue';
+import {ref, computed, onMounted, onActivated} from 'vue';
 import { ElMessage, ElLoading } from 'element-plus';
 import { StatsAction, CreateAction, GetSettingsAction } from '@/api/es-index';
 import { clone } from '@/utils/index';
-const ctx = getCurrentInstance().appContext.config.globalProperties
 import {sdk} from "@elasticview/plugin-sdk";
 const props = defineProps({
   indexName: {
@@ -270,10 +269,15 @@ const closeDialog = () => {
 }
 
 onMounted(()=>{
+  console.log('settings mounted')
   if (indexName.value != '') {
     catIndexStatus()
     catIndexSettings()
   }
+})
+
+onActivated(()=>{
+  console.log('settings activated')
 })
 
 </script>

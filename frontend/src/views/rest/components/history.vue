@@ -81,7 +81,7 @@
 <script>
 import {ElMessage} from "element-plus";
 import dayjs from "dayjs";
-import {ref, onMounted, watch, getCurrentInstance} from 'vue';
+import {ref, onMounted, onActivated, watch, } from 'vue';
 import { CleanAction, ListAction } from '@/api/dsl-history';
 import IndexSelect from '@/components/index/select.vue'
 import Date from '@/components/Date/index.vue'
@@ -165,7 +165,12 @@ export default {
     };
 
     onMounted(() => {
+      console.log('history mounted')
       searchHistory(1);
+    });
+
+    onActivated(() => {
+      console.log('history activated')
     });
 
     watch(() => props.dialogVisible, (newVal) => {

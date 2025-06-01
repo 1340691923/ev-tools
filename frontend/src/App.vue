@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-config-provider :size="size">
-      <router-view />
+      <router-view></router-view>
     </el-config-provider>
   </div>
 </template>

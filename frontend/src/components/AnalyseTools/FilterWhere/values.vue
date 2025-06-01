@@ -3,7 +3,6 @@
       collapse-tags-tooltip
       v-model="selectVal"
       filterable
-      :options="options"
       placeholder="请输入筛选值"
       style="width: 240px"
       multiple
@@ -12,11 +11,18 @@
       collapse-tags
       :reserve-keyword="false"
       clearable
-  />
+  >
+    <el-option
+        v-for="item in selectOptions"
+        :key="item"
+        :label="item"
+        :value="item"
+    />
+  </el-select>
 </template>
 
 <script>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 import {sdk} from "@elasticview/plugin-sdk"
 
 export default {
@@ -34,7 +40,15 @@ export default {
   },
   setup(props, { emit }) {
     const options = ref([]);
-    const selectVal = ref(props.value);
+    const selectVal = ref(Array.isArray(props.value) ? [...props.value] : []);
+
+    // 生成选项列表，确保包含当前选中的值
+    const selectOptions = computed(() => {
+      // 合并选项和当前选中值，去重
+      const allOptions = [...new Set([...options.value, ...(Array.isArray(selectVal.value) ? selectVal.value : [])])];
+      return allOptions;
+    });
+
     const cleanValues = () => {
       selectVal.value = [];
       emit('update:value', selectVal.value);
@@ -45,7 +59,36 @@ export default {
     };
 
     const initValue = (data) => {
-      options.value = []; // Initialize options based on your logic
+      // 保留原有选项
+      // options.value = []; // 不清空选项
+    };
+
+    // 批量导入值的方法
+    const batchImportValues = (values) => {
+      if (!values || !Array.isArray(values)) return;
+
+      // 如果selectVal不是数组，初始化为空数组
+      if (!Array.isArray(selectVal.value)) {
+        selectVal.value = [];
+      }
+
+      // 将所有新值添加到选中值中，避免重复添加
+      const newValues = [];
+      values.forEach(val => {
+        const trimmedVal = val.trim();
+        if (trimmedVal && !selectVal.value.includes(trimmedVal)) {
+          newValues.push(trimmedVal);
+        }
+      });
+
+      // 更新选中值
+      selectVal.value = [...selectVal.value, ...newValues];
+
+      // 更新options以显示这些值
+      options.value = [...new Set([...options.value, ...newValues])];
+
+      // 发出值变更事件
+      emit('update:value', selectVal.value);
     };
 
     watch(() => props.data, (newV) => {
@@ -58,13 +101,19 @@ export default {
 
     onMounted(() => {
       initValue(props.data);
+      // 确保值是数组
+      if (!Array.isArray(selectVal.value)) {
+        selectVal.value = [];
+      }
     });
 
     return {
       options,
       selectVal,
+      selectOptions,
       cleanValues,
-      changeValue
+      changeValue,
+      batchImportValues
     };
   }
 };

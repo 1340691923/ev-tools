@@ -108,6 +108,13 @@ icon="el-icon-plus" type="primary" @click.native="openAddDialog = true" >添加�
                    @click="download()"
                >下载
                </el-button>
+
+               <el-button
+                   :disabled="selectedIds.length === 0"
+                   type="danger"
+                   @click="batchDelete"
+               >批量删除
+               </el-button>
              </el-form-item>
            </el-form>
           </div>
@@ -120,7 +127,13 @@ icon="el-icon-plus" type="primary" @click.native="openAddDialog = true" >添加�
               ref="multipleTable"
               :row-height="30"
               show-overflow-tooltip
+              @selection-change="handleSelectionChange"
           >
+            <el-table-column
+                type="selection"
+                width="55"
+            >
+            </el-table-column>
             <el-table-column
                 label="ID"
                 align="center"
@@ -257,13 +270,12 @@ import { ListAction } from '@/api/es-map'
 import { DeleteRowByIDAction, InsertAction, UpdateByIDAction } from '@/api/es-doc'
 import { clone } from '../../utils'
 import {ElMessageBox,ElMessage } from "element-plus";
-import {getCurrentInstance} from "vue";
+
 
 export default {
   name: 'Crud',
   setup(){
-    const ctx = getCurrentInstance().appContext.config.globalProperties
-    return {ctx}
+
   },
   components: {
     JsonEditor,FilterWhere,
@@ -275,7 +287,10 @@ export default {
     },
     queryDslString(){
       return JSON.stringify(this.queryDsl,null, '\t')
-    }
+    },
+    selectedIds(){
+      return Array.from(this.selectedMap.keys())
+    },
   },
   props: {
     indexName: {
@@ -322,13 +337,68 @@ export default {
       drawerShow: false,
       queryDslShow: false,
       queryDsl: {},
-      downloadLoading: false
+      downloadLoading: false,
+      multipleSelection: [],
+
+      selectedMap:new Map()
     }
   },
+  activated(){
+    console.log('crud activated')
+  },
   mounted() {
+    console.log('crud mounted')
     if (this.indexName != '') this.search(1)
   },
   methods: {
+    handleSelectionChange(selection) {
+      selection.forEach(item => {
+        this.selectedMap.set(item._id, item)
+      })
+    },
+    async batchDelete() {
+      if (this.selectedIds.length === 0) {
+        ElMessage({
+          type: 'warning',
+          message: '请至少选择一条记录'
+        })
+        return
+      }
+
+      ElMessageBox.confirm(`确定批量删除吗?`, '警告', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+      .then(async() => {
+        const input = {}
+        input['es_connect'] = sdk.GetSelectEsConnID()
+        input['index_name'] = this.indexName
+        input['type'] = this.typName
+        input['ids'] = this.selectedIds
+
+        const res = await DeleteRowByIDAction(input)
+        if (res.code == 0) {
+          input['ids'].forEach(id => this.selectedMap.delete(id))
+
+          setTimeout(async() => {
+            await this.search(1)
+            ElMessage({
+              type: 'success',
+              message: res.msg
+            })
+          }, 1000)
+        } else {
+          ElMessage({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+      .catch(err => {
+        console.error(err)
+      })
+    },
     download() {
       const form = {
         index_name: this.indexName,
@@ -496,6 +566,7 @@ export default {
         }
       }
       this.$nextTick(() => {
+        this.setTableSelection()
         this.$refs.multipleTable.doLayout();
       })
     },
@@ -620,6 +691,15 @@ export default {
         this.tableData = []
       }
       this.tableLoading = false
+    },
+    setTableSelection() {
+      if (this.selectedIds.length > 0) {
+        this.tableData.forEach(row => {
+          if (this.selectedIds.includes(row._id)) {
+            this.$refs.multipleTable.toggleRowSelection(row, true)
+          }
+        })
+      }
     }
   }
 }

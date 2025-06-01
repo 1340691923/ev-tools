@@ -58,7 +58,8 @@ func (this *CatService) CatNodes(ctx context.Context, esClient pkg.ClientInterfa
 	return
 }
 
-func (this *CatService) CatIndices(ctx context.Context, esClient pkg.ClientInterface, sort []string, indexBytesFormat string) (res *proto2.Response, err error) {
+func (this *CatService) CatIndices(ctx context.Context, esClient pkg.ClientInterface,
+	sort []string, indexBytesFormat string, isBanSysIndex bool) (res *proto2.Response, err error) {
 
 	req := proto2.CatIndicesRequest{}
 	req.S = sort
@@ -67,6 +68,10 @@ func (this *CatService) CatIndices(ctx context.Context, esClient pkg.ClientInter
 	if indexBytesFormat != "" {
 		req.Bytes = indexBytesFormat
 	}
+	if isBanSysIndex {
+		req.Index = append(req.Index, "*,-.*")
+	}
+
 	res, err = esClient.EsGetIndices(ctx, req)
 	return
 }

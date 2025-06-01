@@ -17,7 +17,7 @@
 
 
     <el-row :gutter="40">
-      <el-col v-for="(v,k,index) in list" :key="index" :xs="40" :sm="11" :lg="11" class="card-panel-col">
+      <el-col v-for="(v, k) in list" :key="k" :xs="40" :sm="11" :lg="11" class="card-panel-col">
 
         <el-card shadow="never" class="table-container" >
 
@@ -205,7 +205,7 @@
 <script lang="ts">
 
 import {Component, Prop, toNative, Vue} from "vue-facing-decorator";
-import {getCurrentInstance} from "vue";
+
 import {ElMessage} from "element-plus";
 import {CatAction} from "../../../api/es";
 import {sdk} from "@elasticview/plugin-sdk"
@@ -214,13 +214,20 @@ import {sdk} from "@elasticview/plugin-sdk"
   name: 'Node',
 })
 class Node extends Vue {
-  list= []
-  connectLoading=false
-  value= 90
-  beforeMount() {
+  list: any[] = []
+  connectLoading = false
+  value = 90
+
+  activated() {
+
+  }
+
+  mounted() {
+    console.log('Node mounted')
     this.searchData()
   }
-  getOpt(v) {
+
+  getOpt(v: any) {
     const numV = Number(v)
 
     if (numV < 60) {
@@ -230,13 +237,16 @@ class Node extends Vue {
     }
     return 'red'
   }
+
+  forceRefresh() {
+    console.log('Force refresh triggered')
+    this.searchData()
+  }
+
   async searchData() {
-
-    const ctx = getCurrentInstance().appContext.config.globalProperties
-
-    console.log("ctx",ctx)
-
+    console.log('searchData called')
     this.connectLoading = true
+
     const res = await CatAction({
       cat: 'Node',
       es_connect: sdk.GetSelectEsConnID()

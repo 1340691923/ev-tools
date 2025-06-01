@@ -330,7 +330,7 @@
 import { esBodyKeyWords } from '@/utils/base-data'
 import { ListAction } from '@/api/es-map'
 import { ReindexAction } from '@/api/es-index'
-import {getCurrentInstance} from "vue";
+
 import JsonEditor from '@/components/JsonEditor/index.vue';
 import {sdk} from "@elasticview/plugin-sdk"
 
@@ -342,8 +342,7 @@ export default {
     JsonEditor
   },
   setup(){
-    const ctx = getCurrentInstance().appContext.config.globalProperties
-    return {ctx}
+
   },
   data() {
     return {
@@ -415,17 +414,18 @@ export default {
       linkOpt: []
     }
   },
+  activated(){
+    console.log('reindex activated')
+  },
   mounted() {
+    console.log('reindex mounted')
     this.es_connect = sdk.GetSelectEsConnID()
     this.getLinkList()
     this.getIndexList()
   },
 
   methods: {
-
-
     changeLink(link) {
-
       for (const v of this.linkOpt) {
         if (v.remark == link) {
           this.form.source.remote.host = v.ip

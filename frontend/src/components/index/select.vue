@@ -23,12 +23,10 @@
 </template>
 
 <script setup>
-import {ref, onMounted, getCurrentInstance} from 'vue'
+import {ref, onMounted} from 'vue'
 import { IndexNamesAction } from '@/api/es-index'
 import {ElMessage} from "element-plus";
 import {sdk} from "@elasticview/plugin-sdk"
-
-const ctx = getCurrentInstance().appContext.config.globalProperties
 
 const props = defineProps({
   indexName: {
