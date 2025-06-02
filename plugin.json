@@ -2,7 +2,7 @@
   "developer": "肖大侠",
   "plugin_alias": "ev-tools",
   "plugin_name":"ev工具箱",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "main_go_file": "main.go",
   "frontend_debug": false,
   "frontend_dev_port":7002,
