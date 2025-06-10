@@ -4,7 +4,7 @@
   "plugin_name":"ev工具箱",
   "version": "0.0.19",
   "main_go_file": "main.go",
-  "frontend_debug": false,
+  "frontend_debug": true,
   "frontend_dev_port":7002,
   "frontend_routes": [
     {
