@@ -26,8 +26,8 @@ node version >= 20.14.0
 install gowatch:
 go install github.com/silenceper/gowatch@latest
 
-go install github.com/1340691923/ElasticView/cmd/ev_plugin_builder@v0.0.12
-go install github.com/1340691923/ElasticView/cmd/ev_plugin_zip@v0.0.12
+go install github.com/1340691923/eve-plugin-sdk-go/cmd/ev_plugin_builder@v0.0.15
+go install github.com/1340691923/eve-plugin-sdk-go/cmd/ev_plugin_zip@v0.0.15
 
 install pnpm:
 npm install -g pnpm
