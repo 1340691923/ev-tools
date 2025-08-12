@@ -5,7 +5,15 @@
       <page-split class="page-split" :distribute="0.2" :lineThickness="3" :isVertical="true">
         <template v-slot:first>
           <div class="left-panel">
+            
             <div class="search-container">
+              
+              <el-switch
+                      @change="init"
+                      v-model="is_ban_sys_index"
+                      active-text="屏蔽系统索引"
+                      inactive-text="不屏蔽">
+                  </el-switch>
               <el-autocomplete
                   v-model="filterStr"
                   class="search-input"
@@ -17,6 +25,7 @@
                   <span>{{ item.value }}</span>
                 </template>
               </el-autocomplete>
+
 
               <el-menu v-loading="loadingMenu" class="index-menu">
 
@@ -138,6 +147,7 @@ const currentSettings = ref({})
 const eventAttrOptions = ref([])
 const showIndexSettings = ref(false)
 const attrMap = ref([])
+const is_ban_sys_index = ref(false)
 
 // Computed properties
 const getIndexList = computed(() => {
@@ -302,7 +312,8 @@ onActivated(async () => {
 const init= async () => {
   const form = {
     cat: 'CatIndices',
-    es_connect: sdk.GetSelectEsConnID()
+    es_connect: sdk.GetSelectEsConnID(),
+    is_ban_sys_index:is_ban_sys_index.value,
   }
   indexList.value = []
   loadingMenu.value = true
